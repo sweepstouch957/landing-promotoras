@@ -1,5 +1,4 @@
 import { Clock, Calendar, MapPin, Star, Phone, TrendingUp } from 'lucide-react';
-import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -435,8 +434,8 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6">
-                "¡Perfecto para mi horario universitario! Gano más que en
-                trabajos tradicionales y tengo flexibilidad total."
+               &quot;¡Perfecto para mi horario universitario! Gano más que en
+                trabajos tradicionales y tengo flexibilidad total.&quot;
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
@@ -459,8 +458,8 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6">
-                "En 3 meses he ganado $2,400 trabajando solo fines de semana.
-                ¡Increíble!"
+                &quot;En 3 meses he ganado $2,400 trabajando solo fines de semana.
+                ¡Increíble!&quot;
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
@@ -483,8 +482,8 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6">
-                "El ambiente es súper friendly y las bonificaciones hacen que
-                valga la pena el esfuerzo extra."
+                &quot;El ambiente es súper friendly y las bonificaciones hacen que
+                valga la pena el esfuerzo extra.&quot;
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
