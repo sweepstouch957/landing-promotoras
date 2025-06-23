@@ -1,0 +1,61 @@
+.container {
+  background-color: #fff;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.title {
+  color: #e91e63;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  width: 300px;
+  max-width: 90%;
+  text-align: center;
+  border: 1px solid #eee;
+}
+
+.iconLight {
+  font-size: 2rem;
+  color: #f4c9cf;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.iconPink {
+  font-size: 2rem;
+  color: #fc0680;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: #555;
+}
