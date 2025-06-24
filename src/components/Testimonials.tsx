@@ -32,7 +32,7 @@ export default function Testimonials() {
                   <span key={i} className="star">⭐</span>
                 ))}
               </div>
-              <p className="testimonial-text">"{testimonial.text}"</p>
+              <p className="testimonial-text">&quot;{testimonial.text}&quot;</p>
               <div className="testimonial-author">
                 <div className="author-avatar">{testimonial.name.charAt(0)}</div>
                 <div className="author-info">

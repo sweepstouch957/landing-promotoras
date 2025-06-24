@@ -1,4 +1,3 @@
-import Responsibilities from './Responsabilities';
 
 export default function Hero() {
   return (
@@ -40,6 +39,7 @@ export default function Hero() {
             </div>
           </div>
           <div className="hero-image">
+            
             <img src="/hero-image.jpg" alt="Estudiantes trabajando" />
           </div>
         </div>
