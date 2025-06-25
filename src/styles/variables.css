@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@700&family=Inter:wght@400;600&display=swap');
+
+:root {
+  --primary-color: #f82083;
+  --secondary-color: #ece3df;
+  --text-color-dark: #333;
+  --text-color-light: #fff;
+  --text-color-medium: #3a3a3a;
+  --button-hover-color: #e01070;
+}

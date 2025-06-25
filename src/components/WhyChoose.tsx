@@ -1,56 +1,139 @@
+import React from 'react';
+import styles from '../styles/WhyChoose.module.css';
+
 export default function WhyChoose() {
   const features = [
     {
-      icon: '⏰',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <polyline
+            points="12,6 12,12 16,14"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        </svg>
+      ),
       title: 'Flexibilidad Total',
       items: [
         'Tú eliges cuándo trabajar',
-        'Turnos de 4 horas',
         'Compatible con clases',
-        'Sin horarios fijos'
-      ]
+        'Turnos de 4 horas',
+        'Sin horarios fijos',
+      ],
     },
     {
-      icon: '📱',
-      title: 'Tecnología Avanzada',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect
+            x="5"
+            y="2"
+            width="14"
+            height="20"
+            rx="2"
+            ry="2"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <line
+            x1="12"
+            y1="18"
+            x2="12.01"
+            y2="18"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        </svg>
+      ),
+      title: 'Tecnología Amigable',
       items: [
-        'App móvil intuitiva',
         'Check-in/out automático',
+        'Pago semanal directo',
         'Tracking en tiempo real',
-        'Pago semanal directo'
-      ]
+      ],
     },
     {
-      icon: '📈',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line
+            x1="12"
+            y1="20"
+            x2="12"
+            y2="10"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <line
+            x1="18"
+            y1="20"
+            x2="18"
+            y2="4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <line
+            x1="6"
+            y1="20"
+            x2="6"
+            y2="16"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        </svg>
+      ),
       title: 'Desarrollo Profesional',
       items: [
         'Habilidades de ventas',
-        'Experiencia en marketing',
         'Networking',
-        'Referencias para CV'
-      ]
-    }
+        'Experiencia en marketing',
+        'Referencias para CV',
+      ],
+    },
   ];
 
+  const CheckIcon = () => (
+    <svg
+      className={styles.checkIcon}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="12" cy="12" r="10" fill="currentColor" />
+      <path
+        d="m9 12 2 2 4-4"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+
   return (
-    <section className="why-choose">
-      <div className="container">
-        <h2 className="section-title">¿Por Qué Elegir Sweepstouch?</h2>
-        <div className="features-grid">
-          {features.map((feature, index) => (
-            <div key={index} className="feature-card">
-              <div className="feature-icon">{feature.icon}</div>
-              <h3 className="feature-title">{feature.title}</h3>
-              <ul className="feature-list">
-                {feature.items.map((item, itemIndex) => (
-                  <li key={itemIndex}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+    <section className={styles.container}>
+      <h2 className={styles.title}>¿POR QUÉ ELEGIR SWEEPSTOUCH?</h2>
+      <div className={styles.featuresGrid}>
+        {features.map((feature, index) => (
+          <div key={index} className={styles.featureCard}>
+            <div className={styles.iconContainer}>{feature.icon}</div>
+            <h3 className={styles.featureTitle}>{feature.title}</h3>
+            <ul className={styles.featureList}>
+              {feature.items.map((item, itemIndex) => (
+                <li key={itemIndex} className={styles.featureItem}>
+                  <CheckIcon />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
-

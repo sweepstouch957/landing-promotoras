@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Anton&display=swap');
+
+.hero {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  padding: 40px 20px;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  position: relative;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 550px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hero-badge svg {
+  width: 14px;
+  height: 14px;
+  fill: #e91e63;
+}
+
+.hero-title-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+  display: inline-block;
+  width: 100%;
+}
+
+/* NUEVO contenedor para los dos títulos y la línea */
+.hero-headline {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+}
+
+/* Línea detrás de los títulos */
+.hero-headline::before {
+  content: '';
+  height: 6px;
+  background-color: #e91e63;
+  position: absolute;
+  left: 0;
+  right: 130px; /* Ajusta este valor según el ancho de la palabra "Oportunidad" */
+  top: 60%;
+  transform: translateY(-50%);
+  z-index: 1;
+  border-radius: 3px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  line-height: 1;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  padding-right: 15px;
+  display: inline-block;
+}
+
+.hero-subtitle {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #e91e63;
+  margin: 0;
+  line-height: 1;
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  padding-left: 15px;
+  display: inline-block;
+}
+
+.hero-description {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.hero-features {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  overflow-x: visible;
+  justify-content: space-between;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(233, 30, 99, 0.2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.feature-item svg {
+  width: 16px;
+  height: 16px;
+  fill: #e91e63;
+}
+
+.primary-button {
+  background: linear-gradient(135deg, #e91e63 0%, #d81b60 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 12px rgba(233, 30, 99, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(233, 30, 99, 0.4);
+}
+
+.hero-image {
+  flex: 1;
+  position: relative;
+  max-width: 500px;
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .hero {
+    padding: 32px 16px;
+  }
+
+  .hero-container {
+    flex-direction: column;
+    gap: 32px;
+    text-align: center;
+  }
+
+  .hero-title,
+  .hero-subtitle {
+    font-size: 2.5rem;
+  }
+
+  .hero-features {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .feature-item {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 24px 12px;
+  }
+
+  .hero-title,
+  .hero-subtitle {
+    font-size: 2rem;
+  }
+
+  .hero-features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-item {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Anton&display=swap');
+
+.hero-title-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.hero-line-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.hero-line {
+  height: 6px;
+  background-color: #e91e63;
+  flex-grow: 1;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  display: inline-block;
+}
+
+.hero-subtitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #e91e63;
+  margin: 0;
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+}
+.hero-title-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.hero-line-container {
+  position: relative;
+  display: flex;
+  align-items: baseline; /* más balance visual */
+  gap: 10px; /* espacio pequeño entre línea y texto */
+}
+
+.hero-line {
+  height: 6px;
+  background-color: #e91e63;
+  flex-grow: 1;
+  border-radius: 3px;
+  /* Se quitó el margin-right */
+}
+
+.hero-title {
+  font-size: 4.5rem; /* más grande */
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  display: inline-block;
+}
+
+.hero-subtitle {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #e91e63;
+
+  margin: 0;
+  margin-left: 0;
+  padding-top: 10px;
+  padding-left: 0;
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+}
+.hero-line {
+  height: 3px;
+  background-color: #e91e63;
+  flex-grow: 1;
+  min-width: 215px; /* ← ancho mínimo asegurado */
+  border-radius: 3px;
+
+  margin-right: 0;
+  padding-right: 0;
+}

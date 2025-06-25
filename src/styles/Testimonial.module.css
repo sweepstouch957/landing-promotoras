@@ -1,0 +1,130 @@
+/* Estilos generales del cuerpo para el fondo */
+/* NOTA: Los estilos para 'body' no deben ir en un CSS Module si quieres que afecten a todo el documento.
+   Normalmente, los estilos de 'body' o globales van en un archivo CSS global (ej. global.css o app.css).
+   Si este componente es el único que usa este fondo, puedes aplicarlo a la sección principal.
+   Por ahora, lo dejo comentado aquí para que sepas, pero lo ideal es que 'body' se estilice globalmente. */
+/*
+body {
+  background-color: #EEEAE6;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+*/
+
+/* Contenedor principal de la sección de testimonios */
+.testimonials {
+  background-color: #eeeae6; /* Aplicamos el color de fondo directamente a la sección */
+  padding: 60px 0; /* Espaciado superior e inferior de la sección */
+  text-align: center; /* Centra el título de la sección */
+}
+
+.container {
+  max-width: 1200px; /* Ancho máximo del contenido, ajusta si es necesario */
+  margin: 0 auto; /* Centra el contenedor */
+  padding: 0 20px; /* Espaciado lateral */
+}
+
+/* Título de la sección */
+.sectionTitle {
+  color: #ec407a; /* Color rosa/magenta del título */
+  font-size: 2.5em; /* Tamaño de la fuente del título */
+  font-weight: bold; /* Negrita */
+  text-transform: uppercase; /* Todo en mayúsculas */
+  margin-bottom: 50px; /* Espacio debajo del título */
+  letter-spacing: 1px; /* Ligero espaciado entre letras */
+}
+
+/* Contenedor de la cuadrícula de testimonios */
+.testimonialsGrid {
+  display: grid;
+  /* REDUCCIÓN DE TAMAÑO: Cambiado de minmax(300px, 1fr) a minmax(280px, 1fr) */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(280px, 1fr)
+  ); /* Cuadrícula responsiva de 3 columnas */
+  gap: 30px; /* Espacio entre las tarjetas de testimonios */
+  justify-content: center; /* Centra las tarjetas en la cuadrícula */
+}
+
+/* Tarjeta de testimonio individual */
+.testimonialCard {
+  background-color: #ffffff; /* Fondo blanco de la tarjeta */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 30px; /* Relleno interno de la tarjeta */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Sombra sutil */
+  text-align: left; /* Alinea el texto a la izquierda dentro de la tarjeta */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Empuja el autor hacia abajo */
+
+  /* EFECTO HOVER: Transición suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* EFECTO HOVER: Estilos al pasar el ratón */
+.testimonialCard:hover {
+  transform: translateY(-5px); /* Se eleva ligeramente */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+}
+
+/* Estrellas de calificación */
+.rating {
+  margin-bottom: 15px; /* Espacio debajo de las estrellas */
+}
+
+.star {
+  color: #ec407a; /* Color rosa/magenta para las estrellas */
+  font-size: 1.5em; /* Tamaño de las estrellas */
+}
+
+/* Texto del testimonio */
+.testimonialText {
+  color: #333333; /* Color gris oscuro para el texto */
+  font-size: 1.1em; /* Tamaño de la fuente del texto */
+  line-height: 1.6; /* Altura de línea para mejor legibilidad */
+  margin-bottom: 25px; /* Espacio debajo del texto */
+  flex-grow: 1; /* Permite que el texto ocupe el espacio disponible */
+}
+
+/* Información del autor */
+.testimonialAuthor {
+  display: flex;
+  align-items: center; /* Alinea el avatar y la información del autor verticalmente */
+  margin-top: 20px; /* Espacio encima de la información del autor */
+}
+
+/* Avatar del autor */
+.authorAvatar {
+  width: 50px;
+  height: 50px;
+  background-color: #333333; /* Fondo gris oscuro/negro del avatar */
+  color: #ffffff; /* Texto blanco del avatar */
+  border-radius: 50%; /* Forma circular */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em; /* Tamaño de la letra inicial */
+  font-weight: bold; /* Negrita */
+  margin-right: 15px; /* Espacio a la derecha del avatar */
+}
+
+/* Contenedor de nombre y escuela del autor */
+.authorInfo {
+  display: flex;
+  flex-direction: column; /* Apila el nombre y la escuela */
+}
+
+/* Nombre del autor */
+.authorName {
+  color: #333333; /* Color gris oscuro */
+  font-size: 1.1em; /* Tamaño de la fuente */
+  font-weight: bold; /* Negrita */
+}
+
+/* Escuela del autor */
+.authorSchool {
+  color: #666666; /* Color gris más claro */
+  font-size: 0.9em; /* Tamaño de la fuente más pequeño */
+}
