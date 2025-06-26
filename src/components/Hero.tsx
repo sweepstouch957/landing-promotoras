@@ -30,7 +30,14 @@ export default function Hero() {
             ¿Eres estudiante universitaria y buscas un trabajo que se adapte a
             tu horario académico? ¡Esta oportunidad es perfecta para ti!
           </p>
-
+          <div
+            className={`${styles['hero-image']} ${styles['hero-image-mobile']}`}
+          >
+            <img
+              src="/hero-image.jpg"
+              alt="Grupo de chicas felices trabajando juntas"
+            />
+          </div>
           <div className={styles['hero-features']}>
             <div className={styles['feature-item']}>
               <svg
@@ -80,8 +87,14 @@ export default function Hero() {
 
           <button className={styles['primary-button']}>Aplicar Ahora</button>
         </div>
-        <div className={styles['hero-image']}>
-          <img src="/hero-image.jpg" alt="Grupo de chicas felices" />
+
+        <div
+          className={`${styles['hero-image']} ${styles['hero-image-desktop']}`}
+        >
+          <img
+            src="/hero-image.jpg"
+            alt="Grupo de chicas felices trabajando juntas"
+          />
         </div>
       </div>
     </section>

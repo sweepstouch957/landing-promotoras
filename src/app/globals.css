@@ -1,5 +1,6 @@
 /* Reset y configuración base */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Dancing+Script:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 * {
   margin: 0;
@@ -58,6 +59,7 @@ body {
 }
 
 /* Header */
+
 .header {
   background: var(--background-white);
   padding: var(--spacing-sm) 0;
@@ -118,6 +120,7 @@ body {
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--border-radius);
   font-weight: 600;
+  font-family: 'Roboto', sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -126,6 +129,125 @@ body {
   background: var(--primary-pink-dark);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+/* Estilos para el botón hamburguesa */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.hamburger:focus {
+  outline: none;
+}
+
+.hamburger-line {
+  width: 30px;
+  height: 3px;
+  background: var(--primary-pink);
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+/* Animación del botón hamburguesa cuando está abierto */
+.hamburger[aria-expanded='true'] .hamburger-line:first-child {
+  transform: rotate(45deg);
+}
+
+.hamburger[aria-expanded='true'] .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.hamburger[aria-expanded='true'] .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* Menú móvil */
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--background-white);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-md);
+  border-top: 1px solid #e5e5e5;
+}
+
+.mobile-menu.open {
+  display: block;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Media queries para dispositivos móviles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .apply-button {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  .mobile-menu .apply-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: var(--spacing-sm);
+  }
+}
+
+/* Para tablets */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+
+  .apply-button {
+    display: block;
+  }
+}
+
+/* Para desktop */
+@media (min-width: 1025px) {
+  .hamburger {
+    display: none;
+  }
+
+  .apply-button {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: none !important;
+  }
 }
 
 /* Hero Section */

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -40,10 +40,17 @@ const inputStyles = {
     },
   },
 };
-
 export default function ApplicationForm() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // 🔴 Nuevo: referencia al formulario
+  const formRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 🔴 Hacer scroll al formulario cuando el componente se monte
+    formRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   const {
     register,
@@ -72,6 +79,7 @@ export default function ApplicationForm() {
 
   return (
     <Box
+      ref={formRef}
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{
@@ -90,6 +98,7 @@ export default function ApplicationForm() {
         fontWeight="bold"
         color="#fc0680"
         textTransform="uppercase"
+        sx={{ fontFamily: 'Roboto, sans-serif' }}
       >
         Formulario de Aplicación
       </Typography>

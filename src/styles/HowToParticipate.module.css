@@ -1,113 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 /* Contenedor principal de la sección */
 .container {
-  background-color: #ffffff; /* Fondo completamente blanco */
-  padding: 80px 20px; /* Espaciado superior/inferior y lateral */
-  text-align: center; /* Centra todo el contenido de la sección */
-  font-family: 'Arial', sans-serif; /* Asegura una fuente genérica si no hay una específica */
+  background-color: #ffffff;
+  padding: 80px 20px;
+  text-align: center;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 /* Título principal */
 .title {
-  color: #ec407a; /* Color rosa/magenta */
-  font-size: 2.2em; /* Ligeramente más pequeño para el título */
-  font-weight: 700; /* Negrita más definida */
+  color: #ec407a;
+  font-size: 2.6rem;
+  font-weight: 400;
   text-transform: uppercase;
-  margin-bottom: 15px; /* Espacio debajo del título */
-  letter-spacing: 1px;
+  margin-bottom: 18px;
+  letter-spacing: 1.2px;
 }
 
 /* Subtítulo */
 .subtitle {
-  color: #555555; /* Color gris oscuro */
-  font-size: 1.1em; /* Ligeramente más pequeño */
-  margin-bottom: 60px; /* Espacio debajo del subtítulo antes de las tarjetas */
-  max-width: 700px; /* Limita el ancho del subtítulo */
+  color: #555555;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 60px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.5;
+  letter-spacing: 0.4px;
 }
 
 /* Contenedor de las tarjetas */
 .cards {
   display: grid;
-  /* Ajuste para hacer las tarjetas más pequeñas y mantener 3 columnas */
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(260px, 1fr)
-  ); /* Min-width aún más ajustado */
-  gap: 25px; /* Espacio entre las tarjetas (ligeramente reducido) */
-  justify-content: center; /* Centra las tarjetas en la cuadrícula */
-  max-width: 900px; /* Limita el ancho total de la cuadrícula de tarjetas */
-  margin: 0 auto; /* Centra la cuadrícula */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* Estilo de cada tarjeta individual */
 .card {
-  background-color: #ffffff; /* Fondo blanco de la tarjeta */
-  border-radius: 10px; /* Bordes redondeados */
-  padding: 25px 15px; /* Relleno interno de la tarjeta (más reducido) */
-  /* Sombra más notable y estilizada, como en Figma */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Sombra más suave pero presente */
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 30px 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra el contenido horizontalmente */
-  text-align: center; /* Centra el texto dentro de la tarjeta */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave para hover */
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Efecto hover para las tarjetas */
 .card:hover {
-  transform: translateY(-5px); /* Se eleva ligeramente */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12); /* Sombra más pronunciada al hover */
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
 /* Contenedor del icono */
 .iconContainer {
   background-color: transparent;
-  width: 70px; /* Tamaño del contenedor del icono (reducido) */
+  width: 70px;
   height: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 15px; /* Espacio debajo del icono (reducido) */
+  margin-bottom: 15px;
 }
 
-/* Estilo del icono SVG */
+/* Icono SVG */
 .icon {
-  width: 40px; /* Tamaño del icono (reducido) */
+  width: 40px;
   height: 40px;
-  fill: #ec407a; /* Color fucsia para los iconos */
-  color: #ec407a; /* Para asegurar que currentColor funcione si se usa */
+  fill: #ec407a;
+  color: #ec407a;
 }
 
 /* Título de la tarjeta */
 .cardTitle {
-  color: #333333; /* Color gris oscuro */
-  font-size: 1.2em; /* Tamaño de fuente (ligeramente reducido) */
-  font-weight: 600; /* Negrita */
-  margin-bottom: 8px; /* Espacio debajo del título de la tarjeta (reducido) */
+  font-size: 1.3rem; /* reducido desde 1.6rem */
+  font-weight: 400;
+  color: #333333;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
 }
 
 /* Descripción de la tarjeta */
 .cardDescription {
-  color: #666666; /* Color gris más claro */
-  font-size: 0.9em; /* Tamaño de fuente ligeramente más pequeño */
-  line-height: 1.5;
+  font-size: 0.9rem; /* reducido desde 1.1rem */
+  font-weight: 400;
+  color: #666666;
+  line-height: 1.6;
+  letter-spacing: 0.3px;
 }
 
-/* Media queries para responsividad */
+/* Responsivo */
 @media (max-width: 768px) {
   .title {
-    font-size: 1.8em;
+    font-size: 2.2rem;
   }
+
   .subtitle {
-    font-size: 0.95em;
+    font-size: 1.2rem;
   }
+
   .cards {
-    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
-    max-width: 350px; /* Limita el ancho de la tarjeta en móvil */
+    grid-template-columns: 1fr;
+    max-width: 350px;
   }
+
   .card {
-    padding: 20px 15px; /* Ajuste de padding para móvil */
+    padding: 25px 16px;
+  }
+
+  .cardTitle {
+    font-size: 1.1rem; /* reducido desde 1.4rem */
+  }
+
+  .cardDescription {
+    font-size: 0.85rem; /* reducido desde 1rem */
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .cardTitle {
+    font-size: 1rem; /* reducido desde 1.3rem */
+  }
+
+  .cardDescription {
+    font-size: 0.8rem; /* reducido desde 0.95rem */
   }
 }
