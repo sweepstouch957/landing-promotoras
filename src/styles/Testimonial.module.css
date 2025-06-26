@@ -1,21 +1,6 @@
-/* Estilos generales del cuerpo para el fondo */
-/* NOTA: Los estilos para 'body' no deben ir en un CSS Module si quieres que afecten a todo el documento.
-   Normalmente, los estilos de 'body' o globales van en un archivo CSS global (ej. global.css o app.css).
-   Si este componente es el único que usa este fondo, puedes aplicarlo a la sección principal.
-   Por ahora, lo dejo comentado aquí para que sepas, pero lo ideal es que 'body' se estilice globalmente. */
-/*
-body {
-  background-color: #EEEAE6;
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-*/
-
 /* Contenedor principal de la sección de testimonios */
 .testimonials {
-  background-color: #eeeae6; /* Aplicamos el color de fondo directamente a la sección */
+  background-color: #e4dbd8; /* Aplicamos el color de fondo directamente a la sección */
   padding: 60px 0; /* Espaciado superior e inferior de la sección */
   text-align: center; /* Centra el título de la sección */
 }

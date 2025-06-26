@@ -1,7 +1,14 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import styles from '../styles/Hero.module.css';
 
 export default function Hero() {
+  const router = useRouter();
+
+  const handleApplyClick = () => {
+    router.push('/formulario');
+  };
+
   return (
     <section className={styles.hero}>
       <div className={styles['hero-container']}>
@@ -85,7 +92,12 @@ export default function Hero() {
             </div>
           </div>
 
-          <button className={styles['primary-button']}>Aplicar Ahora</button>
+          <button
+            className={styles['primary-button']}
+            onClick={handleApplyClick}
+          >
+            Aplicar Ahora
+          </button>
         </div>
 
         <div
