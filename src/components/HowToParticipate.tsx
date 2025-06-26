@@ -48,7 +48,7 @@ const HowToParticipate = () => {
               />
             </svg>
           </div>
-          <h3 className={styles.cardTitle}>Función "Share" en la App</h3>
+          <h3 className={styles.cardTitle}>Función &quot;Share&quot; en la App</h3>
           <p className={styles.cardDescription}>
             Aumenta la participación compartiendo con amigos y familiares del
             participante, aumentando sus probabilidades de ganar.
