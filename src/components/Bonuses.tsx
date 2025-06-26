@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../styles/Bonuses.module.css';
 
 const Bonuses = () => {
-  const MedalIcon = ({ className }) => (
+  const MedalIcon = ({ className }:{className:string}) => (
     <svg
       className={className}
       viewBox="0 0 24 24"
