@@ -4,9 +4,10 @@ import styles from '../styles/HowToParticipate.module.css';
 const HowToParticipate = () => {
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>¿CÓMO CONSEGUIR PARTICIPACIONES?</h2>
+      <h2 className={styles.title}>MAXIMIZA TUS GANANCIAS</h2>
       <p className={styles.subtitle}>
-        Maximiza tus ganancias y tus posibilidades en el sorteo del carro.
+        Consiguiendo participaciones en los diversos sorteos aumentas tus
+        probabilidades de aumentar tus ganancias
       </p>
       <div className={styles.cards}>
         <div className={styles.card}>

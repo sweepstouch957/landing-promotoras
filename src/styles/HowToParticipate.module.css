@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap');
 
 /* Contenedor principal de la sección */
 .container {
   background-color: #ffffff;
   padding: 80px 20px;
   text-align: center;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Título principal */
@@ -16,6 +16,7 @@
   text-transform: uppercase;
   margin-bottom: 18px;
   letter-spacing: 1.2px;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 /* Subtítulo */
@@ -45,8 +46,8 @@
 .card {
   background-color: #ffffff;
   border-radius: 10px;
-  padding: 30px 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  padding: 26px 18px; /* reducido ligeramente */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); /* más notorio */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,8 +56,8 @@
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18); /* más fuerte en hover */
 }
 
 /* Contenedor del icono */
@@ -80,20 +81,23 @@
 
 /* Título de la tarjeta */
 .cardTitle {
-  font-size: 1.3rem; /* reducido desde 1.6rem */
+  font-size: 1.3rem;
   font-weight: 400;
   color: #333333;
   margin-bottom: 10px;
   letter-spacing: 0.5px;
+  font-family: 'Bebas Neue', sans-serif; /* vuelve a usar Bebas Neue */
 }
 
 /* Descripción de la tarjeta */
 .cardDescription {
-  font-size: 0.9rem; /* reducido desde 1.1rem */
-  font-weight: 400;
+  font-size: 1.05rem; /* subido para buena legibilidad en minúscula */
+  font-weight: 300;
   color: #666666;
-  line-height: 1.6;
+  line-height: 1.7;
   letter-spacing: 0.3px;
+  text-transform: none;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Responsivo */
@@ -112,15 +116,15 @@
   }
 
   .card {
-    padding: 25px 16px;
+    padding: 22px 14px;
   }
 
   .cardTitle {
-    font-size: 1.1rem; /* reducido desde 1.4rem */
+    font-size: 1.15rem;
   }
 
   .cardDescription {
-    font-size: 0.85rem; /* reducido desde 1rem */
+    font-size: 0.95rem;
   }
 }
 
@@ -134,10 +138,10 @@
   }
 
   .cardTitle {
-    font-size: 1rem; /* reducido desde 1.3rem */
+    font-size: 1.05rem;
   }
 
   .cardDescription {
-    font-size: 0.8rem; /* reducido desde 0.95rem */
+    font-size: 0.9rem;
   }
 }

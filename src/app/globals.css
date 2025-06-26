@@ -377,55 +377,128 @@ body {
   margin: 0 auto;
 }
 
-/* Footer */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 .footer {
-  background: var(--text-dark);
+  background: #0b0f1a;
   color: white;
-  padding: var(--spacing-xl) 0 var(--spacing-lg);
+  padding: 3rem 1rem 2rem;
+  font-family: 'Inter', sans-serif;
 }
 
 .footer-content {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footer-contact h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.footer-contact p {
+  font-size: 0.85rem;
+  color: #ddd;
+  margin-bottom: 1rem;
+  max-width: 260px;
+}
+
+.contact-item {
+  display: flex;
   align-items: center;
-  margin-bottom: var(--spacing-lg);
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #ccc;
+  margin-bottom: 0.5rem;
+}
+
+.icon svg {
+  fill: #ec0e7b;
+  width: 20px;
+  height: 20px;
+}
+
+.footer-right {
+  text-align: right;
 }
 
 .footer-logo {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  justify-content: flex-end;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.footer-logo .logo-icon {
-  background: var(--primary-pink);
+.logo-icon {
+  color: #ec0e7b;
+  font-size: 2rem;
 }
 
-.footer-logo .logo-text {
-  color: white;
+.logo-text {
+  color: #ec0e7b;
+  font-weight: normal;
+}
+
+.logo-text .highlight {
+  color: #ec0e7b;
+  font-weight: bold;
 }
 
 .footer-links {
   display: flex;
-  gap: var(--spacing-lg);
+  gap: 1.5rem;
+  justify-content: flex-end;
 }
 
 .footer-link {
   color: white;
   text-decoration: none;
+  font-size: 0.95rem;
   transition: color 0.3s ease;
 }
 
 .footer-link:hover {
-  color: var(--secondary-pink);
+  color: #ec0e7b;
 }
 
 .footer-bottom {
   text-align: center;
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid #444;
+  padding-top: 2rem;
+  border-top: 1px solid #222;
   color: #999;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+}
+.footer-logo {
+  background: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer-right {
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+
+  .footer-logo {
+    justify-content: center;
+  }
 }
 
 /* Responsive Design */
