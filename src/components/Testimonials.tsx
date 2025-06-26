@@ -41,7 +41,7 @@ export default function Testimonials() {
                   </span>
                 ))}
               </div>
-              <p className={styles.testimonialText}>"{testimonial.text}"</p>
+              <p className={styles.testimonialText}>&quot;{testimonial.text}&quot;</p>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>
                   {testimonial.name.charAt(0)}
