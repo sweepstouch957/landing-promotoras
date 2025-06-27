@@ -38,12 +38,7 @@ const Responsibilities = () => {
               fill="#fc0680"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                d="M7 7a4 4 0 1 1 8 0M5 22v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"
-                stroke="currentColor"
-                strokeWidth="2"
-                fill="none"
-              />
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
             </svg>
           </div>
           <h3>Promocionar Participación en Sorteo</h3>
@@ -52,6 +47,7 @@ const Responsibilities = () => {
             por ser cliente del supermercado.
           </p>
         </div>
+
         <div className={styles.card}>
           <div className={styles.icon}>
             <svg
