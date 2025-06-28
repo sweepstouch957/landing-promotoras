@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap');
 
 .container {
   background-color: #ffffff;
@@ -8,6 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-family: 'Inter', sans-serif;
 }
 
 .title {
@@ -22,14 +23,15 @@
 }
 
 .subtitle {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 400;
-  letter-spacing: 0.4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+  letter-spacing: 0.3px;
   color: #666666;
   text-align: center;
   margin: 0 0 60px 0;
-  line-height: 1.4;
+  line-height: 1.6;
+  text-transform: none;
 }
 
 .cards {
@@ -43,16 +45,16 @@
 .card {
   background-color: #ffffff;
   border-radius: 16px;
-  padding: 40px 30px;
+  padding: 36px 28px;
   text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #f0f0f0;
 }
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 14px 45px rgba(0, 0, 0, 0.22);
 }
 
 .iconContainer {
@@ -88,13 +90,14 @@
 }
 
 .cardDescription {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 300;
   letter-spacing: 0.2px;
   color: #666666;
-  line-height: 1.6;
+  line-height: 1.7;
   margin: 0;
+  text-transform: none;
 }
 
 /* Responsive */
@@ -109,7 +112,7 @@
   }
 
   .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     margin-bottom: 40px;
   }
 
@@ -121,7 +124,7 @@
 
   .card {
     padding: 30px 25px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.13);
   }
 
   .iconContainer {
@@ -140,7 +143,7 @@
   }
 
   .cardDescription {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -167,7 +170,7 @@
   .card {
     padding: 25px 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.14);
   }
 
   .iconContainer {
@@ -186,6 +189,6 @@
   }
 
   .cardDescription {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 }

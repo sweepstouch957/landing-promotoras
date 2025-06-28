@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap');
 
 .container {
   background-color: #e4dbd8;
   padding: 3rem 1rem;
   text-align: center;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .title {
@@ -14,10 +14,11 @@
   margin-bottom: 0.8rem;
   letter-spacing: 1px;
   text-transform: uppercase;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 .subtitle {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #333333;
   margin-bottom: 2rem;
   font-weight: 400;
@@ -26,46 +27,51 @@
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 tarjetas en línea */
-  gap: 1.5rem;
-  max-width: 1200px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 .card {
   background-color: white;
   border-radius: 10px;
-  padding: 1.5rem 1.2rem;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  padding: 1.2rem 1rem; /* reducido */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .icon {
-  font-size: 2.2rem;
-  display: block;
-  margin-bottom: 0.9rem;
+  font-size: 2rem; /* ligeramente más pequeño */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.7rem;
   color: #fc0680;
 }
 
 .card h3 {
   font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   font-weight: 400;
   color: #222;
   letter-spacing: 0.5px;
+  font-family: 'Bebas Neue', sans-serif; /* fuente original para títulos */
 }
 
 .card p {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #555555;
   font-weight: 300;
   line-height: 1.6;
+  text-transform: none;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Responsive */
@@ -82,19 +88,24 @@
     grid-template-columns: 1fr;
     max-width: 400px;
   }
+
   .title {
     font-size: 1.7rem;
   }
+
   .subtitle {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
+
   .card {
-    padding: 1.3rem 1rem;
+    padding: 1.1rem 0.9rem;
   }
+
   .card h3 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
+
   .card p {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 }

@@ -1,3 +1,12 @@
+/* SOLUCIÓN ACTUALIZADA PARA HERO-LINE DESDE EL BORDE IZQUIERDO */
+
+/* 
+NUEVOS REQUISITOS:
+- La línea hero-line debe salir del borde izquierdo de la página
+- El hero-subtitle debe estar más centrado
+- Mantener la proporción en todos los tamaños responsive
+*/
+
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Anton&display=swap');
 
 .hero {
@@ -44,63 +53,69 @@
 
 .hero-title-wrapper {
   position: relative;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 16px;
-  display: inline-block;
-  width: 100%;
+  align-items: flex-start;
 }
 
-/* NUEVO contenedor para los dos títulos y la línea */
-.hero-headline {
+.hero-line-container {
   display: flex;
   align-items: center;
   position: relative;
-  width: fit-content;
+  margin-top: 10px;
+  width: 60%;
+  overflow: visible;
 }
 
-/* Línea detrás de los títulos */
-.hero-headline::before {
-  content: '';
-  height: 6px;
-  background-color: #e91e63;
+/* SOLUCIÓN PRINCIPAL: Línea que sale del borde izquierdo */
+.hero-line {
   position: absolute;
-  left: 0;
-  right: 130px; /* Ajusta este valor según el ancho de la palabra "Oportunidad" */
-  top: 60%;
+  top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
+  height: 4px;
+  background-color: #e91e63;
   border-radius: 3px;
+  z-index: 1;
+  /* Línea que se extiende desde el borde izquierdo de la página */
+  left: calc(-50vw + 50%);
+  width: calc(50vw + 50% - 8rem);
 }
 
 .hero-title {
-  font-size: 4rem;
+  font-size: 4.5rem;
   font-weight: 600;
   color: #333;
   margin: 0;
-  line-height: 1;
   font-family: 'Dancing Script', cursive;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 2;
   background: transparent;
-  padding-right: 15px;
   display: inline-block;
+  line-height: 1;
 }
 
 .hero-subtitle {
-  font-size: 4rem;
+  position: relative;
+  z-index: 2;
+  font-size: 2.1rem;
   font-weight: 700;
   color: #e91e63;
   margin: 0;
-  line-height: 1;
+  margin-left: auto;
+  padding-left: 45px;
   font-family: 'Anton', sans-serif;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 2;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  padding-left: 15px;
-  display: inline-block;
+  letter-spacing: 1px;
+  background: transparent;
+  line-height: 1;
+  white-space: nowrap;
+  /* Centrado mejorado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8rem;
 }
 
 .hero-description {
@@ -176,130 +191,6 @@
   z-index: 3;
 }
 
-/* Existing styles for hero-title-wrapper, hero-line-container, hero-line, hero-title, hero-subtitle */
-.hero-title-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-  align-items: flex-start;
-}
-
-.hero-line-container {
-  position: relative;
-  display: flex;
-  align-items: baseline; /* más balance visual */
-  gap: 10px; /* espacio pequeño entre línea y texto */
-}
-
-.hero-line {
-  height: 6px;
-  background-color: #e91e63;
-  flex-grow: 1;
-  border-radius: 3px;
-}
-
-.hero-title {
-  font-size: 4.5rem; /* más grande */
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-  font-family: 'Dancing Script', cursive;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 2;
-  background: transparent;
-  display: inline-block;
-}
-
-.hero-subtitle {
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: #e91e63;
-  margin: 0;
-  margin-left: 0;
-  padding-top: 10px;
-  padding-left: 0;
-  font-family: 'Anton', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  position: relative;
-  z-index: 2;
-  display: inline-block;
-}
-
-.hero-line {
-  height: 3px;
-  background-color: #e91e63;
-  flex-grow: 1;
-  min-width: 215px; /* ← ancho mínimo asegurado */
-  border-radius: 3px;
-  margin-right: 0;
-  padding-right: 0;
-}
-
-.hero-line-container {
-  display: flex;
-  align-items: center; /* alinea verticalmente */
-  position: relative;
-  margin-top: 20px;
-}
-
-.hero-line {
-  height: 3px;
-  background-color: #e91e63;
-  min-width: 215px;
-  flex-grow: 1;
-  border-radius: 3px;
-  margin-right: -12px;
-  margin-left: calc(-1 * (100vw - 100%)); /* ← truco para ir hasta el borde */
-}
-
-.hero-subtitle {
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: #e91e63;
-  margin: 0;
-  padding-top: 10px;
-  font-family: 'Anton', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  position: relative;
-  z-index: 2;
-}
-
-.hero-line-container {
-  display: flex;
-  align-items: center;
-  position: relative; /* necesario para posicionar la línea dentro */
-  margin-top: 10px;
-}
-
-.hero-line {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 3px;
-  background-color: #e91e63;
-  width: 87vw;
-  z-index: 2;
-}
-
-.hero-subtitle {
-  position: relative;
-  z-index: 2;
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: #e91e63;
-  margin: 0;
-  padding-top: 0;
-  padding-left: 160px; /* 👈 mueve el texto hacia la derecha */
-  font-family: 'Anton', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  background: transparent;
-}
 .hero-image-mobile {
   display: none;
 }
@@ -310,7 +201,8 @@
   max-width: 500px;
   margin: 24px auto 0 auto;
 }
-/* Responsive design */
+
+/* RESPONSIVE DESIGN CON LÍNEA DESDE EL BORDE IZQUIERDO */
 @media (max-width: 768px) {
   .hero {
     padding: 32px 16px;
@@ -323,19 +215,19 @@
   }
 
   .hero-content {
-    order: 1; /* Asegura que el contenido de texto vaya primero */
+    order: 1;
     width: 100%;
-    max-width: none; /* Elimina el max-width para que ocupe todo el ancho disponible */
+    max-width: none;
   }
 
   .hero-badge {
-    margin: 0 auto 16px auto; /* Centra el badge */
+    margin: 0 auto 16px auto;
   }
 
   .hero-title-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra los títulos */
+    align-items: center;
     margin-bottom: 16px;
   }
 
@@ -343,27 +235,28 @@
     font-size: 5.5rem;
     line-height: 1.2;
     padding-right: 0;
-    background: none; /* Elimina el fondo para que la línea se vea completa */
+    background: none;
   }
+
+  /* Línea desde el borde izquierdo para tablet */
   .hero-line {
-    width: 73vw;
-    height: 5px;
+    left: calc(-50vw + 50%);
+    width: calc(50vw + 50% - 10rem);
+    height: 4px;
   }
+
   .hero-subtitle {
     font-size: 2.5rem;
     letter-spacing: 1px;
-    padding-left: 0;
-    background: none; /* Elimina el fondo para que la línea se vea completa */
-  }
-
-  .hero-headline::before {
-    right: 0; /* Extiende la línea a todo el ancho */
+    background: none;
+    width: 10rem;
+    justify-content: center;
   }
 
   .hero-description {
     font-size: 14px;
     margin-bottom: 24px;
-    text-align: center; /* Centra el texto de la descripción */
+    text-align: center;
   }
 
   .hero-features {
@@ -374,12 +267,12 @@
   }
 
   .feature-item {
-    flex: 0 0 calc(50% - 5px); /* Dos por fila con un pequeño espacio */
-    max-width: none; /* Elimina el max-width */
+    flex: 0 0 calc(50% - 5px);
+    max-width: none;
     font-size: 14px;
     padding: 6px 8px;
     gap: 4px;
-    justify-content: center; /* Centra el contenido del item */
+    justify-content: center;
   }
 
   .feature-item svg {
@@ -389,8 +282,8 @@
 
   .primary-button {
     width: 100%;
-    max-width: 280px; /* Ajusta el ancho máximo del botón */
-    margin: 0 auto; /* Centra el botón */
+    max-width: 190px;
+    margin: 0 auto;
     padding: 10px 20px;
     font-size: 14px;
   }
@@ -420,17 +313,28 @@
   .hero {
     padding: 24px 12px;
   }
+
   .hero-image-mobile {
     max-width: 395px;
     margin-left: 15px;
     margin-bottom: 20px;
   }
+
   .hero-title {
     font-size: 3rem;
   }
 
   .hero-subtitle {
     font-size: 1.8rem;
+    width: 7rem;
+    justify-content: center;
+  }
+
+  /* Línea desde el borde izquierdo para móvil */
+  .hero-line {
+    left: calc(-50vw + 50%);
+    width: calc(50vw + 50% - 7rem);
+    height: 3px;
   }
 
   .hero-features {
@@ -440,15 +344,30 @@
   }
 
   .feature-item {
-    flex: 0 0 calc(50% - 5px); /* Dos por fila */
+    flex: 0 0 calc(50% - 5px);
     max-width: none;
     justify-content: center;
     font-size: 11px;
     padding: 6px 8px;
     gap: 4px;
   }
+}
+
+/* BREAKPOINT ADICIONAL PARA PANTALLAS MUY PEQUEÑAS */
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+    width: 6rem;
+    justify-content: center;
+  }
 
   .hero-line {
-    width: 67dvw;
+    left: calc(-50vw + 50%);
+    width: calc(50vw + 50% - 6rem);
+    height: 2.5px;
   }
 }
