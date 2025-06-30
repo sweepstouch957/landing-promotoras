@@ -12,7 +12,7 @@ export default function Footer() {
             <span className="icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                fill="#ec0e7b"
+                fill="#ED1F80"
                 viewBox="0 0 24 24"
                 width="20"
                 height="20"
@@ -27,7 +27,7 @@ export default function Footer() {
             <span className="icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                fill="#ec0e7b"
+                fill="#ED1F80"
                 viewBox="0 0 24 24"
                 width="20"
                 height="20"

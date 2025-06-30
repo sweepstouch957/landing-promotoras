@@ -31,17 +31,17 @@ interface FormData {
 
 const inputStyles = {
   "& label.Mui-focused": {
-    color: "#fc0680",
+    color: "#ED1F80",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderColor: "#ccc",
     },
     "&:hover fieldset": {
-      borderColor: "#fc0680",
+      borderColor: "#ED1F80",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#fc0680",
+      borderColor: "#ED1F80",
     },
   },
 };
@@ -75,7 +75,7 @@ export default function ApplicationForm() {
         title: "¡Solicitud enviada!",
         text: "Gracias por participar. Te contactaremos pronto.",
         icon: "success",
-        confirmButtonColor: "#fc0680",
+        confirmButtonColor: "#ED1F80",
         confirmButtonText: "Aceptar",
         customClass: {
           popup: "rounded-xl",
@@ -91,7 +91,7 @@ export default function ApplicationForm() {
         title: "Error",
         text: "Hubo un problema al enviar tu solicitud. Inténtalo más tarde.",
         icon: "error",
-        confirmButtonColor: "#fc0680",
+        confirmButtonColor: "#ED1F80",
         confirmButtonText: "Aceptar",
         customClass: {
           popup: "rounded-xl",
@@ -121,7 +121,7 @@ export default function ApplicationForm() {
         variant="h6"
         align="center"
         fontWeight="bold"
-        color="#fc0680"
+        color="#ED1F80"
         textTransform="uppercase"
         sx={{ fontFamily: "Roboto, sans-serif" }}
       >
@@ -236,9 +236,9 @@ export default function ApplicationForm() {
             {...register("acepta", { required: true })}
             color="primary"
             sx={{
-              color: "#fc0680",
+              color: "#ED1F80",
               "&.Mui-checked": {
-                color: "#fc0680",
+                color: "#ED1F80",
               },
             }}
           />
@@ -257,7 +257,7 @@ export default function ApplicationForm() {
         fullWidth
         sx={{
           mt: 1,
-          backgroundColor: "#fc0680",
+          backgroundColor: "#ED1F80",
           color: "white",
           fontWeight: "bold",
           borderRadius: "25px",
