@@ -1,0 +1,127 @@
+{
+  "earnings_badge": "💰 Earn up to $25/hour",
+  "hero_title": "Flexible job",
+  "hero_subtitle": "Opportunity",
+  "hero_description": "Are you a university student looking for a job that fits your academic schedule? This opportunity is perfect for you!",
+  "feature_1": "Flexible schedule",
+  "feature_2": "Multiple locations",
+  "feature_3": "More information",
+  "apply_now": "Apply Now",
+  "responsibilities_title": "WHAT WILL YOU DO?",
+  "responsibilities_subtitle": "As a Sweepstouch promoter, your responsibilities will include:",
+  "responsibility_1_title": "Work Flexible Shifts",
+  "responsibility_1_desc": "4-hour shifts that fit your university schedule.",
+  "responsibility_2_title": "Promote Sweepstakes Participation",
+  "responsibility_2_desc": "Encourage participation in the free car or miles sweepstakes for supermarket customers.",
+  "responsibility_3_title": "Interact with Customers",
+  "responsibility_3_desc": "Friendly and professional communication, answering questions and registering participants.",
+  "responsibility_4_title": "Register Entries",
+  "responsibility_4_desc": "Using our intuitive app for the car or miles sweepstakes.",
+  "how_to_title": "MAXIMIZE YOUR EARNINGS",
+  "how_to_subtitle": "By getting entries into various raffles, you increase your chances of earning more.",
+  "how_to_card_1_title": "Partner Supermarkets",
+  "how_to_card_1_desc": "Promote participation in raffles at supermarkets affiliated with Sweepstouch.",
+  "how_to_card_2_title": "\"Share\" Feature in the App",
+  "how_to_card_2_desc": "Increase participation by sharing with friends and family of the participant, boosting their chances of winning.",
+  "how_to_card_3_title": "Events and Fairs",
+  "how_to_card_3_desc": "Leverage local events and fairs to register more participants and earn more money.",
+  "payment_title": "Transparent Payment Structure",
+  "payment_subtitle": "Earn more based on your performance – You decide how much you make!",
+  "payment_table_title": "Earnings Table",
+  "payment_table_header_participaciones": "Entries",
+  "payment_table_header_turno": "Payment per Shift",
+  "payment_table_header_hora": "Payment per Hour",
+  "why_title": "WHY CHOOSE SWEEPSTOUCH?",
+  "why_features": [
+    {
+      "title": "Professional Development",
+      "items": [
+        "Sales skills",
+        "Networking",
+        "Marketing experience",
+        "CV references"
+      ]
+    },
+    {
+      "title": "Total Flexibility",
+      "items": [
+        "You choose when to work",
+        "Class-friendly",
+        "4-hour shifts",
+        "No fixed schedule"
+      ]
+    },
+    {
+      "title": "Friendly Technology",
+      "items": [
+        "Automatic check-in/out",
+        "Weekly direct payment",
+        "Real-time tracking"
+      ]
+    }
+  ],
+  "bonuses_title": "ADDITIONAL BONUSES",
+  "bonuses_subtitle": "We reward your effort and dedication.",
+  "bonuses_weekly_title": "Weekly Bonus",
+  "bonuses_weekly_desc": "Earn a $25 bonus for every 100 entries registered during the week.",
+  "bonuses_monthly_title": "Monthly Bonus",
+  "bonuses_monthly_desc": "Reach 1000 entries in a month and receive an extra $100 bonus.",
+  "testimonials_title": "What Our Promoters Are Saying",
+  "testimonials": [
+    {
+      "text": "Perfect for my college schedule! I earn more than traditional jobs and have total flexibility.",
+      "name": "Maria, 20 years old",
+      "school": "NYU"
+    },
+    {
+      "text": "In 3 months, I’ve earned $2,400 working only weekends. Incredible!",
+      "name": "Sofia, 19 years old",
+      "school": "Rutgers"
+    },
+    {
+      "text": "The environment is super friendly and the bonuses make the extra effort worth it.",
+      "name": "Camila, 21 years old",
+      "school": "UConn"
+    }
+  ],
+  "join_title": "Join the Sweepstouch Community Today",
+  "join_subtitle": "Don't miss the chance to earn money, flexibility, and experience.",
+  "join_button": "Apply Now",
+  "footer_contact_title": "Contact Us",
+  "footer_contact_text": "Have questions? We're here to help.",
+  "footer_email": "jobs@sweepstouch.com",
+  "footer_phone": "(201) 686-4638",
+  "footer_terms": "Terms",
+  "footer_privacy": "Privacy",
+  "footer_contact": "Contact",
+  "footer_copyright": "All rights reserved.",
+  "form_title": "Application Form",
+  "form_nombre": "First Name",
+  "form_apellido": "Last Name",
+  "form_telefono": "Phone",
+  "form_correo": "Email",
+  "form_edad": "Age",
+  "form_zip": "ZIP Code",
+  "form_supermercado": "Supermarket",
+  "form_acepta": "I have read and accept the program terms.",
+  "form_enviar": "Submit my application",
+
+  "form_error_nombre": "First name is required",
+  "form_error_apellido": "Last name is required",
+  "form_error_telefono": "Phone number is required",
+  "form_error_correo": "Email is required",
+  "form_error_edad": "Age is required",
+  "form_error_zip": "ZIP code is required",
+  "form_error_supermercado": "This field is required",
+  "form_error_acepta": "You must accept the terms",
+  "form_error_solo_letras": "Only letters allowed",
+  "form_error_correo_invalido": "Invalid email",
+  "form_error_telefono_invalido": "Invalid phone number",
+  "form_error_edad_minima": "Must be 18 or older",
+
+  "form_success_title": "Application sent!",
+  "form_success_text": "Thank you! We'll be in touch soon.",
+  "form_error_title": "Error",
+  "form_error_text": "There was a problem submitting your application. Please try again.",
+  "form_button_ok": "OK"
+}

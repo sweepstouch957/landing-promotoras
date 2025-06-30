@@ -1,14 +1,14 @@
-import React from 'react';
+'use client';
+import { useTranslation } from 'react-i18next';
 import styles from '../styles/HowToParticipate.module.css';
 
 const HowToParticipate = () => {
+  const { t } = useTranslation('common');
+
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>MAXIMIZA TUS GANANCIAS</h2>
-      <p className={styles.subtitle}>
-        Consiguiendo participaciones en los diversos sorteos aumentas tus
-        probabilidades de aumentar tus ganancias
-      </p>
+      <h2 className={styles.title}>{t('how_to_title')}</h2>
+      <p className={styles.subtitle}>{t('how_to_subtitle')}</p>
       <div className={styles.cards}>
         <div className={styles.card}>
           <div className={styles.iconContainer}>
@@ -24,12 +24,10 @@ const HowToParticipate = () => {
               />
             </svg>
           </div>
-          <h3 className={styles.cardTitle}>Supermercados Afiliados</h3>
-          <p className={styles.cardDescription}>
-            Promueve la participación en sorteos en supermercados afiliados a
-            Sweepstouch.
-          </p>
+          <h3 className={styles.cardTitle}>{t('how_to_card_1_title')}</h3>
+          <p className={styles.cardDescription}>{t('how_to_card_1_desc')}</p>
         </div>
+
         <div className={styles.card}>
           <div className={styles.iconContainer}>
             <svg
@@ -52,13 +50,8 @@ const HowToParticipate = () => {
               />
             </svg>
           </div>
-          <h3 className={styles.cardTitle}>
-            Función &quot;Share&quot; en la App
-          </h3>
-          <p className={styles.cardDescription}>
-            Aumenta la participación compartiendo con amigos y familiares del
-            participante, aumentando sus probabilidades de ganar.
-          </p>
+          <h3 className={styles.cardTitle}>{t('how_to_card_2_title')}</h3>
+          <p className={styles.cardDescription}>{t('how_to_card_2_desc')}</p>
         </div>
 
         <div className={styles.card}>
@@ -75,11 +68,8 @@ const HowToParticipate = () => {
               />
             </svg>
           </div>
-          <h3 className={styles.cardTitle}>Eventos y Ferias</h3>
-          <p className={styles.cardDescription}>
-            Aprovecha eventos y ferias en tu área para registrar más
-            participaciones y ganar más dinero.
-          </p>
+          <h3 className={styles.cardTitle}>{t('how_to_card_3_title')}</h3>
+          <p className={styles.cardDescription}>{t('how_to_card_3_desc')}</p>
         </div>
       </div>
     </section>

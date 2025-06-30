@@ -1,8 +1,12 @@
+'use client';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from '../styles/Bonuses.module.css';
 
 const Bonuses = () => {
-  const MedalIcon = ({ className }:{className:string}) => (
+  const { t } = useTranslation('common');
+
+  const MedalIcon = ({ className }: { className: string }) => (
     <svg
       className={className}
       viewBox="0 0 24 24"
@@ -28,28 +32,22 @@ const Bonuses = () => {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>BONOS ADICIONALES</h2>
-      <p className={styles.subtitle}>Recompensamos tu esfuerzo y dedicación.</p>
+      <h2 className={styles.title}>{t('bonuses_title')}</h2>
+      <p className={styles.subtitle}>{t('bonuses_subtitle')}</p>
       <div className={styles.cards}>
         <div className={styles.card}>
           <div className={styles.iconContainer}>
             <MedalIcon className={`${styles.icon} ${styles.iconLight}`} />
           </div>
-          <h3 className={styles.cardTitle}>Bono Semanal</h3>
-          <p className={styles.cardDescription}>
-            Gana un bono de $25 por cada 100 participaciones registradas en la
-            semana.
-          </p>
+          <h3 className={styles.cardTitle}>{t('bonuses_weekly_title')}</h3>
+          <p className={styles.cardDescription}>{t('bonuses_weekly_desc')}</p>
         </div>
         <div className={styles.card}>
           <div className={styles.iconContainer}>
             <MedalIcon className={`${styles.icon} ${styles.iconPink}`} />
           </div>
-          <h3 className={styles.cardTitle}>Bono Mensual</h3>
-          <p className={styles.cardDescription}>
-            Alcanza 1000 participaciones en el mes y recibe un bono adicional de
-            $100.
-          </p>
+          <h3 className={styles.cardTitle}>{t('bonuses_monthly_title')}</h3>
+          <p className={styles.cardDescription}>{t('bonuses_monthly_desc')}</p>
         </div>
       </div>
     </section>
