@@ -1,13 +1,14 @@
-import React from 'react';
+'use client';
+import { useTranslation } from 'react-i18next';
 import styles from '../styles/Responsabilities.module.css';
 
 const Responsibilities = () => {
+  const { t } = useTranslation('common');
+
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>¿QUÉ HARÁS?</h2>
-      <p className={styles.subtitle}>
-        Como impulsadora de Sweepstouch, tus responsabilidades incluirán:
-      </p>
+      <h2 className={styles.title}>{t('responsibilities_title')}</h2>
+      <p className={styles.subtitle}>{t('responsibilities_subtitle')}</p>
       <div className={styles.cards}>
         <div className={styles.card}>
           <div className={styles.icon}>
@@ -26,8 +27,8 @@ const Responsibilities = () => {
               />
             </svg>
           </div>
-          <h3>Trabajar en Turnos Flexibles</h3>
-          <p>Turnos de 4 horas que se adaptan a tu horario universitario.</p>
+          <h3>{t('responsibility_1_title')}</h3>
+          <p>{t('responsibility_1_desc')}</p>
         </div>
         <div className={styles.card}>
           <div className={styles.icon}>
@@ -41,13 +42,9 @@ const Responsibilities = () => {
               <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
             </svg>
           </div>
-          <h3>Promocionar Participación en Sorteo</h3>
-          <p>
-            Promover la participación en el sorteo gratuito de un carro o millas
-            por ser cliente del supermercado.
-          </p>
+          <h3>{t('responsibility_2_title')}</h3>
+          <p>{t('responsibility_2_desc')}</p>
         </div>
-
         <div className={styles.card}>
           <div className={styles.icon}>
             <svg
@@ -65,11 +62,8 @@ const Responsibilities = () => {
               />
             </svg>
           </div>
-          <h3>Interactuar con Clientes</h3>
-          <p>
-            De manera amigable y profesional, resolviendo dudas y registrando
-            participantes.
-          </p>
+          <h3>{t('responsibility_3_title')}</h3>
+          <p>{t('responsibility_3_desc')}</p>
         </div>
         <div className={styles.card}>
           <div className={styles.icon}>
@@ -88,8 +82,8 @@ const Responsibilities = () => {
               />
             </svg>
           </div>
-          <h3>Registrar Participaciones</h3>
-          <p>Usando nuestra app intuitiva para el sorteo del carro o millas.</p>
+          <h3>{t('responsibility_4_title')}</h3>
+          <p>{t('responsibility_4_desc')}</p>
         </div>
       </div>
     </section>

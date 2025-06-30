@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '../styles/variables.css'; // importa los estilos globales aquí
+import '@/lib/i18n';
 
 import './globals.css';
 

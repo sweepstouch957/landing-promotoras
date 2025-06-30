@@ -1,0 +1,127 @@
+{
+  "earnings_badge": "💰 Gana hasta $25/hora",
+  "hero_title": "Trabajo flexible",
+  "hero_subtitle": "Oportunidad",
+  "hero_description": "¿Eres estudiante universitaria y buscas un trabajo que se adapte a tu horario académico? ¡Esta oportunidad es perfecta para ti!",
+  "feature_1": "Horario flexible",
+  "feature_2": "Múltiples ubicaciones",
+  "feature_3": "Más Información",
+  "apply_now": "Aplicar Ahora",
+  "responsibilities_title": "¿QUÉ HARÁS?",
+  "responsibilities_subtitle": "Como impulsadora de Sweepstouch, tus responsabilidades incluirán:",
+  "responsibility_1_title": "Trabajar en Turnos Flexibles",
+  "responsibility_1_desc": "Turnos de 4 horas que se adaptan a tu horario universitario.",
+  "responsibility_2_title": "Promocionar Participación en Sorteo",
+  "responsibility_2_desc": "Promover la participación en el sorteo gratuito de un carro o millas por ser cliente del supermercado.",
+  "responsibility_3_title": "Interactuar con Clientes",
+  "responsibility_3_desc": "De manera amigable y profesional, resolviendo dudas y registrando participantes.",
+  "responsibility_4_title": "Registrar Participaciones",
+  "responsibility_4_desc": "Usando nuestra app intuitiva para el sorteo del carro o millas.",
+  "how_to_title": "MAXIMIZA TUS GANANCIAS",
+  "how_to_subtitle": "Consiguiendo participaciones en los diversos sorteos aumentas tus probabilidades de aumentar tus ganancias",
+  "how_to_card_1_title": "Supermercados Afiliados",
+  "how_to_card_1_desc": "Promueve la participación en sorteos en supermercados afiliados a Sweepstouch.",
+  "how_to_card_2_title": "Función \"Share\" en la App",
+  "how_to_card_2_desc": "Aumenta la participación compartiendo con amigos y familiares del participante, aumentando sus probabilidades de ganar.",
+  "how_to_card_3_title": "Eventos y Ferias",
+  "how_to_card_3_desc": "Aprovecha eventos y ferias en tu área para registrar más participaciones y ganar más dinero.",
+  "payment_title": "Estructura de Pagos Transparente",
+  "payment_subtitle": "Gana más según tu rendimiento - ¡Tú decides cuánto ganar!",
+  "payment_table_title": "Tabla de Ganancias",
+  "payment_table_header_participaciones": "Participaciones",
+  "payment_table_header_turno": "Pago por Turno",
+  "payment_table_header_hora": "Pago por Hora",
+  "why_title": "¿POR QUÉ ELEGIR SWEEPSTOUCH?",
+  "why_features": [
+    {
+      "title": "Desarrollo Profesional",
+      "items": [
+        "Habilidades de ventas",
+        "Networking",
+        "Experiencia en marketing",
+        "Referencias para CV"
+      ]
+    },
+    {
+      "title": "Flexibilidad Total",
+      "items": [
+        "Tú eliges cuándo trabajar",
+        "Compatible con clases",
+        "Turnos de 4 horas",
+        "Sin horarios fijos"
+      ]
+    },
+    {
+      "title": "Tecnología Amigable",
+      "items": [
+        "Check-in/out automático",
+        "Pago semanal directo",
+        "Tracking en tiempo real"
+      ]
+    }
+  ],
+  "bonuses_title": "BONOS ADICIONALES",
+  "bonuses_subtitle": "Recompensamos tu esfuerzo y dedicación.",
+  "bonuses_weekly_title": "Bono Semanal",
+  "bonuses_weekly_desc": "Gana un bono de $25 por cada 100 participaciones registradas en la semana.",
+  "bonuses_monthly_title": "Bono Mensual",
+  "bonuses_monthly_desc": "Alcanza 1000 participaciones en el mes y recibe un bono adicional de $100.",
+  "testimonials_title": "Lo Que Dicen Nuestras Impulsadoras",
+  "testimonials": [
+    {
+      "text": "¡Perfecto para mi horario universitario! Gano más que en trabajos tradicionales y tengo flexibilidad total.",
+      "name": "María, 20 años",
+      "school": "NYU"
+    },
+    {
+      "text": "En 3 meses he ganado $2,400 trabajando solo fines de semana. ¡Increíble!",
+      "name": "Sofía, 19 años",
+      "school": "Rutgers"
+    },
+    {
+      "text": "El ambiente es súper friendly y las bonificaciones hacen que valga la pena el esfuerzo extra.",
+      "name": "Camila, 21 años",
+      "school": "UConn"
+    }
+  ],
+  "join_title": "Forma Parte de la Comunidad Sweepstouch Hoy",
+  "join_subtitle": "No pierdas la oportunidad de ganar dinero, flexibilidad y experiencia.",
+  "join_button": "Aplicar Ahora",
+  "footer_contact_title": "Contáctanos",
+  "footer_contact_text": "¿Tienes preguntas? Estamos aquí para ayudarte.",
+  "footer_email": "jobs@sweepstouch.com",
+  "footer_phone": "(201) 686-4638",
+  "footer_terms": "Términos",
+  "footer_privacy": "Privacidad",
+  "footer_contact": "Contacto",
+  "footer_copyright": "Todos los derechos reservados.",
+  "form_title": "Formulario de Aplicación",
+  "form_nombre": "Nombre",
+  "form_apellido": "Apellido",
+  "form_telefono": "Teléfono",
+  "form_correo": "Correo electrónico",
+  "form_edad": "Edad",
+  "form_zip": "Código ZIP",
+  "form_supermercado": "Supermercado donde compra",
+  "form_acepta": "He leído y acepto los términos del programa.",
+  "form_enviar": "Enviar mi solicitud",
+
+  "form_error_nombre": "El nombre es obligatorio",
+  "form_error_apellido": "El apellido es obligatorio",
+  "form_error_telefono": "El teléfono es obligatorio",
+  "form_error_correo": "El correo es obligatorio",
+  "form_error_edad": "La edad es obligatoria",
+  "form_error_zip": "El código ZIP es obligatorio",
+  "form_error_supermercado": "Este campo es obligatorio",
+  "form_error_acepta": "Debes aceptar los términos",
+  "form_error_solo_letras": "Solo letras permitidas",
+  "form_error_correo_invalido": "Correo inválido",
+  "form_error_telefono_invalido": "Teléfono inválido",
+  "form_error_edad_minima": "Debe ser mayor de edad",
+
+  "form_success_title": "¡Solicitud enviada!",
+  "form_success_text": "Gracias por participar. Te contactaremos pronto.",
+  "form_error_title": "Error",
+  "form_error_text": "Hubo un problema al enviar tu solicitud. Inténtalo más tarde.",
+  "form_button_ok": "Aceptar"
+}

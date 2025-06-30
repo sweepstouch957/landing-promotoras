@@ -1,7 +1,10 @@
-import React from 'react';
+'use client';
+import { useTranslation } from 'react-i18next';
 import styles from '../styles/PaymentStructure.module.css';
 
 export default function PaymentStructure() {
+  const { t } = useTranslation('common');
+
   const paymentData = [
     { participaciones: 100, pagoTurno: '$40', pagoHora: '$10' },
     { participaciones: 150, pagoTurno: '$60', pagoHora: '$15' },
@@ -24,20 +27,24 @@ export default function PaymentStructure() {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>Estructura de Pagos Transparente</h2>
-      <p className={styles.subtitle}>
-        Gana más según tu rendimiento - ¡Tú decides cuánto ganar!
-      </p>
+      <h2 className={styles.title}>{t('payment_title')}</h2>
+      <p className={styles.subtitle}>{t('payment_subtitle')}</p>
 
       <div className={styles.tableContainer}>
-        <h3 className={styles.tableTitle}>Tabla de Ganancias</h3>
+        <h3 className={styles.tableTitle}>{t('payment_table_title')}</h3>
         <div className={styles.tableWrapper}>
           <table className={styles.paymentTable}>
             <thead>
               <tr className={styles.headerRow}>
-                <th className={styles.headerCell}>Participaciones</th>
-                <th className={styles.headerCell}>Pago por Turno</th>
-                <th className={styles.headerCell}>Pago por Hora</th>
+                <th className={styles.headerCell}>
+                  {t('payment_table_header_participaciones')}
+                </th>
+                <th className={styles.headerCell}>
+                  {t('payment_table_header_turno')}
+                </th>
+                <th className={styles.headerCell}>
+                  {t('payment_table_header_hora')}
+                </th>
               </tr>
             </thead>
             <tbody>

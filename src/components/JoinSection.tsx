@@ -3,9 +3,11 @@
 import React from 'react';
 import styles from '../styles/JoinSection.module.css';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 const JoinSection = () => {
   const router = useRouter();
+  const { t } = useTranslation('common');
 
   const handleApplyClick = () => {
     router.push('/formulario');
@@ -13,14 +15,10 @@ const JoinSection = () => {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>
-        Forma Parte de la Comunidad Sweepstouch Hoy
-      </h2>
-      <p className={styles.subtitle}>
-        No pierdas la oportunidad de ganar dinero, flexibilidad y experiencia.
-      </p>
+      <h2 className={styles.title}>{t('join_title')}</h2>
+      <p className={styles.subtitle}>{t('join_subtitle')}</p>
       <button className={styles.button} onClick={handleApplyClick}>
-        Aplicar Ahora
+        {t('join_button')}
       </button>
     </section>
   );
