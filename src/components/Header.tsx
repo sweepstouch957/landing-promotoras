@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@/lib/i18n';
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import styles from '../styles/Header.module.css';
+import styles from '../styles/header.module.css';
 
 export default function Header() {
   const router = useRouter();
@@ -69,26 +69,38 @@ export default function Header() {
     '& .MuiSwitch-switchBase': {
       padding: 0,
       margin: 4,
-      transitionDuration: '500ms',
+      transition: theme.transitions.create(['transform'], {
+        duration: 800,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      }),
       transform: 'translateX(0px)',
       '&.Mui-checked': {
         transform: 'translateX(40px)',
         color: '#fff',
         '& + .MuiSwitch-track': {
-          backgroundColor: '#e8f4fd',
+          backgroundColor: '#e01070',
           opacity: 1,
-          border: '2px solid #b3d9f2',
+          border: '2px solid #c00d5f',
+          boxShadow: '0 0 10px rgba(224, 16, 112, 0.3)',
         },
         '& .MuiSwitch-thumb': {
           // Bandera de USA (cuando está en inglés)
-          backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><pattern id="stars" x="0" y="0" width="4" height="3" patternUnits="userSpaceOnUse"><rect width="4" height="3" fill="%233C3B6E"/><polygon points="2,0.5 2.3,1.5 1.3,1.5" fill="white"/></pattern></defs><rect width="32" height="32" fill="%23B22234"/><rect width="32" height="2.46" y="0" fill="%23FFFFFF"/><rect width="32" height="2.46" y="4.92" fill="%23FFFFFF"/><rect width="32" height="2.46" y="9.84" fill="%23FFFFFF"/><rect width="32" height="2.46" y="14.76" fill="%23FFFFFF"/><rect width="32" height="2.46" y="19.68" fill="%23FFFFFF"/><rect width="32" height="2.46" y="24.6" fill="%23FFFFFF"/><rect width="32" height="2.46" y="29.52" fill="%23FFFFFF"/><rect width="12.8" height="17.22" fill="%233C3B6E"/></svg>')`,
-          transform: 'scale(1.05)',
+          backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23B22234"/><rect width="32" height="2.46" y="0" fill="%23FFFFFF"/><rect width="32" height="2.46" y="4.92" fill="%23FFFFFF"/><rect width="32" height="2.46" y="9.84" fill="%23FFFFFF"/><rect width="32" height="2.46" y="14.76" fill="%23FFFFFF"/><rect width="32" height="2.46" y="19.68" fill="%23FFFFFF"/><rect width="32" height="2.46" y="24.6" fill="%23FFFFFF"/><rect width="32" height="2.46" y="29.52" fill="%23FFFFFF"/><rect width="12.8" height="17.22" fill="%233C3B6E"/></svg>')`,
+          transform: 'scale(1.02)',
+          boxShadow: '0 4px 12px rgba(224, 16, 112, 0.4)',
         },
       },
       '&:not(.Mui-checked) + .MuiSwitch-track': {
-        backgroundColor: '#ffeaa7',
-        opacity: 1,
-        border: '2px solid #fdcb6e',
+        backgroundColor: '#e01070',
+        opacity: 0.7,
+        border: '2px solid #c00d5f',
+        boxShadow: '0 0 8px rgba(224, 16, 112, 0.2)',
+      },
+      '&:hover': {
+        backgroundColor: 'transparent',
+        '& .MuiSwitch-thumb': {
+          boxShadow: '0 6px 16px rgba(224, 16, 112, 0.5)',
+        },
       },
     },
     '& .MuiSwitch-thumb': {
@@ -96,11 +108,15 @@ export default function Header() {
       width: 32,
       height: 32,
       borderRadius: '50%',
-      border: '2px solid #ddd',
-      boxShadow: '0 3px 6px rgba(0,0,0,0.3)',
-      transition: theme.transitions.create(['background-image', 'transform'], {
-        duration: 500,
-      }),
+      border: '2px solid #e01070',
+      boxShadow: '0 4px 8px rgba(224, 16, 112, 0.3)',
+      transition: theme.transitions.create(
+        ['background-image', 'transform', 'box-shadow'],
+        {
+          duration: 800,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        }
+      ),
       // Bandera de España (cuando está en español - posición inicial)
       backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23c60b1e"/><rect width="32" height="10.67" y="10.67" fill="%23ffc400"/><g transform="translate(8,16)"><rect width="8" height="6" fill="%23c60b1e"/><rect width="6" height="4" x="1" y="1" fill="%23ffc400"/><rect width="4" height="2" x="2" y="2" fill="%23c60b1e"/></g></svg>')`,
       backgroundSize: 'cover',
@@ -109,13 +125,15 @@ export default function Header() {
     },
     '& .MuiSwitch-track': {
       borderRadius: 20,
-      backgroundColor: '#ffeaa7',
-      opacity: 1,
-      border: '2px solid #fdcb6e',
+      backgroundColor: '#e01070',
+      opacity: 0.7,
+      border: '2px solid #c00d5f',
+      boxShadow: '0 0 8px rgba(224, 16, 112, 0.2)',
       transition: theme.transitions.create(
-        ['background-color', 'border-color'],
+        ['background-color', 'border-color', 'box-shadow', 'opacity'],
         {
-          duration: 500,
+          duration: 800,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
         }
       ),
     },
