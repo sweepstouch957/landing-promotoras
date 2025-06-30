@@ -1,4 +1,7 @@
+import Image from 'next/image';
+
 export default function WhoAreWe() {
+  
   return (
     <section className="who-are-we">
       <div className="container">
@@ -7,7 +10,7 @@ export default function WhoAreWe() {
             <h2 className="section-title">¿Quiénes Somos?</h2>
           </div>
           <div className="image-content">
-            <img src="/phone-mockup.jpg" alt="App móvil Sweepstouch" />
+            <Image src="/phone-mockup.jpg" alt="App móvil Sweepstouch" />
           </div>
         </div>
       </div>

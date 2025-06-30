@@ -10,9 +10,6 @@ import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from '../styles/header.module.css';
 
-
-
-
 export default function Header() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,18 +36,22 @@ export default function Header() {
     // No cerrar el menú al hacer switch
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (menuOpen && !event.target.closest('.header')) {
-        setMenuOpen(false);
-      }
-    };
+ useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      menuOpen &&
+      !(event.target instanceof Element && event.target.closest('.header'))
+    ) {
+      setMenuOpen(false);
+    }
+  };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [menuOpen]);
+  document.addEventListener('click', handleClickOutside);
+  return () => {
+    document.removeEventListener('click', handleClickOutside);
+  };
+}, [menuOpen]);
+
 
   useEffect(() => {
     const handleResize = () => {
