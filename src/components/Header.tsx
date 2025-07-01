@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@/lib/i18n';
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import styles from '../styles/header.module.css';
+import styles from '@style/Header.module.css';
 
 export default function Header() {
   const router = useRouter();
