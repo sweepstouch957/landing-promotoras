@@ -36,22 +36,21 @@ export default function Header() {
     // No cerrar el menú al hacer switch
   };
 
- useEffect(() => {
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      menuOpen &&
-      !(event.target instanceof Element && event.target.closest('.header'))
-    ) {
-      setMenuOpen(false);
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuOpen &&
+        !(event.target instanceof Element && event.target.closest('.header'))
+      ) {
+        setMenuOpen(false);
+      }
+    };
 
-  document.addEventListener('click', handleClickOutside);
-  return () => {
-    document.removeEventListener('click', handleClickOutside);
-  };
-}, [menuOpen]);
-
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,13 +69,11 @@ export default function Header() {
     width: 80,
     height: 40,
     padding: 4,
+    position: 'relative',
     '& .MuiSwitch-switchBase': {
       padding: 0,
       margin: 4,
-      transition: theme.transitions.create(['transform'], {
-        duration: 800,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-      }),
+      transition: 'transform 300ms ease-in-out',
       transform: 'translateX(0px)',
       '&.Mui-checked': {
         transform: 'translateX(40px)',
@@ -88,23 +85,12 @@ export default function Header() {
           boxShadow: '0 0 10px rgba(224, 16, 112, 0.3)',
         },
         '& .MuiSwitch-thumb': {
-          // Bandera de USA (cuando está en inglés)
-          backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23B22234"/><rect width="32" height="2.46" y="0" fill="%23FFFFFF"/><rect width="32" height="2.46" y="4.92" fill="%23FFFFFF"/><rect width="32" height="2.46" y="9.84" fill="%23FFFFFF"/><rect width="32" height="2.46" y="14.76" fill="%23FFFFFF"/><rect width="32" height="2.46" y="19.68" fill="%23FFFFFF"/><rect width="32" height="2.46" y="24.6" fill="%23FFFFFF"/><rect width="32" height="2.46" y="29.52" fill="%23FFFFFF"/><rect width="12.8" height="17.22" fill="%233C3B6E"/></svg>')`,
-          transform: 'scale(1.02)',
-          boxShadow: '0 4px 12px rgba(224, 16, 112, 0.4)',
+          transform: 'scale(1)',
+          boxShadow: '0 4px 10px rgba(224, 16, 112, 0.3)',
         },
-      },
-      '&:not(.Mui-checked) + .MuiSwitch-track': {
-        backgroundColor: '#e01070',
-        opacity: 0.7,
-        border: '2px solid #c00d5f',
-        boxShadow: '0 0 8px rgba(224, 16, 112, 0.2)',
       },
       '&:hover': {
         backgroundColor: 'transparent',
-        '& .MuiSwitch-thumb': {
-          boxShadow: '0 6px 16px rgba(224, 16, 112, 0.5)',
-        },
       },
     },
     '& .MuiSwitch-thumb': {
@@ -114,18 +100,7 @@ export default function Header() {
       borderRadius: '50%',
       border: '2px solid #e01070',
       boxShadow: '0 4px 8px rgba(224, 16, 112, 0.3)',
-      transition: theme.transitions.create(
-        ['background-image', 'transform', 'box-shadow'],
-        {
-          duration: 800,
-          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        }
-      ),
-      // Bandera de España (cuando está en español - posición inicial)
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23c60b1e"/><rect width="32" height="10.67" y="10.67" fill="%23ffc400"/><g transform="translate(8,16)"><rect width="8" height="6" fill="%23c60b1e"/><rect width="6" height="4" x="1" y="1" fill="%23ffc400"/><rect width="4" height="2" x="2" y="2" fill="%23c60b1e"/></g></svg>')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      transform: 'scale(1)',
+      transition: 'all 300ms ease-in-out',
     },
     '& .MuiSwitch-track': {
       borderRadius: 20,
@@ -133,13 +108,25 @@ export default function Header() {
       opacity: 0.7,
       border: '2px solid #c00d5f',
       boxShadow: '0 0 8px rgba(224, 16, 112, 0.2)',
-      transition: theme.transitions.create(
-        ['background-color', 'border-color', 'box-shadow', 'opacity'],
-        {
-          duration: 800,
-          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        }
-      ),
+      position: 'relative',
+      transition: 'all 300ms ease-in-out',
+      '&::before, &::after': {
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        fontSize: 12,
+        fontWeight: 'bold',
+        fontFamily: 'Arial Black, sans-serif',
+        color: '#fff',
+      },
+      '&::before': {
+        content: '"ES"',
+        left: 10,
+      },
+      '&::after': {
+        content: '"EN"',
+        right: 10,
+      },
     },
   }));
 
