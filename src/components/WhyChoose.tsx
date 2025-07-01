@@ -1,16 +1,21 @@
-'use client';
-import { useTranslation } from 'react-i18next';
-import styles from '../styles/WhyChoose.module.css';
+"use client";
+import { useTranslation } from "react-i18next";
+import styles from "../styles/WhyChoose.module.css";
 
 export default function WhyChoose() {
-  const { t } = useTranslation('common');
-  const features = t('why_features', { returnObjects: true }) as {
+  const { t } = useTranslation("common");
+  const features = t("why_features", { returnObjects: true }) as {
     title: string;
     items: string[];
   }[];
 
   const icons = [
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      key={1}
+    >
       <line
         x1="12"
         y1="20"
@@ -36,7 +41,7 @@ export default function WhyChoose() {
         strokeWidth="1.5"
       />
     </svg>,
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" key={2}>
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
       <polyline
         points="12,6 12,12 16,14"
@@ -44,7 +49,7 @@ export default function WhyChoose() {
         strokeWidth="1.5"
       />
     </svg>,
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" key={3}>
       <rect
         x="5"
         y="2"
@@ -86,7 +91,7 @@ export default function WhyChoose() {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>{t('why_title')}</h2>
+      <h2 className={styles.title}>{t("why_title")}</h2>
       <div className={styles.featuresGrid}>
         {features.map((feature, index) => (
           <div key={index} className={styles.featureCard}>
