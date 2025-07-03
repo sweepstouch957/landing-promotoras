@@ -9,6 +9,7 @@ import i18n from '@/lib/i18n';
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from '@style/Header.module.css';
+import AuthNavigation from './AuthNavigation';
 
 export default function Header() {
   const router = useRouter();
@@ -160,6 +161,7 @@ export default function Header() {
         </button>
 
         <div className={styles.actions}>
+          <AuthNavigation />
           <div className={styles.languageSwitchContainer}>
             <FlagSwitch
               checked={language === 'en'}

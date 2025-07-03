@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '../styles/variables.css'; // importa los estilos globales aquí
 import '@/lib/i18n';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 import './globals.css';
 
@@ -55,7 +56,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
