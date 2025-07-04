@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState } from 'react';
@@ -17,7 +16,7 @@ import {
   CircularProgress,
   Container,
   InputAdornment,
-  IconButton
+  IconButton,
 } from '@mui/material';
 import { Visibility, VisibilityOff, Lock, Person } from '@mui/icons-material';
 
@@ -36,21 +35,23 @@ const LoginForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>();
+
+  const primaryColor = '#ec0e7b';
 
   const onSubmit = async (data: LoginFormData) => {
     setLoginError(null);
-    
     try {
       const success = await login(data);
-      
       if (success) {
-        // Redireccionar a la página solicitada o al admin por defecto
-        const redirectTo : any = searchParams.get('redirect') || '/admin';
-        router.push(redirectTo);
+        const redirectTo = searchParams.get('redirect') || '/admin';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        router.push(redirectTo as any);
       } else {
-        setLoginError('Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.');
+        setLoginError(
+          'Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.'
+        );
       }
     } catch (error) {
       setLoginError('Error al iniciar sesión. Por favor, inténtalo de nuevo.');
@@ -71,7 +72,7 @@ const LoginForm: React.FC = () => {
           alignItems="center"
           minHeight="100vh"
         >
-          <CircularProgress />
+          <CircularProgress sx={{ color: primaryColor }} />
         </Box>
       </Container>
     );
@@ -92,7 +93,7 @@ const LoginForm: React.FC = () => {
             width: '100%',
             maxWidth: 400,
             boxShadow: 3,
-            borderRadius: 2
+            borderRadius: 2,
           }}
         >
           <CardContent sx={{ p: 4 }}>
@@ -100,8 +101,8 @@ const LoginForm: React.FC = () => {
               <Lock
                 sx={{
                   fontSize: 48,
-                  color: 'primary.main',
-                  mb: 2
+                  color: primaryColor,
+                  mb: 2,
                 }}
               />
               <Typography variant="h4" component="h1" gutterBottom>
@@ -129,7 +130,7 @@ const LoginForm: React.FC = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Person color="action" />
+                      <Person sx={{ color: primaryColor }} />
                     </InputAdornment>
                   ),
                 }}
@@ -137,11 +138,18 @@ const LoginForm: React.FC = () => {
                   required: 'El usuario es requerido',
                   minLength: {
                     value: 3,
-                    message: 'El usuario debe tener al menos 3 caracteres'
-                  }
+                    message: 'El usuario debe tener al menos 3 caracteres',
+                  },
                 })}
                 error={!!errors.username}
                 helperText={errors.username?.message}
+                sx={{
+                  '& label.Mui-focused': { color: primaryColor },
+                  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+                    {
+                      borderColor: primaryColor,
+                    },
+                }}
               />
 
               <TextField
@@ -154,7 +162,7 @@ const LoginForm: React.FC = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Lock color="action" />
+                      <Lock sx={{ color: primaryColor }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -164,7 +172,11 @@ const LoginForm: React.FC = () => {
                         onClick={togglePasswordVisibility}
                         edge="end"
                       >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        {showPassword ? (
+                          <VisibilityOff sx={{ color: primaryColor }} />
+                        ) : (
+                          <Visibility sx={{ color: primaryColor }} />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -173,11 +185,18 @@ const LoginForm: React.FC = () => {
                   required: 'La contraseña es requerida',
                   minLength: {
                     value: 6,
-                    message: 'La contraseña debe tener al menos 6 caracteres'
-                  }
+                    message: 'La contraseña debe tener al menos 6 caracteres',
+                  },
                 })}
                 error={!!errors.password}
                 helperText={errors.password?.message}
+                sx={{
+                  '& label.Mui-focused': { color: primaryColor },
+                  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+                    {
+                      borderColor: primaryColor,
+                    },
+                }}
               />
 
               <Button
@@ -190,12 +209,19 @@ const LoginForm: React.FC = () => {
                   mt: 3,
                   mb: 2,
                   py: 1.5,
-                  fontSize: '1.1rem'
+                  fontSize: '1.1rem',
+                  backgroundColor: primaryColor,
+                  '&:hover': {
+                    backgroundColor: '#d40c6f',
+                  },
                 }}
               >
                 {isSubmitting ? (
                   <>
-                    <CircularProgress size={20} sx={{ mr: 1 }} />
+                    <CircularProgress
+                      size={20}
+                      sx={{ mr: 1, color: 'white' }}
+                    />
                     Iniciando sesión...
                   </>
                 ) : (
@@ -209,7 +235,8 @@ const LoginForm: React.FC = () => {
                 Credenciales de prueba:
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Usuario: <strong>admin</strong> | Contraseña: <strong>admin123</strong>
+                Usuario: <strong>admin</strong> | Contraseña:{' '}
+                <strong>admin123</strong>
               </Typography>
             </Box>
           </CardContent>
@@ -220,4 +247,3 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
-

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useEffect } from 'react';
@@ -11,9 +10,9 @@ interface ProtectedRouteProps {
   requiredRole?: string;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
-  children, 
-  requiredRole = 'administrator' 
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  requiredRole = 'administrator',
 }) => {
   const { isAuthenticated, user, loading } = useAuth();
   const router = useRouter();
@@ -22,8 +21,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       // Redireccionar al login con la URL actual como parámetro
-      const loginUrl : any = `/login?redirect=${encodeURIComponent(pathname)}`;
-      router.push(loginUrl);
+      const loginUrl = `/login?redirect=${encodeURIComponent(pathname)}`;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      router.push(loginUrl as any);
     }
   }, [isAuthenticated, loading, router, pathname]);
 
@@ -81,4 +81,3 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 };
 
 export default ProtectedRoute;
-

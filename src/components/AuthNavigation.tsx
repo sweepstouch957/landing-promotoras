@@ -11,7 +11,7 @@ import {
   MenuItem,
   Avatar,
   Chip,
-  Divider
+  Divider,
 } from '@mui/material';
 import { Logout, Person, AdminPanelSettings } from '@mui/icons-material';
 
@@ -20,12 +20,14 @@ const AuthNavigation: React.FC = () => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+  const primaryColor = '#e01070';
+
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
-    setAnchorEl(anchorEl);
+    setAnchorEl(null);
   };
 
   const handleLogout = () => {
@@ -51,18 +53,43 @@ const AuthNavigation: React.FC = () => {
   return (
     <Box display="flex" alignItems="center" gap={2}>
       <Chip
-        icon={<AdminPanelSettings />}
+        icon={<AdminPanelSettings sx={{ color: primaryColor }} />}
         label={user.role === 'administrator' ? 'Administrador' : user.role}
-        color="primary"
         variant="outlined"
         size="small"
+        sx={{
+          borderColor: primaryColor,
+          color: primaryColor,
+          '& .MuiChip-icon': {
+            color: primaryColor,
+          },
+        }}
       />
-      
+
       <Button
         onClick={handleMenuOpen}
-        startIcon={<Avatar sx={{ width: 24, height: 24 }}><Person /></Avatar>}
+        startIcon={
+          <Avatar
+            sx={{
+              width: 24,
+              height: 24,
+              bgcolor: 'white',
+              color: primaryColor,
+            }}
+          >
+            <Person />
+          </Avatar>
+        }
         variant="outlined"
         size="small"
+        sx={{
+          borderColor: primaryColor,
+          color: primaryColor,
+          '&:hover': {
+            borderColor: primaryColor,
+            backgroundColor: 'rgba(224, 16, 112, 0.1)',
+          },
+        }}
       >
         {user.username}
       </Button>
@@ -91,21 +118,21 @@ const AuthNavigation: React.FC = () => {
             {user.email}
           </Typography>
         </Box>
-        
+
         <Divider />
-        
+
         <MenuItem onClick={handleGoToAdmin}>
-          <AdminPanelSettings sx={{ mr: 1 }} />
-          Panel de Admin
+          <AdminPanelSettings sx={{ mr: 1, color: primaryColor }} />
+          <Typography color={primaryColor}>Panel de Admin</Typography>
         </MenuItem>
-        
+
         <MenuItem onClick={handleGoToCitas}>
-          <AdminPanelSettings sx={{ mr: 1 }} />
-          Gestión de Citas
+          <AdminPanelSettings sx={{ mr: 1, color: primaryColor }} />
+          <Typography color={primaryColor}>Gestión de Citas</Typography>
         </MenuItem>
-        
+
         <Divider />
-        
+
         <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
           <Logout sx={{ mr: 1 }} />
           Cerrar Sesión
@@ -116,4 +143,3 @@ const AuthNavigation: React.FC = () => {
 };
 
 export default AuthNavigation;
-
