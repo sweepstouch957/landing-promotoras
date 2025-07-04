@@ -10,6 +10,7 @@ import {
   Typography,
   FormGroup,
   useMediaQuery,
+  Divider,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -34,7 +35,6 @@ export default function AdminDashboard() {
   const [endHour, setEndHour] = useState('17:00');
 
   useEffect(() => {
-    // Cargar configuración previa
     const config = localStorage.getItem('scheduleConfig');
     if (config) {
       const parsed = JSON.parse(config);
@@ -53,13 +53,7 @@ export default function AdminDashboard() {
   };
 
   const handleSave = () => {
-    const config = {
-      startDate,
-      endDate,
-      selectedDays,
-      startHour,
-      endHour,
-    };
+    const config = { startDate, endDate, selectedDays, startHour, endHour };
     localStorage.setItem('scheduleConfig', JSON.stringify(config));
     alert('¡Configuración guardada correctamente!');
   };
@@ -67,149 +61,177 @@ export default function AdminDashboard() {
   return (
     <Box
       sx={{
-        maxWidth: 500,
-        mx: 'auto',
-        mt: 4,
-        p: isMobile ? 2 : 4,
-        border: '1px solid #ccc',
-        borderRadius: 2,
+        minHeight: '100vh',
+        backgroundColor: '#ffffff',
         display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        py: 4,
+        px: 2,
       }}
     >
-      <Typography variant="h6" fontWeight="bold" color="#ED1F80" align="center">
-        Dashboard Admin - Configurar horarios
-      </Typography>
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: 600,
+          backgroundColor: '#fff',
+          borderRadius: 4,
+          px: 4,
+          py: 5,
+          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.15)',
+          fontFamily: 'Inter, sans-serif',
+        }}
+      >
+        <Typography
+          variant="h5"
+          fontWeight="700"
+          color="#ED1F80"
+          textAlign="center"
+          gutterBottom
+        >
+          Configuración de Horarios
+        </Typography>
 
-      <TextField
-        label="Fecha inicio"
-        type="date"
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-        InputLabelProps={{ shrink: true }}
-        fullWidth
-      />
+        <Divider sx={{ mb: 3 }} />
 
-      <TextField
-        label="Fecha fin"
-        type="date"
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-        InputLabelProps={{ shrink: true }}
-        fullWidth
-      />
+        <TextField
+          label="Fecha de inicio"
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          fullWidth
+          sx={{ mb: 2 }}
+        />
 
-      <Typography variant="subtitle1" fontWeight="bold">
-        Días permitidos
-      </Typography>
-      <FormGroup row>
-        {daysOfWeek.map((day) => (
-          <FormControlLabel
-            key={day.value}
-            control={
-              <Checkbox
-                checked={selectedDays.includes(day.value)}
-                onChange={() => handleDayChange(day.value)}
-              />
-            }
-            label={day.label}
+        <TextField
+          label="Fecha de fin"
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          fullWidth
+          sx={{ mb: 3 }}
+        />
+
+        <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+          Días permitidos
+        </Typography>
+
+        <FormGroup row sx={{ mb: 3 }}>
+          {daysOfWeek.map((day) => (
+            <FormControlLabel
+              key={day.value}
+              control={
+                <Checkbox
+                  checked={selectedDays.includes(day.value)}
+                  onChange={() => handleDayChange(day.value)}
+                  sx={{ color: '#ED1F80' }}
+                />
+              }
+              label={day.label}
+              sx={{ mr: 1 }}
+            />
+          ))}
+        </FormGroup>
+
+        <Box
+          display="flex"
+          gap={2}
+          sx={{ mb: 3 }}
+          flexDirection={isMobile ? 'column' : 'row'}
+        >
+          <TextField
+            label="Hora de inicio"
+            type="time"
+            value={startHour}
+            onChange={(e) => setStartHour(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            fullWidth
           />
-        ))}
-      </FormGroup>
+          <TextField
+            label="Hora de fin"
+            type="time"
+            value={endHour}
+            onChange={(e) => setEndHour(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            fullWidth
+          />
+        </Box>
 
-      <Box display="flex" gap={2}>
-        <TextField
-          label="Hora inicio"
-          type="time"
-          value={startHour}
-          onChange={(e) => setStartHour(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-        />
+        <Box display="flex" flexDirection="column" gap={2}>
+          <Button
+            variant="contained"
+            onClick={handleSave}
+            sx={{
+              backgroundColor: '#ED1F80',
+              fontWeight: 'bold',
+              borderRadius: 3,
+              py: 1.2,
+              '&:hover': { backgroundColor: '#d0176e' },
+            }}
+          >
+            Guardar configuración
+          </Button>
 
-        <TextField
-          label="Hora fin"
-          type="time"
-          value={endHour}
-          onChange={(e) => setEndHour(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-        />
+          <Button
+            variant="outlined"
+            onClick={() => {
+              localStorage.removeItem('scheduleConfig');
+              alert('¡Configuración eliminada!');
+              setStartDate('');
+              setEndDate('');
+              setSelectedDays([]);
+              setStartHour('09:00');
+              setEndHour('17:00');
+            }}
+            sx={{
+              borderColor: '#ED1F80',
+              color: '#ED1F80',
+              fontWeight: 'bold',
+              borderRadius: 3,
+              py: 1.2,
+              '&:hover': {
+                backgroundColor: '#fce4ec',
+                borderColor: '#d0176e',
+              },
+            }}
+          >
+            Reset configuración
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={() => {
+              const config = localStorage.getItem('scheduleConfig');
+              if (config) {
+                const blob = new Blob([config], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'configuracion_horarios.json';
+                link.click();
+                URL.revokeObjectURL(url);
+              } else {
+                alert('No hay configuración para exportar.');
+              }
+            }}
+            sx={{
+              borderColor: '#ED1F80',
+              color: '#ED1F80',
+              fontWeight: 'bold',
+              borderRadius: 3,
+              py: 1.2,
+              '&:hover': {
+                backgroundColor: '#fce4ec',
+                borderColor: '#d0176e',
+              },
+            }}
+          >
+            Exportar configuración JSON
+          </Button>
+        </Box>
       </Box>
-
-      <Button
-        variant="contained"
-        onClick={handleSave}
-        sx={{
-          backgroundColor: '#ED1F80',
-          color: 'white',
-          fontWeight: 'bold',
-          borderRadius: '25px',
-          py: 1,
-          '&:hover': {
-            backgroundColor: '#e50575',
-          },
-        }}
-      >
-        Guardar configuración
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={() => {
-          localStorage.removeItem('scheduleConfig');
-          alert('¡Configuración eliminada!');
-          // Opcional: reiniciar estado
-          setStartDate('');
-          setEndDate('');
-          setSelectedDays([]);
-          setStartHour('09:00');
-          setEndHour('17:00');
-        }}
-        sx={{
-          borderColor: '#ED1F80',
-          color: '#ED1F80',
-          fontWeight: 'bold',
-          borderRadius: '25px',
-          py: 1,
-          '&:hover': {
-            backgroundColor: '#fce4ec',
-            borderColor: '#e50575',
-          },
-        }}
-      >
-        Reset Configuración
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={() => {
-          const config = localStorage.getItem('scheduleConfig');
-          if (config) {
-            const blob = new Blob([config], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'configuracion_horarios.json';
-            link.click();
-            URL.revokeObjectURL(url);
-          } else {
-            alert('No hay configuración para exportar.');
-          }
-        }}
-        sx={{
-          borderColor: '#ED1F80',
-          color: '#ED1F80',
-          fontWeight: 'bold',
-          borderRadius: '25px',
-          py: 1,
-          '&:hover': {
-            backgroundColor: '#fce4ec',
-            borderColor: '#e50575',
-          },
-        }}
-      >
-        Exportar configuración JSON
-      </Button>
     </Box>
   );
 }

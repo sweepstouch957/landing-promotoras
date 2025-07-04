@@ -13,6 +13,7 @@ import {
   TextField,
   TablePagination,
   useMediaQuery,
+  Divider,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -76,128 +77,152 @@ export default function AdminScheduleList() {
   return (
     <Box
       sx={{
-        maxWidth: 700,
-        mx: 'auto',
-        mt: 4,
-        p: isMobile ? 2 : 4,
-        border: '1px solid #ccc',
-        borderRadius: 2,
+        backgroundColor: '#ffffff',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        pt: 8,
+        px: 2,
+        fontFamily: 'Inter, sans-serif',
+        paddingBottom: '80px',
       }}
     >
-      <Typography
-        variant="h6"
-        fontWeight="bold"
-        color="#ED1F80"
-        align="center"
-        mb={2}
-      >
-        Lista de reuniones agendadas
-      </Typography>
-
-      <Box display="flex" gap={2} flexWrap="wrap" mb={2}>
-        <TextField
-          label="Filtrar desde"
-          type="date"
-          value={filterStart}
-          onChange={(e) => {
-            setFilterStart(e.target.value);
-            setPage(0); // reset page on filter change
-          }}
-          InputLabelProps={{ shrink: true }}
-          size="small"
-        />
-        <TextField
-          label="Filtrar hasta"
-          type="date"
-          value={filterEnd}
-          onChange={(e) => {
-            setFilterEnd(e.target.value);
-            setPage(0); // reset page on filter change
-          }}
-          InputLabelProps={{ shrink: true }}
-          size="small"
-        />
-      </Box>
-
-      {filteredMeetings.length === 0 ? (
-        <Typography align="center">No hay reuniones agendadas.</Typography>
-      ) : (
-        <>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  <strong>Fecha</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Hora</strong>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {paginatedMeetings.map((meeting, index) => (
-                <TableRow key={index}>
-                  <TableCell>{meeting.date}</TableCell>
-                  <TableCell>{meeting.time}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-
-          <TablePagination
-            component="div"
-            count={filteredMeetings.length}
-            page={page}
-            onPageChange={(e, newPage) => setPage(newPage)}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[rowsPerPage]}
-          />
-        </>
-      )}
-
       <Box
-        mt={2}
-        display="flex"
-        gap={2}
-        flexDirection={isMobile ? 'column' : 'row'}
+        sx={{
+          width: '100%',
+          maxWidth: 700,
+          backgroundColor: '#fff',
+          borderRadius: 4,
+          px: 4,
+          py: 3,
+          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.15)',
+        }}
       >
-        <Button
-          variant="outlined"
-          onClick={handleExport}
-          sx={{
-            borderColor: '#ED1F80',
-            color: '#ED1F80',
-            fontWeight: 'bold',
-            borderRadius: '25px',
-            py: 1,
-            flex: 1,
-            '&:hover': {
-              backgroundColor: '#fce4ec',
-              borderColor: '#e50575',
-            },
-          }}
+        <Typography
+          variant="h5"
+          fontWeight="700"
+          color="#ED1F80"
+          textAlign="center"
+          gutterBottom
         >
-          Exportar citas JSON
-        </Button>
+          Lista de reuniones agendadas
+        </Typography>
 
-        <Button
-          variant="outlined"
-          onClick={handleClear}
-          sx={{
-            borderColor: '#ED1F80',
-            color: '#ED1F80',
-            fontWeight: 'bold',
-            borderRadius: '25px',
-            py: 1,
-            flex: 1,
-            '&:hover': {
-              backgroundColor: '#fce4ec',
-              borderColor: '#e50575',
-            },
-          }}
+        <Divider sx={{ mb: 3 }} />
+
+        <Box
+          display="flex"
+          gap={2}
+          flexWrap="wrap"
+          mb={3}
+          justifyContent="center"
         >
-          Borrar todas las citas
-        </Button>
+          <TextField
+            label="Filtrar desde"
+            type="date"
+            value={filterStart}
+            onChange={(e) => {
+              setFilterStart(e.target.value);
+              setPage(0);
+            }}
+            InputLabelProps={{ shrink: true }}
+            size="small"
+          />
+          <TextField
+            label="Filtrar hasta"
+            type="date"
+            value={filterEnd}
+            onChange={(e) => {
+              setFilterEnd(e.target.value);
+              setPage(0);
+            }}
+            InputLabelProps={{ shrink: true }}
+            size="small"
+          />
+        </Box>
+
+        {filteredMeetings.length === 0 ? (
+          <Typography align="center" sx={{ color: '#666', mb: 2 }}>
+            No hay reuniones agendadas.
+          </Typography>
+        ) : (
+          <>
+            <Table size="small" sx={{ mb: 2 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Typography fontWeight={600}>Fecha</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography fontWeight={600}>Hora</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {paginatedMeetings.map((meeting, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{meeting.date}</TableCell>
+                    <TableCell>{meeting.time}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            <TablePagination
+              component="div"
+              count={filteredMeetings.length}
+              page={page}
+              onPageChange={(e, newPage) => setPage(newPage)}
+              rowsPerPage={rowsPerPage}
+              rowsPerPageOptions={[rowsPerPage]}
+            />
+          </>
+        )}
+
+        <Box
+          mt={3}
+          display="flex"
+          gap={2}
+          flexDirection={isMobile ? 'column' : 'row'}
+        >
+          <Button
+            variant="outlined"
+            onClick={handleExport}
+            sx={{
+              borderColor: '#ED1F80',
+              color: '#ED1F80',
+              fontWeight: 'bold',
+              borderRadius: 3,
+              py: 1.2,
+              flex: 1,
+              '&:hover': {
+                backgroundColor: '#fce4ec',
+                borderColor: '#d0176e',
+              },
+            }}
+          >
+            Exportar citas JSON
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={handleClear}
+            sx={{
+              borderColor: '#ED1F80',
+              color: '#ED1F80',
+              fontWeight: 'bold',
+              borderRadius: 3,
+              py: 1.2,
+              flex: 1,
+              '&:hover': {
+                backgroundColor: '#fce4ec',
+                borderColor: '#d0176e',
+              },
+            }}
+          >
+            Borrar todas las citas
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

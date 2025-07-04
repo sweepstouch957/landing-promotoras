@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import Image from 'next/image';
@@ -67,7 +66,7 @@ export default function Header() {
     };
   }, []);
 
-  const FlagSwitch = styled(Switch)(({ theme }) => ({
+  const FlagSwitch = styled(Switch)(() => ({
     width: 80,
     height: 40,
     padding: 4,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
@@ -64,12 +63,12 @@ function loadAdminScheduleConfig() {
 
     // Generar dailyTimes entre hora inicio y fin cada 1 hora o como prefieras
     const dailyTimes: string[] = [];
-    const [startH, startM] = parsed.startHour.split(':').map(Number);
-    const [endH, endM] = parsed.endHour.split(':').map(Number);
+    const [startH] = parsed.startHour.split(":").map(Number);
+    const [endH] = parsed.endHour.split(":").map(Number);
 
     let currentH = startH;
     while (currentH < endH) {
-      const hStr = currentH.toString().padStart(2, '0');
+      const hStr = currentH.toString().padStart(2, "0");
       dailyTimes.push(`${hStr}:00`);
       currentH++;
     }
@@ -88,7 +87,7 @@ function loadAdminScheduleConfig() {
 // Helper para cargar agendas agendadas
 function loadScheduledMeetings() {
   try {
-    const raw = localStorage.getItem('scheduledMeetings');
+    const raw = localStorage.getItem("scheduledMeetings");
     if (!raw) return [];
     return JSON.parse(raw) as ScheduleData[];
   } catch {
@@ -98,19 +97,7 @@ function loadScheduledMeetings() {
 
 // Guardar agendas
 function saveScheduledMeetings(meetings: ScheduleData[]) {
-  localStorage.setItem('scheduledMeetings', JSON.stringify(meetings));
-}
-
-// Función para generar fechas entre rango
-function getDatesBetween(start: string, end: string): string[] {
-  const dates: string[] = [];
-  const current = new Date(start);
-  const endDate = new Date(end);
-  while (current <= endDate) {
-    dates.push(current.toISOString().slice(0, 10));
-    current.setDate(current.getDate() + 1);
-  }
-  return dates;
+  localStorage.setItem("scheduledMeetings", JSON.stringify(meetings));
 }
 
 export default function ApplicationForm() {
