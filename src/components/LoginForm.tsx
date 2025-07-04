@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState } from 'react';
@@ -46,7 +47,7 @@ const LoginForm: React.FC = () => {
       
       if (success) {
         // Redireccionar a la página solicitada o al admin por defecto
-        const redirectTo = searchParams.get('redirect') || '/admin';
+        const redirectTo : any = searchParams.get('redirect') || '/admin';
         router.push(redirectTo);
       } else {
         setLoginError('Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.');
