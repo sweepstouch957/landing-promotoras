@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useEffect } from 'react';
@@ -21,7 +22,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       // Redireccionar al login con la URL actual como parámetro
-      const loginUrl = `/login?redirect=${encodeURIComponent(pathname)}`;
+      const loginUrl : any = `/login?redirect=${encodeURIComponent(pathname)}`;
       router.push(loginUrl);
     }
   }, [isAuthenticated, loading, router, pathname]);
