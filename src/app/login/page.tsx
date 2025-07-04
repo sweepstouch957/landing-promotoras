@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import LoginForm from '@/components/LoginForm';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Iniciar Sesión | Sweepstouch Promotoras',
@@ -8,6 +9,8 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
-  return <LoginForm />;
+  return <Suspense fallback={<>Loading...</>}>
+    <LoginForm />
+  </Suspense>;
 }
 
