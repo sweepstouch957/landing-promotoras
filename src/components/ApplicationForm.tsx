@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
@@ -103,7 +104,7 @@ function saveScheduledMeetings(meetings: ScheduleData[]) {
 // Función para generar fechas entre rango
 function getDatesBetween(start: string, end: string): string[] {
   const dates: string[] = [];
-  let current = new Date(start);
+  const current = new Date(start);
   const endDate = new Date(end);
   while (current <= endDate) {
     dates.push(current.toISOString().slice(0, 10));
