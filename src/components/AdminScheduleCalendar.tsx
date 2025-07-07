@@ -20,7 +20,7 @@ import {
   Divider
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Person, Email, Phone, Schedule } from '@mui/icons-material';
+import { Person, Email, Phone, Schedule, VideoCall, OpenInNew } from '@mui/icons-material';
 
 interface ScheduleData {
   date: string; // formato YYYY-MM-DD
@@ -29,6 +29,9 @@ interface ScheduleData {
   apellido?: string;
   telefono?: string;
   correo?: string;
+  meetLink?: string; // Nuevo campo para el enlace de Google Meet
+  eventId?: string; // ID del evento en Google Calendar
+  htmlLink?: string; // Enlace directo al evento en Google Calendar
 }
 
 type MyEvent = {
@@ -255,14 +258,28 @@ export default function AdminScheduleCalendar() {
                           </Typography>
                         )}
                       </Box>
-                      <Chip 
-                        label={appointment.time}
-                        sx={{ 
-                          backgroundColor: '#ED1F80',
-                          color: 'white',
-                          fontWeight: 'bold'
-                        }}
-                      />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        {appointment.meetLink && (
+                          <Chip 
+                            icon={<VideoCall />}
+                            label="Meet"
+                            size="small"
+                            sx={{ 
+                              backgroundColor: '#e8f5e8',
+                              color: '#2e7d32',
+                              fontWeight: 'bold'
+                            }}
+                          />
+                        )}
+                        <Chip 
+                          label={appointment.time}
+                          sx={{ 
+                            backgroundColor: '#ED1F80',
+                            color: 'white',
+                            fontWeight: 'bold'
+                          }}
+                        />
+                      </Box>
                     </Box>
                   </CardContent>
                 </Card>
@@ -350,6 +367,72 @@ export default function AdminScheduleCalendar() {
                     <Typography variant="body2" color="text.secondary">
                       Número de teléfono
                     </Typography>
+                  </Box>
+                </Box>
+              )}
+
+              {selectedAppointment.meetLink && (
+                <>
+                  <Divider />
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <VideoCall sx={{ color: '#ED1F80' }} />
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="body2" color="text.secondary" mb={1}>
+                        Enlace de Google Meet
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        href={selectedAppointment.meetLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          backgroundColor: '#ED1F80',
+                          color: 'white',
+                          fontWeight: 'bold',
+                          borderRadius: '20px',
+                          px: 3,
+                          py: 1,
+                          '&:hover': {
+                            backgroundColor: '#e50575',
+                          },
+                        }}
+                        startIcon={<VideoCall />}
+                        endIcon={<OpenInNew />}
+                      >
+                        Unirse a Meet
+                      </Button>
+                    </Box>
+                  </Box>
+                </>
+              )}
+
+              {selectedAppointment.htmlLink && (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Schedule sx={{ color: '#ED1F80' }} />
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body2" color="text.secondary" mb={1}>
+                      Ver en Google Calendar
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      href={selectedAppointment.htmlLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{
+                        color: '#ED1F80',
+                        borderColor: '#ED1F80',
+                        borderRadius: '20px',
+                        px: 3,
+                        py: 1,
+                        '&:hover': {
+                          borderColor: '#e50575',
+                          backgroundColor: 'rgba(237, 31, 128, 0.04)',
+                        },
+                      }}
+                      endIcon={<OpenInNew />}
+                    >
+                      Abrir en Calendar
+                    </Button>
                   </Box>
                 </Box>
               )}

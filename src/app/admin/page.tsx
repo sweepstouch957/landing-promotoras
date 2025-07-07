@@ -1,4 +1,4 @@
-import AdminDashboard from '@/components/AdminDashboard';
+import AdminDashboardTabs from '@/components/AdminDashboardTabs';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -9,7 +9,7 @@ export default function AdminPage() {
     <ProtectedRoute>
       <AdminLayout title="Panel de Administración">
         <Header />
-        <AdminDashboard />
+        <AdminDashboardTabs />
         <Footer />
       </AdminLayout>
     </ProtectedRoute>

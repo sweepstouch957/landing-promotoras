@@ -38,6 +38,9 @@ interface ScheduleData {
   apellido?: string;
   telefono?: string;
   correo?: string;
+  meetLink?: string; // Nuevo campo para el enlace de Google Meet
+  eventId?: string; // ID del evento en Google Calendar
+  htmlLink?: string; // Enlace directo al evento en Google Calendar
 }
 
 const inputStyles = {
@@ -90,7 +93,6 @@ export default function ApplicationForm() {
     handleSubmit,
     formState: { errors },
     reset,
-    getValues,
   } = useForm<FormData>();
 
   useEffect(() => {
@@ -138,24 +140,121 @@ export default function ApplicationForm() {
     }
   };
 
-  const handleScheduleConfirm = (scheduleData: ScheduleData) => {
-    // Cargar citas existentes y agregar la nueva
-    const existingMeetings = loadScheduledMeetings();
-    const newMeetings = [...existingMeetings, scheduleData];
-    saveScheduledMeetings(newMeetings);
+  const handleScheduleConfirm = async (scheduleData: ScheduleData) => {
+    try {
+      // Verificar si hay credenciales de Google guardadas
+      const storedCredentials = localStorage.getItem('googleCredentials');
+      if (!storedCredentials) {
+        await MySwal.fire({
+          title: 'Configuración requerida',
+          text: 'Es necesario configurar la integración con Google Calendar. Por favor, contacta al administrador.',
+          icon: 'warning',
+          confirmButtonColor: '#ED1F80',
+          confirmButtonText: 'OK',
+        });
+        return;
+      }
 
-    MySwal.fire({
-      title: '¡Reunión agendada!',
-      text: `Has agendado tu cita para el ${scheduleData.date} a las ${scheduleData.time}`,
-      icon: 'success',
-      confirmButtonColor: '#ED1F80',
-      confirmButtonText: 'OK',
-      customClass: {
-        popup: 'rounded-xl',
-        title: 'font-bold text-lg',
-        confirmButton: 'px-4 py-2',
-      },
-    });
+      const credentials = JSON.parse(storedCredentials);
+
+      // Crear la cita completa con Google Calendar y envío de emails
+      const response = await fetch('/api/appointments/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          // Datos del formulario
+          nombre: currentFormData?.nombre,
+          apellido: currentFormData?.apellido,
+          telefono: currentFormData?.telefono,
+          correo: currentFormData?.correo,
+          edad: currentFormData?.edad,
+          zip: currentFormData?.zip,
+          supermercado: currentFormData?.supermercado,
+          // Datos de la cita
+          date: scheduleData.date,
+          time: scheduleData.time,
+          // Credenciales de Google
+          credentials,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Actualizar los datos de la cita con la información completa
+        const completeScheduleData: ScheduleData = {
+          ...scheduleData,
+          meetLink: result.data.meeting.meetLink,
+          eventId: result.data.meeting.eventId,
+          htmlLink: result.data.meeting.htmlLink,
+        };
+
+        // Cargar citas existentes y agregar la nueva
+        const existingMeetings = loadScheduledMeetings();
+        const newMeetings = [...existingMeetings, completeScheduleData];
+        saveScheduledMeetings(newMeetings);
+
+        await MySwal.fire({
+          title: '¡Reunión agendada exitosamente!',
+          html: `
+            <div style="text-align: left;">
+              <p><strong>Fecha:</strong> ${scheduleData.date}</p>
+              <p><strong>Hora:</strong> ${scheduleData.time}</p>
+              <p><strong>Google Meet:</strong> <a href="${result.data.meeting.meetLink}" target="_blank">Enlace de reunión</a></p>
+              <br>
+              <p style="color: #666; font-size: 14px;">
+                ✅ Evento creado en Google Calendar<br>
+                ✅ Invitación enviada por email<br>
+                ✅ Enlace de Google Meet generado
+              </p>
+            </div>
+          `,
+          icon: 'success',
+          confirmButtonColor: '#ED1F80',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'rounded-xl',
+            title: 'font-bold text-lg',
+            confirmButton: 'px-4 py-2',
+          },
+        });
+      } else {
+        throw new Error(result.error || 'Error al crear la cita');
+      }
+    } catch (error) {
+      console.error('Error creating appointment:', error);
+      
+      // Fallback: guardar la cita localmente sin Google Calendar
+      const existingMeetings = loadScheduledMeetings();
+      const newMeetings = [...existingMeetings, scheduleData];
+      saveScheduledMeetings(newMeetings);
+
+      await MySwal.fire({
+        title: 'Cita agendada (modo local)',
+        html: `
+          <div style="text-align: left;">
+            <p>Tu cita ha sido guardada localmente:</p>
+            <p><strong>Fecha:</strong> ${scheduleData.date}</p>
+            <p><strong>Hora:</strong> ${scheduleData.time}</p>
+            <br>
+            <p style="color: #ff9800; font-size: 14px;">
+              ⚠️ No se pudo crear el evento en Google Calendar.<br>
+              Por favor, contacta al administrador para completar la configuración.
+            </p>
+          </div>
+        `,
+        icon: 'warning',
+        confirmButtonColor: '#ED1F80',
+        confirmButtonText: 'OK',
+        customClass: {
+          popup: 'rounded-xl',
+          title: 'font-bold text-lg',
+          confirmButton: 'px-4 py-2',
+        },
+      });
+    }
 
     // Limpiar formulario
     reset();
