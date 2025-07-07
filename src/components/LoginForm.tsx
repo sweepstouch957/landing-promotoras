@@ -234,10 +234,6 @@ const LoginForm: React.FC = () => {
               <Typography variant="body2" color="text.secondary">
                 Credenciales de prueba:
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Usuario: <strong>admin</strong> | Contraseña:{' '}
-                <strong>admin123</strong>
-              </Typography>
             </Box>
           </CardContent>
         </Card>
