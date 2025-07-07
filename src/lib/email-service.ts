@@ -26,19 +26,19 @@ export class EmailService {
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: false, // true para 465, false para otros puertos
+      secure: false, // true for 465, false for other ports
       auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS, // Contraseña de aplicación de Gmail
+        pass: process.env.SMTP_PASS, // Gmail app password
       },
     });
   }
 
-  // Enviar email genérico
+  // Send a generic email
   async sendEmail(emailData: EmailData): Promise<void> {
     try {
       const mailOptions = {
-        from: `"Landing Promotoras" <${process.env.SMTP_USER}>`,
+        from: `"Landing Promoters" <${process.env.SMTP_USER}>`,
         to: emailData.to,
         subject: emailData.subject,
         html: emailData.html,
@@ -52,15 +52,15 @@ export class EmailService {
     }
   }
 
-  // Generar HTML para email de confirmación al usuario
+  // Generate HTML for user confirmation email
   private generateUserConfirmationHTML(data: AppointmentEmailData): string {
     return `
       <!DOCTYPE html>
-      <html lang="es">
+      <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Confirmación de Cita</title>
+        <title>Appointment Confirmation</title>
         <style>
           body {
             font-family: 'Arial', sans-serif;
@@ -141,26 +141,27 @@ export class EmailService {
       <body>
         <div class="container">
           <div class="header">
-            <div class="logo">Landing Promotoras</div>
-            <h1 class="title">¡Tu cita ha sido confirmada!</h1>
+            <div class="logo">Sweepstouch Booster Program</div>
+            <h1 class="title">All set! Your appointment to learn about the program is scheduled.</h1>
           </div>
 
-          <p>Hola <strong>${data.userName}</strong>,</p>
+          <p>Hello <strong>${data.userName}</strong>,</p>
           
-          <p>Nos complace confirmar que tu cita ha sido agendada exitosamente. A continuación encontrarás todos los detalles:</p>
+          <p>Thank you for scheduling your appointment with us! Your video call is now confirmed, and we’re excited to move forward with you in the selection process:</p>
+          <p>Here are the details:</p>
 
           <div class="appointment-details">
-            <h3 style="color: #ED1F80; margin-top: 0;">Detalles de tu Cita</h3>
+            <h3 style="color: #ED1F80; margin-top: 0;">Appointment Details</h3>
             <div class="detail-row">
-              <span class="detail-label">📅 Fecha:</span>
+              <span class="detail-label">📅 Date:</span>
               <span>${data.appointmentDate}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">🕐 Hora:</span>
+              <span class="detail-label">🕐 Time:</span>
               <span>${data.appointmentTime}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">👤 Participante:</span>
+              <span class="detail-label">👤 Name:</span>
               <span>${data.userName}</span>
             </div>
             <div class="detail-row">
@@ -170,32 +171,27 @@ export class EmailService {
           </div>
 
           <div class="important-note">
-            <strong>📝 Importante:</strong> Tu reunión se realizará por Google Meet. Haz clic en el botón de abajo para unirte a la videollamada en el horario programado.
+            <strong>📝 Important:</strong> Your meeting will be held via Google Meet. Click the button below to join the video call at your scheduled time.
+          </div>
+          <div class="important-note">
+            <strong>💡 Tips for your meeting:</strong>
+            Join a few minutes early to make sure your camera, audio, and internet connection are working properly.
+            This is a great opportunity for us to get to know you, answer your questions, and explain the Sweepstouch Brand Promoter Program.
           </div>
 
-          <div style="text-align: center;">
+          <div style="text-align: center; color: white;">
             <a href="${data.meetLink}" class="meet-button">
-              🎥 Unirse a Google Meet
+              🎥 Join Google Meet
             </a>
           </div>
 
-          <div class="important-note">
-            <strong>💡 Consejos para tu reunión:</strong>
-            <ul>
-              <li>Asegúrate de tener una conexión a internet estable</li>
-              <li>Prueba tu cámara y micrófono antes de la reunión</li>
-              <li>Únete unos minutos antes de la hora programada</li>
-              <li>Ten a mano cualquier documento que puedas necesitar</li>
-            </ul>
-          </div>
-
-          <p>Si necesitas reprogramar o cancelar tu cita, por favor contáctanos con anticipación.</p>
+          <p>If you need to reschedule or cancel your appointment, please contact us in advance.</p>
 
           <div class="footer">
-            <p>¡Esperamos verte pronto!</p>
-            <p><strong>Equipo de Landing Promotoras</strong></p>
+            <p>We look forward to meeting you!</p>
+            <p><strong>Sweepstouch Team</strong></p>
             <p style="font-size: 12px; color: #999;">
-              Este es un email automático, por favor no respondas a este mensaje.
+              This is an automated email, please do not reply.
             </p>
           </div>
         </div>
@@ -204,15 +200,15 @@ export class EmailService {
     `;
   }
 
-  // Generar HTML para email de notificación al administrador
+  // Generate HTML for admin notification email
   private generateAdminNotificationHTML(data: AppointmentEmailData): string {
     return `
       <!DOCTYPE html>
-      <html lang="es">
+      <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nueva Cita Agendada</title>
+        <title>New Appointment Scheduled</title>
         <style>
           body {
             font-family: 'Arial', sans-serif;
@@ -268,6 +264,7 @@ export class EmailService {
             border-radius: 20px;
             font-weight: bold;
             margin: 15px 0;
+            color: white;
           }
           .footer {
             margin-top: 30px;
@@ -282,14 +279,14 @@ export class EmailService {
       <body>
         <div class="container">
           <div class="header">
-            <h1 class="title">🎉 Nueva Cita Agendada</h1>
-            <p style="margin: 0;">Se ha registrado una nueva cita en el sistema</p>
+            <h1 class="title">🎉 New Appointment Scheduled</h1>
+            <p style="margin: 0;">A new appointment has been registered in the system</p>
           </div>
 
           <div class="user-info">
-            <h3 style="color: #ED1F80; margin-top: 0;">Información del Usuario</h3>
+            <h3 style="color: #ED1F80; margin-top: 0;">User Information</h3>
             <div class="detail-row">
-              <span class="detail-label">👤 Nombre:</span>
+              <span class="detail-label">👤 Name:</span>
               <span>${data.userName}</span>
             </div>
             <div class="detail-row">
@@ -300,7 +297,7 @@ export class EmailService {
               data.userPhone
                 ? `
             <div class="detail-row">
-              <span class="detail-label">📱 Teléfono:</span>
+              <span class="detail-label">📱 Phone:</span>
               <span>${data.userPhone}</span>
             </div>
             `
@@ -310,8 +307,8 @@ export class EmailService {
               data.userAge
                 ? `
             <div class="detail-row">
-              <span class="detail-label">🎂 Edad:</span>
-              <span>${data.userAge} años</span>
+              <span class="detail-label">🎂 Age:</span>
+              <span>${data.userAge} years</span>
             </div>
             `
                 : ''
@@ -320,7 +317,7 @@ export class EmailService {
               data.userZip
                 ? `
             <div class="detail-row">
-              <span class="detail-label">📍 Código Postal:</span>
+              <span class="detail-label">📍 ZIP Code:</span>
               <span>${data.userZip}</span>
             </div>
             `
@@ -330,7 +327,7 @@ export class EmailService {
               data.userSupermarket
                 ? `
             <div class="detail-row">
-              <span class="detail-label">🏪 Supermercado:</span>
+              <span class="detail-label">🏪 Supermarket:</span>
               <span>${data.userSupermarket}</span>
             </div>
             `
@@ -339,37 +336,35 @@ export class EmailService {
           </div>
 
           <div class="user-info">
-            <h3 style="color: #ED1F80; margin-top: 0;">Detalles de la Cita</h3>
+            <h3 style="color: #ED1F80; margin-top: 0;">Appointment Details</h3>
             <div class="detail-row">
-              <span class="detail-label">📅 Fecha:</span>
+              <span class="detail-label">📅 Date:</span>
               <span>${data.appointmentDate}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">🕐 Hora:</span>
+              <span class="detail-label">🕐 Time:</span>
               <span>${data.appointmentTime}</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">🎥 Google Meet:</span>
-              <a href="${
-                data.meetLink
-              }" class="meet-button">Unirse a la reunión</a>
+              <a href="${data.meetLink}" class="meet-button">Join Meeting</a>
             </div>
           </div>
 
           <div style="background-color: #e8f5e8; padding: 15px; border-radius: 5px; margin: 20px 0;">
-            <strong>✅ Acciones realizadas automáticamente:</strong>
+            <strong>✅ Automatically completed actions:</strong>
             <ul>
-              <li>Evento creado en Google Calendar</li>
-              <li>Enlace de Google Meet generado</li>
-              <li>Email de confirmación enviado al usuario</li>
-              <li>Invitación de calendario enviada al usuario</li>
+              <li>Event created in Google Calendar</li>
+              <li>Google Meet link generated</li>
+              <li>Confirmation email sent to user</li>
+              <li>Calendar invitation sent to user</li>
             </ul>
           </div>
 
           <div class="footer">
-            <p><strong>Sistema de Gestión de Citas - Landing Promotoras</strong></p>
+            <p><strong>Appointment Management System - Landing Promoters</strong></p>
             <p style="font-size: 12px; color: #999;">
-              Este es un email automático generado por el sistema.
+              This is an automated email generated by the system.
             </p>
           </div>
         </div>
@@ -378,30 +373,30 @@ export class EmailService {
     `;
   }
 
-  // Enviar email de confirmación al usuario
+  // Send confirmation email to user
   async sendUserConfirmationEmail(data: AppointmentEmailData): Promise<void> {
     const emailData: EmailData = {
       to: data.userEmail,
-      subject: `✅ Confirmación de Cita - ${data.appointmentDate} a las ${data.appointmentTime}`,
+      subject: `✅ Appointment Confirmation - ${data.appointmentDate} at ${data.appointmentTime}`,
       html: this.generateUserConfirmationHTML(data),
-      text: `Hola ${data.userName}, tu cita ha sido confirmada para el ${data.appointmentDate} a las ${data.appointmentTime}. Enlace de Google Meet: ${data.meetLink}`,
+      text: `Hi ${data.userName}, your appointment is confirmed for ${data.appointmentDate} at ${data.appointmentTime}. Google Meet link: ${data.meetLink}`,
     };
 
     await this.sendEmail(emailData);
   }
 
-  // Enviar email de notificación al administrador
+  // Send notification email to admin
   async sendAdminNotificationEmail(data: AppointmentEmailData): Promise<void> {
     const emailData: EmailData = {
-      to: 'aldairleiva42@gmail.com',
-      subject: `🎉 Nueva Cita Agendada - ${data.userName} (${data.appointmentDate})`,
+      to: 'cesar@sweepstouch.com',
+      subject: `🎉 New Appointment - ${data.userName} (${data.appointmentDate})`,
       html: this.generateAdminNotificationHTML(data),
-      text: `Nueva cita agendada: ${data.userName} (${data.userEmail}) para el ${data.appointmentDate} a las ${data.appointmentTime}. Google Meet: ${data.meetLink}`,
+      text: `New appointment scheduled: ${data.userName} (${data.userEmail}) on ${data.appointmentDate} at ${data.appointmentTime}. Google Meet: ${data.meetLink}`,
     };
 
     await this.sendEmail(emailData);
   }
 }
 
-// Instancia singleton
+// Singleton instance
 export const emailService = new EmailService();
