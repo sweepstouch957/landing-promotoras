@@ -297,8 +297,9 @@ export default function GoogleAuthSetup() {
 
             <Box component="li" sx={{ mb: 2 }}>
               <Typography variant="body2">
-                <strong>Autorizar aplicación:</strong> Haz clic en "Conectar con
-                Google" y autoriza los permisos solicitados.
+                <strong>Autorizar aplicación:</strong> Haz clic en
+                &quot;Conectar con Google&quot; y autoriza los permisos
+                solicitados.
               </Typography>
             </Box>
           </Box>

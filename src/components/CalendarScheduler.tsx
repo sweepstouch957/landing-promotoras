@@ -5,17 +5,17 @@ import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { format, parse, startOfWeek, getDay, addHours } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { 
-  Box, 
-  Typography, 
-  useMediaQuery, 
+import {
+  Box,
+  Typography,
+  useMediaQuery,
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   MenuItem,
-  TextField
+  TextField,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -73,12 +73,12 @@ function loadAdminScheduleConfig() {
 
     // Generar dailyTimes entre hora inicio y fin cada 1 hora
     const dailyTimes: string[] = [];
-    const [startH] = parsed.startHour.split(":").map(Number);
-    const [endH] = parsed.endHour.split(":").map(Number);
+    const [startH] = parsed.startHour.split(':').map(Number);
+    const [endH] = parsed.endHour.split(':').map(Number);
 
     let currentH = startH;
     while (currentH < endH) {
-      const hStr = currentH.toString().padStart(2, "0");
+      const hStr = currentH.toString().padStart(2, '0');
       dailyTimes.push(`${hStr}:00`);
       currentH++;
     }
@@ -97,7 +97,7 @@ function loadAdminScheduleConfig() {
 // Helper para cargar agendas agendadas
 function loadScheduledMeetings() {
   try {
-    const raw = localStorage.getItem("scheduledMeetings");
+    const raw = localStorage.getItem('scheduledMeetings');
     if (!raw) return [];
     return JSON.parse(raw) as ScheduleData[];
   } catch {
@@ -105,15 +105,15 @@ function loadScheduledMeetings() {
   }
 }
 
-export default function CalendarScheduler({ 
-  open, 
-  onClose, 
-  onSchedule, 
-  formData 
+export default function CalendarScheduler({
+  open,
+  onClose,
+  onSchedule,
+  formData,
 }: CalendarSchedulerProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
+
   const [meetings, setMeetings] = useState<ScheduleData[]>([]);
   const [adminScheduleConfig, setAdminScheduleConfig] = useState<{
     startDate: string;
@@ -121,7 +121,7 @@ export default function CalendarScheduler({
     allowedWeekDays: number[];
     dailyTimes: string[];
   } | null>(null);
-  
+
   const [showTimeDialog, setShowTimeDialog] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
@@ -217,8 +217,12 @@ export default function CalendarScheduler({
   };
 
   // Determinar el rango de fechas para mostrar en el calendario
-  const minDate = adminScheduleConfig ? new Date(adminScheduleConfig.startDate) : new Date();
-  const maxDate = adminScheduleConfig ? new Date(adminScheduleConfig.endDate) : new Date();
+  const minDate = adminScheduleConfig
+    ? new Date(adminScheduleConfig.startDate)
+    : new Date();
+  const maxDate = adminScheduleConfig
+    ? new Date(adminScheduleConfig.endDate)
+    : new Date();
 
   return (
     <>
@@ -231,7 +235,7 @@ export default function CalendarScheduler({
           sx: {
             borderRadius: 3,
             maxHeight: '90vh',
-          }
+          },
         }}
       >
         <DialogTitle>
@@ -252,7 +256,7 @@ export default function CalendarScheduler({
             Haz clic en una fecha disponible para agendar tu reunión
           </Typography>
         </DialogTitle>
-        
+
         <DialogContent>
           <Box
             sx={{
@@ -330,7 +334,7 @@ export default function CalendarScheduler({
               popup
               min={minDate}
               max={maxDate}
-              eventPropGetter={(event) => ({
+              eventPropGetter={() => ({
                 style: {
                   backgroundColor: '#ED1F80',
                   color: 'white',
@@ -341,10 +345,10 @@ export default function CalendarScheduler({
               })}
               dayPropGetter={(date) => {
                 if (!adminScheduleConfig) return {};
-                
+
                 const dateStr = format(date, 'yyyy-MM-dd');
                 const dayOfWeek = date.getDay();
-                
+
                 // Marcar días no disponibles
                 if (
                   dateStr < adminScheduleConfig.startDate ||
@@ -356,16 +360,16 @@ export default function CalendarScheduler({
                       backgroundColor: '#f5f5f5',
                       color: '#ccc',
                       cursor: 'not-allowed',
-                    }
+                    },
                   };
                 }
-                
+
                 return {};
               }}
             />
           </Box>
         </DialogContent>
-        
+
         <DialogActions sx={{ p: 3 }}>
           <Button
             onClick={onClose}
@@ -391,7 +395,7 @@ export default function CalendarScheduler({
         maxWidth="sm"
         fullWidth
         PaperProps={{
-          sx: { borderRadius: 3 }
+          sx: { borderRadius: 3 },
         }}
       >
         <DialogTitle>
@@ -412,7 +416,7 @@ export default function CalendarScheduler({
             {selectedDate && format(selectedDate, 'PPP', { locale: es })}
           </Typography>
         </DialogTitle>
-        
+
         <DialogContent>
           <TextField
             label="Hora disponible"
@@ -444,7 +448,7 @@ export default function CalendarScheduler({
             ))}
           </TextField>
         </DialogContent>
-        
+
         <DialogActions sx={{ p: 3 }}>
           <Button
             onClick={handleCloseTimeDialog}
@@ -485,4 +489,3 @@ export default function CalendarScheduler({
     </>
   );
 }
-
