@@ -1,448 +1,463 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import SlotSelectorModal from './SlotSelectorModal';
+
 import {
   Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
   TextField,
+  Button,
   Typography,
-  useMediaQuery,
+  Paper,
+  Grid,
+  Alert,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+  OutlinedInput,
+  SelectChangeEvent,
+  Checkbox,
+  ListItemText
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import { useTheme } from '@mui/material/styles';
-import { formatPhone } from '@/app/utils/formatPhone';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { useTranslation } from 'react-i18next';
-import CalendarScheduler from './CalendarScheduler';
+interface Slot {
+  _id: string;
+  fecha: string;
+  horaInicio: string;
+  horaFin: string;
+  capacidadMaxima: number;
+  usuariosRegistrados: string[];
+  estado: string;
+  enlaceMeet?: string;
+}
 
-const MySwal = withReactContent(Swal);
-
-interface FormData {
+type FormData = {
   nombre: string;
   apellido: string;
-  telefono: string;
-  correo: string;
-  edad: number;
-  zip: string;
-  supermercado: string;
-  acepta: boolean;
-}
-
-interface ScheduleData {
-  date: string; // yyyy-MM-dd
-  time: string; // HH:mm (24h)
-  nombre?: string;
-  apellido?: string;
+  email: string;
   telefono?: string;
-  correo?: string;
-  meetLink?: string; // Nuevo campo para el enlace de Google Meet
-  eventId?: string; // ID del evento en Google Calendar
-  htmlLink?: string; // Enlace directo al evento en Google Calendar
-}
-
-const inputStyles = {
-  '& label.Mui-focused': {
-    color: '#ED1F80',
-  },
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: '#ccc',
-    },
-    '&:hover fieldset': {
-      borderColor: '#ED1F80',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: '#ED1F80',
-    },
-  },
+  edad?: string;
+  zipCode?: string;
+  idiomas: string[];
 };
 
-// Guardar agendas
-function saveScheduledMeetings(meetings: ScheduleData[]) {
-  localStorage.setItem("scheduledMeetings", JSON.stringify(meetings));
-}
-
-// Helper para cargar agendas agendadas
-function loadScheduledMeetings() {
-  try {
-    const raw = localStorage.getItem("scheduledMeetings");
-    if (!raw) return [];
-    return JSON.parse(raw) as ScheduleData[];
-  } catch {
-    return [];
-  }
-}
-
-export default function ApplicationForm() {
-  const { t } = useTranslation('common');
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const formRef = useRef<HTMLDivElement>(null);
-
-  // Estados
-  const [showCalendarScheduler, setShowCalendarScheduler] = useState(false);
+const ApplicationForm: React.FC = () => {
+  const [showSlotSelector, setShowSlotSelector] = useState(false);
   const [currentFormData, setCurrentFormData] = useState<FormData | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [selectedIdiomas, setSelectedIdiomas] = useState<string[]>(["Español"]);
 
-  // React hook form para formulario principal
   const {
     register,
-    setValue,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm<FormData>();
+    setValue,
+    watch,
+    reset
+  } = useForm<FormData>({
+    defaultValues: {
+      idiomas: ["Español"]
+    }
+  });
+
+  // Observar cambios en idiomas
+  const watchedIdiomas = watch('idiomas');
 
   useEffect(() => {
-    formRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+    setValue('idiomas', selectedIdiomas);
+  }, [selectedIdiomas, setValue]);
 
+  // Manejar cambio de idiomas múltiples
+  const handleIdiomasChange = (event: SelectChangeEvent<typeof selectedIdiomas>) => {
+    const value = event.target.value;
+    const newIdiomas = typeof value === 'string' ? value.split(',') : value;
+    setSelectedIdiomas(newIdiomas);
+  };
+
+  // Manejar envío del formulario principal
   const onSubmit = async (data: FormData) => {
+    console.log('📝 Datos del formulario antes de enviar:', data);
+    
+    // Asegurar que los idiomas estén incluidos
+    const formDataWithIdiomas = {
+      ...data,
+      idiomas: selectedIdiomas
+    };
+    
+    console.log('✅ Datos del formulario procesados:', formDataWithIdiomas);
+    setCurrentFormData(formDataWithIdiomas);
+    setSubmitError(null);
+
+    // Verificar si el usuario ya existe
     try {
-      await fetch('https://sheetdb.io/api/v1/5rnrmuhqeq1h4', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data }),
-      });
+      const checkResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/users`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
 
-      await MySwal.fire({
-        title: t('form_success_title'),
-        text: t('form_success_text'),
-        icon: 'success',
-        confirmButtonColor: '#ED1F80',
-        confirmButtonText: t('form_button_ok'),
-        customClass: {
-          popup: 'rounded-xl',
-          title: 'font-bold text-lg',
-          confirmButton: 'px-4 py-2',
-        },
-      });
+      if (checkResponse.ok) {
+        const usersResult = await checkResponse.json();
+        const existingUser = usersResult.data?.find(
+          (user: any) => user.email.toLowerCase() === data.email.toLowerCase()
+        );
 
-      // Guardar los datos del formulario y mostrar el calendario
-      setCurrentFormData(data);
-      setShowCalendarScheduler(true);
-    } catch (err) {
-      console.error(err);
-      await MySwal.fire({
-        title: t('form_error_title'),
-        text: t('form_error_text'),
-        icon: 'error',
-        confirmButtonColor: '#ED1F80',
-        confirmButtonText: t('form_button_ok'),
-        customClass: {
-          popup: 'rounded-xl',
-          title: 'font-bold text-lg',
-          confirmButton: 'px-4 py-2',
-        },
-      });
-    }
-  };
-
-  const handleScheduleConfirm = async (scheduleData: ScheduleData) => {
-    try {
-      // Verificar si hay credenciales de Google guardadas
-      const storedCredentials = localStorage.getItem('googleCredentials');
-      if (!storedCredentials) {
-        await MySwal.fire({
-          title: 'Configuración requerida',
-          text: 'Es necesario configurar la integración con Google Calendar. Por favor, contacta al administrador.',
-          icon: 'warning',
-          confirmButtonColor: '#ED1F80',
-          confirmButtonText: 'OK',
-        });
-        return;
+        if (existingUser) {
+          setSubmitError('Ya existe un usuario registrado con este email');
+          return;
+        }
       }
 
-      const credentials = JSON.parse(storedCredentials);
-
-      // Crear la cita completa con Google Calendar y envío de emails
-      const response = await fetch('/api/appointments/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          // Datos del formulario
-          nombre: currentFormData?.nombre,
-          apellido: currentFormData?.apellido,
-          telefono: currentFormData?.telefono,
-          correo: currentFormData?.correo,
-          edad: currentFormData?.edad,
-          zip: currentFormData?.zip,
-          supermercado: currentFormData?.supermercado,
-          // Datos de la cita
-          date: scheduleData.date,
-          time: scheduleData.time,
-          // Credenciales de Google
-          credentials,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        // Actualizar los datos de la cita con la información completa
-        const completeScheduleData: ScheduleData = {
-          ...scheduleData,
-          meetLink: result.data.meeting.meetLink,
-          eventId: result.data.meeting.eventId,
-          htmlLink: result.data.meeting.htmlLink,
-        };
-
-        // Cargar citas existentes y agregar la nueva
-        const existingMeetings = loadScheduledMeetings();
-        const newMeetings = [...existingMeetings, completeScheduleData];
-        saveScheduledMeetings(newMeetings);
-
-        await MySwal.fire({
-          title: '¡Reunión agendada exitosamente!',
-          html: `
-            <div style="text-align: left;">
-              <p><strong>Fecha:</strong> ${scheduleData.date}</p>
-              <p><strong>Hora:</strong> ${scheduleData.time}</p>
-              <p><strong>Google Meet:</strong> <a href="${result.data.meeting.meetLink}" target="_blank">Enlace de reunión</a></p>
-              <br>
-              <p style="color: #666; font-size: 14px;">
-                ✅ Evento creado en Google Calendar<br>
-                ✅ Invitación enviada por email<br>
-                ✅ Enlace de Google Meet generado
-              </p>
-            </div>
-          `,
-          icon: 'success',
-          confirmButtonColor: '#ED1F80',
-          confirmButtonText: 'OK',
-          customClass: {
-            popup: 'rounded-xl',
-            title: 'font-bold text-lg',
-            confirmButton: 'px-4 py-2',
-          },
-        });
-      } else {
-        throw new Error(result.error || 'Error al crear la cita');
-      }
+      // Si no existe, mostrar selector de slot
+      setShowSlotSelector(true);
     } catch (error) {
-      console.error('Error creating appointment:', error);
-      
-      // Fallback: guardar la cita localmente sin Google Calendar
-      const existingMeetings = loadScheduledMeetings();
-      const newMeetings = [...existingMeetings, scheduleData];
-      saveScheduledMeetings(newMeetings);
-
-      await MySwal.fire({
-        title: 'Cita agendada (modo local)',
-        html: `
-          <div style="text-align: left;">
-            <p>Tu cita ha sido guardada localmente:</p>
-            <p><strong>Fecha:</strong> ${scheduleData.date}</p>
-            <p><strong>Hora:</strong> ${scheduleData.time}</p>
-            <br>
-            <p style="color: #ff9800; font-size: 14px;">
-              ⚠️ No se pudo crear el evento en Google Calendar.<br>
-              Por favor, contacta al administrador para completar la configuración.
-            </p>
-          </div>
-        `,
-        icon: 'warning',
-        confirmButtonColor: '#ED1F80',
-        confirmButtonText: 'OK',
-        customClass: {
-          popup: 'rounded-xl',
-          title: 'font-bold text-lg',
-          confirmButton: 'px-4 py-2',
-        },
-      });
+      console.error('❌ Error verificando usuario:', error);
+      setSubmitError('Error verificando el usuario. Intenta nuevamente.');
     }
-
-    // Limpiar formulario
-    reset();
-    setCurrentFormData(null);
   };
 
-  const handleCloseCalendar = () => {
-    setShowCalendarScheduler(false);
-    setCurrentFormData(null);
+  // Manejar selección de slot
+  const handleSlotSelect = async (slot: Slot) => {
+    if (!currentFormData) return;
+
+    setSelectedSlot(slot);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      console.log('🎯 Enviando datos al backend:', {
+        ...currentFormData,
+        slotId: slot._id
+      });
+
+      // Crear usuario con slot seleccionado
+      const userResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/users`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...currentFormData,
+            slotId: slot._id
+          }),
+        }
+      );
+
+      const userResult = await userResponse.json();
+      console.log('📊 Respuesta del backend:', userResult);
+
+      if (!userResult.success) {
+        throw new Error(userResult.message || 'Error al crear usuario');
+      }
+
+      setSubmitSuccess(true);
+      setShowSlotSelector(false);
+      
+      // Limpiar formulario
+      reset();
+      setSelectedIdiomas(['Español']);
+      setCurrentFormData(null);
+      setSelectedSlot(null);
+
+    } catch (error) {
+      console.error('❌ Error en el registro:', error);
+      setSubmitError(error instanceof Error ? error.message : 'Error desconocido');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  return (
-    <Box ref={formRef}>
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        sx={{
-          width: '100%',
-          maxWidth: 420,
-          mx: 'auto',
-          p: isMobile ? 2 : 4,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-        }}
-      >
-        <Typography
-          variant="h6"
-          align="center"
-          fontWeight="bold"
-          color="#ED1F80"
-          textTransform="uppercase"
-          sx={{ fontFamily: 'Roboto, sans-serif' }}
-        >
-          {t('form_title')}
-        </Typography>
+  // Cerrar modal de selección de slot
+  const handleCloseSlotSelector = () => {
+    setShowSlotSelector(false);
+    setSelectedSlot(null);
+    setIsSubmitting(false);
+  };
 
-        <TextField
-          label={t('form_nombre')}
-          {...register('nombre', {
-            required: t('form_error_nombre'),
-            pattern: {
-              value: /^[A-Za-zÁ-ú\s]+$/,
-              message: t('form_error_solo_letras'),
-            },
-          })}
-          error={!!errors.nombre}
-          helperText={errors.nombre?.message}
-          fullWidth
-          sx={inputStyles}
-        />
-
-        <TextField
-          label={t('form_apellido')}
-          {...register('apellido', {
-            required: t('form_error_apellido'),
-            pattern: {
-              value: /^[A-Za-zÁ-ú\s]+$/,
-              message: t('form_error_solo_letras'),
-            },
-          })}
-          error={!!errors.apellido}
-          helperText={errors.apellido?.message}
-          fullWidth
-          sx={inputStyles}
-        />
-
-        <TextField
-          label={t('form_telefono')}
-          {...register('telefono', {
-            required: t('form_error_telefono'),
-            pattern: {
-              value: /^\(\d{3}\) \d{3}-\d{4}$/,
-              message: t('form_error_telefono_invalido'),
-            },
-            onChange: (e) => {
-              const formatted = formatPhone(e.target.value);
-              setValue('telefono', formatted);
-            },
-          })}
-          error={!!errors.telefono}
-          helperText={errors.telefono?.message}
-          fullWidth
-          sx={inputStyles}
-        />
-
-        <TextField
-          label={t('form_correo')}
-          type="email"
-          {...register('correo', {
-            required: t('form_error_correo'),
-            pattern: {
-              value: /^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/,
-              message: t('form_error_correo_invalido'),
-            },
-          })}
-          error={!!errors.correo}
-          helperText={errors.correo?.message}
-          fullWidth
-          sx={inputStyles}
-        />
-
-        <TextField
-          label={t('form_edad')}
-          type="number"
-          inputProps={{ min: 18 }}
-          {...register('edad', {
-            required: t('form_error_edad'),
-            min: { value: 18, message: t('form_error_edad_minima') },
-          })}
-          error={!!errors.edad}
-          helperText={errors.edad?.message}
-          fullWidth
-          sx={inputStyles}
-        />
-
-        <TextField
-          label={t('form_zip')}
-          {...register('zip', { required: t('form_error_zip') })}
-          error={!!errors.zip}
-          helperText={errors.zip?.message}
-          fullWidth
-          sx={inputStyles}
-        />
-
-        <TextField
-          label={t('form_supermercado')}
-          {...register('supermercado', {
-            required: t('form_error_supermercado'),
-          })}
-          error={!!errors.supermercado}
-          helperText={errors.supermercado?.message}
-          fullWidth
-          sx={inputStyles}
-        />
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              {...register('acepta', { required: true })}
-              color="primary"
-              sx={{
-                color: '#ED1F80',
-                '&.Mui-checked': {
-                  color: '#ED1F80',
-                },
-              }}
-            />
-          }
-          label={t('form_acepta')}
-        />
-        {errors.acepta && (
-          <Typography variant="caption" color="error">
-            {t('form_error_acepta')}
-          </Typography>
-        )}
-
+  if (submitSuccess) {
+    return (
+      <Paper elevation={3} sx={{ p: 4, maxWidth: 600, mx: 'auto', mt: 4 }}>
+        <Alert severity="success" sx={{ mb: 2 }}>
+          ¡Registro exitoso! Se ha enviado un correo de confirmación con los detalles de tu cita.
+        </Alert>
         <Button
-          type="submit"
-          variant="contained"
+          variant="outlined"
+          onClick={() => {
+            setSubmitSuccess(false);
+            setSubmitError(null);
+          }}
           fullWidth
-          sx={{
-            mt: 1,
-            backgroundColor: '#ED1F80',
-            color: 'white',
-            fontWeight: 'bold',
-            borderRadius: '25px',
-            py: 1.5,
-            fontSize: '1rem',
+          sx={{ 
+            borderColor: '#ED1F80',
+            color: '#ED1F80',
             '&:hover': {
-              backgroundColor: '#e50575',
-            },
+              borderColor: '#d1176b',
+              backgroundColor: 'rgba(237, 31, 128, 0.04)'
+            }
           }}
         >
-          {t('form_enviar')}
+          Realizar otro registro
         </Button>
-      </Box>
+      </Paper>
+    );
+  }
 
-      {/* Calendario Scheduler */}
-      {currentFormData && (
-        <CalendarScheduler
-          open={showCalendarScheduler}
-          onClose={handleCloseCalendar}
-          onSchedule={handleScheduleConfirm}
-          formData={currentFormData}
-        />
-      )}
-    </Box>
+  return (
+    <>
+      <Paper elevation={3} sx={{ p: 4, maxWidth: 600, mx: 'auto', mt: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ color: '#ED1F80' }}>
+          Formulario de Aplicación
+        </Typography>
+        
+        <Typography variant="body1" sx={{ mb: 3, textAlign: 'center', color: 'text.secondary' }}>
+          Completa tus datos para agendar una cita. Los campos marcados con * son obligatorios.
+        </Typography>
+
+        {submitError && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {submitError}
+          </Alert>
+        )}
+
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...register('nombre')}
+                label="Nombre *"
+                fullWidth
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#ED1F80',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                      color: '#ED1F80',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...register('apellido')}
+                label="Apellido *"
+                fullWidth
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#ED1F80',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                      color: '#ED1F80',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                {...register('email')}
+                label="Email *"
+                type="email"
+                fullWidth
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#ED1F80',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                      color: '#ED1F80',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...register('telefono')}
+                label="Teléfono"
+                fullWidth
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#ED1F80',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                      color: '#ED1F80',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...register('edad')}
+                label="Edad"
+                fullWidth
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#ED1F80',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                      color: '#ED1F80',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                {...register('zipCode')}
+                label="Código Postal (Zip Code)"
+                fullWidth
+                variant="outlined"
+                placeholder="12345"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#ED1F80',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                      color: '#ED1F80',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel sx={{ '&.Mui-focused': { color: '#ED1F80' } }}>
+                  Idiomas que hablas *
+                </InputLabel>
+                <Select
+                  multiple
+                  value={selectedIdiomas}
+                  onChange={handleIdiomasChange}
+                  input={<OutlinedInput label="Idiomas que hablas *" />}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip 
+                          key={value} 
+                          label={value} 
+                          size="small" 
+                          sx={{ 
+                            backgroundColor: 'rgba(237, 31, 128, 0.1)',
+                            color: '#ED1F80'
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  )}
+                  sx={{
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#ED1F80',
+                    },
+                  }}
+                >
+                  {IDIOMAS_DISPONIBLES.map((idioma) => (
+                    <MenuItem key={idioma} value={idioma}>
+                      <Checkbox 
+                        checked={selectedIdiomas.indexOf(idioma) > -1}
+                        sx={{
+                          '&.Mui-checked': {
+                            color: '#ED1F80',
+                          },
+                        }}
+                      />
+                      <ListItemText primary={idioma} />
+                    </MenuItem>
+                  ))}
+                </Select>
+
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                fullWidth
+                sx={{ 
+                  mt: 2, 
+                  py: 1.5,
+                  backgroundColor: '#ED1F80',
+                  '&:hover': {
+                    backgroundColor: '#d1176b'
+                  }
+                }}
+              >
+                Seleccionar Horario de Cita
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+
+      {/* Modal de selección de slot */}
+      <SlotSelectorModal
+        open={showSlotSelector}
+        onClose={handleCloseSlotSelector}
+        onSlotSelect={handleSlotSelect}
+        isSubmitting={isSubmitting}
+      />
+    </>
   );
-}
+};
+
+export default ApplicationForm;
+
+
+
+const IDIOMAS_DISPONIBLES = [
+  "Español",
+  "Inglés",
+  "Portugués",
+  "Francés",
+  "Alemán",
+  "Italiano",
+  "Chino",
+  "Japonés",
+  "Coreano",
+  "Árabe",
+  "Ruso",
+  "Otro"
+];
+
 

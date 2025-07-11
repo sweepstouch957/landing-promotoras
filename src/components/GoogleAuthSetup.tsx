@@ -15,6 +15,7 @@ import {
   DialogActions,
 } from '@mui/material';
 import { Google, CheckCircle, Settings } from '@mui/icons-material';
+import CredentialsDebugger from './CredentialsDebugger';
 
 interface GoogleCredentials {
   access_token: string;
@@ -37,34 +38,49 @@ export default function GoogleAuthSetup() {
     );
 
     // Cargar credenciales guardadas
-    const stored = localStorage.getItem('googleCredentials');
-    if (stored) {
-      try {
-        setCredentials(JSON.parse(stored));
-      } catch (error) {
-        console.error('Error parsing stored credentials:', error);
-        localStorage.removeItem('googleCredentials');
+    const loadStoredCredentials = () => {
+      const stored = localStorage.getItem('googleCredentials');
+      if (stored) {
+        try {
+          const parsedCredentials = JSON.parse(stored);
+          console.log('DEBUG: Credenciales cargadas desde localStorage:', parsedCredentials);
+          setCredentials(parsedCredentials);
+          return parsedCredentials;
+        } catch (error) {
+          console.error('Error parsing stored credentials:', error);
+          localStorage.removeItem('googleCredentials');
+        }
       }
-    }
+      return null;
+    };
+
+    // Cargar credenciales existentes
+    const existingCredentials = loadStoredCredentials();
 
     // Verificar si hay tokens en la URL (callback de OAuth)
     const urlParams = new URLSearchParams(window.location.search);
     const tokensParam = urlParams.get('tokens');
+    const errorParam = urlParams.get('error');
 
-    console.log(
-      'DEBUG (GoogleAuthSetup useEffect): tokensParam from URL:',
-      tokensParam
-    );
+    console.log('DEBUG: tokensParam from URL:', tokensParam);
+    console.log('DEBUG: errorParam from URL:', errorParam);
+
+    if (errorParam) {
+      console.error('Error en OAuth:', errorParam);
+      // Aquí podrías mostrar un mensaje de error al usuario
+    }
 
     if (tokensParam) {
       try {
         const tokens = JSON.parse(decodeURIComponent(tokensParam));
-        console.log(
-          'DEBUG (GoogleAuthSetup useEffect): Parsed tokens:',
-          tokens
-        );
+        console.log('DEBUG: Parsed tokens from URL:', tokens);
+        
+        // Guardar en localStorage
         localStorage.setItem('googleCredentials', JSON.stringify(tokens));
         setCredentials(tokens);
+
+        // Enviar credenciales al backend
+        sendCredentialsToBackend(tokens);
 
         // Limpiar la URL
         window.history.replaceState(
@@ -72,14 +88,70 @@ export default function GoogleAuthSetup() {
           document.title,
           window.location.pathname
         );
-        console.log(
-          'DEBUG (GoogleAuthSetup useEffect): Tokens saved to localStorage and URL cleaned.'
-        );
+        console.log('DEBUG: Tokens saved to localStorage and URL cleaned.');
       } catch (error) {
         console.error('Error processing OAuth tokens in useEffect:', error);
       }
+    } else if (existingCredentials) {
+      // Si no hay tokens en la URL pero sí hay credenciales almacenadas,
+      // verificar si necesitamos reenviarlas al backend
+      console.log('DEBUG: No tokens in URL, but found existing credentials');
+      
+      // Opcional: verificar el estado en el backend
+      checkBackendCredentialsStatus(existingCredentials);
     }
-  }, []); // <--- Vuelve a dejar el array de dependencias vacío
+  }, []); // Array de dependencias vacío para ejecutar solo una vez
+
+  // Función para verificar si el backend tiene las credenciales
+  const checkBackendCredentialsStatus = async (credentialsToCheck?: GoogleCredentials) => {
+    try {
+      const response = await fetch('/api/google-auth/status');
+      const result = await response.json();
+      
+      const credsToUse = credentialsToCheck || credentials;
+      
+      if (!result.configured && credsToUse) {
+        console.log('DEBUG: Backend no tiene credenciales, reenviando...');
+        await sendCredentialsToBackend(credsToUse);
+      }
+    } catch (error) {
+      console.error('Error checking backend credentials status:', error);
+    }
+  };
+
+  // Función para enviar credenciales al backend
+  const sendCredentialsToBackend = async (credentials: GoogleCredentials) => {
+    try {
+      console.log('📤 Enviando credenciales al backend...');
+      
+      const response = await fetch('/api/google-auth/credentials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_token: credentials.access_token,
+          refresh_token: credentials.refresh_token,
+          token_type: credentials.token_type,
+          scope: credentials.scope,
+          expiry_date: credentials.expiry_date
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('✅ Credenciales enviadas al backend correctamente');
+        return true;
+      } else {
+        console.error('❌ Error al enviar credenciales al backend:', result.message);
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ Error de red al enviar credenciales al backend:', error);
+      return false;
+    }
+  };
 
   const handleGoogleAuth = () => {
     setIsLoading(true);
@@ -90,6 +162,12 @@ export default function GoogleAuthSetup() {
   const handleDisconnect = () => {
     localStorage.removeItem('googleCredentials');
     setCredentials(null);
+  };
+
+  const handleResendCredentials = async () => {
+    if (credentials) {
+      await sendCredentialsToBackend(credentials);
+    }
   };
 
   const isTokenValid = (creds: GoogleCredentials): boolean => {
@@ -212,7 +290,7 @@ export default function GoogleAuthSetup() {
                 </Alert>
               )}
 
-              <Box sx={{ display: 'flex', gap: 2 }}>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button
                   variant="contained"
                   onClick={handleGoogleAuth}
@@ -229,6 +307,23 @@ export default function GoogleAuthSetup() {
                   }}
                 >
                   Reconectar
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  onClick={handleResendCredentials}
+                  sx={{
+                    color: '#ED1F80',
+                    borderColor: '#ED1F80',
+                    borderRadius: '25px',
+                    px: 3,
+                    '&:hover': {
+                      borderColor: '#e50575',
+                      backgroundColor: 'rgba(237, 31, 128, 0.04)',
+                    },
+                  }}
+                >
+                  Enviar al Backend
                 </Button>
 
                 <Button
@@ -332,6 +427,13 @@ export default function GoogleAuthSetup() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Componente de debug para desarrollo */}
+      {process.env.NODE_ENV === 'development' && (
+        <Box sx={{ mt: 4 }}>
+          <CredentialsDebugger />
+        </Box>
+      )}
     </Box>
   );
 }

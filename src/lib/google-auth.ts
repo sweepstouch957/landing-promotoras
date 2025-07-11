@@ -60,14 +60,25 @@ export class GoogleAuthManager {
     this.oauth2Client.setCredentials(credentials);
   }
 
-  // Refrescar token de acceso
-  async refreshAccessToken(refreshToken: string): Promise<GoogleCredentials> {
+  // Refrescar token de acceso (recibe todo credentials)
+  async refreshAccessToken(
+    credentials: GoogleCredentials
+  ): Promise<GoogleCredentials> {
     this.oauth2Client.setCredentials({
-      refresh_token: refreshToken,
+      access_token: credentials.access_token,
+      refresh_token: credentials.refresh_token,
+      token_type: credentials.token_type,
+      expiry_date: credentials.expiry_date,
     });
 
-    const { credentials } = await this.oauth2Client.refreshAccessToken();
-    return credentials as GoogleCredentials;
+
+
+    // Nota: refreshAccessToken() está deprecated en googleapis v39+,
+    // se recomienda usar getAccessToken(), pero mantengo así para compatibilidad.
+    const { credentials: refreshed } =
+      await this.oauth2Client.refreshAccessToken();
+
+    return refreshed as GoogleCredentials;
   }
 
   // Obtener cliente autenticado

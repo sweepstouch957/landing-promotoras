@@ -31,6 +31,10 @@ import {
   Logout,
   Home,
   DashboardCustomize,
+  Schedule,
+  CheckCircle,
+  ThumbUp,
+  Settings,
 } from '@mui/icons-material';
 
 interface AdminSidebarProps {
@@ -52,7 +56,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
 
   const menuItems = [
     {
-      text: 'Panel de Admin',
+      text: 'Panel Principal',
       icon: <Dashboard />,
       path: '/admin',
       isAdmin: true,
@@ -67,6 +71,30 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
       text: 'Calendario',
       icon: <CalendarMonth />,
       path: '/calendario',
+      isAdmin: true,
+    },
+    {
+      text: 'Configuración de Horarios',
+      icon: <Settings />,
+      path: '/admin/configuracion',
+      isAdmin: true,
+    },
+    {
+      text: 'Gestión de Cupos',
+      icon: <Schedule />,
+      path: '/admin/cupos',
+      isAdmin: true,
+    },
+    {
+      text: 'Control de Asistencias',
+      icon: <CheckCircle />,
+      path: '/admin/asistencias',
+      isAdmin: true,
+    },
+    {
+      text: 'Aprobaciones',
+      icon: <ThumbUp />,
+      path: '/admin/aprobaciones',
       isAdmin: true,
     },
   ];
@@ -97,7 +125,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
     <Box
       sx={{
         height: '100vh',
-        overflow: 'hidden',
+        overflow: 'auto',
         background: `linear-gradient(135deg, ${primaryColor} 0%, ${hoverColor} 100%)`,
         color: 'white',
         display: 'flex',
@@ -116,7 +144,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
         <Box display="flex" alignItems="center" gap={1}>
           <AdminPanelSettings sx={{ fontSize: 28 }} />
           <Typography variant="h6" fontWeight="bold">
-            Admin Panel
+            Admin Panel v2.0
           </Typography>
         </Box>
         {isMobile && (
@@ -169,7 +197,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
         </Box>
       )}
 
-      <Box sx={{ flexGrow: 1, py: 1, overflow: 'hidden' }}>
+      <Box sx={{ flexGrow: 1, py: 1 }}>
         <List>
           <ListItem disablePadding>
             <ListItemButton
@@ -247,7 +275,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
                       primary={item.text}
                       primaryTypographyProps={{
                         fontWeight: pathname === item.path ? 'bold' : 'normal',
-                        fontSize: '0.9rem',
+                        fontSize: '0.85rem',
                       }}
                     />
                   </ListItemButton>
@@ -264,6 +292,9 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
           borderTop: '1px solid rgba(255, 255, 255, 0.2)',
         }}
       >
+        <Typography variant="caption" sx={{ opacity: 0.7, mb: 1, display: 'block' }}>
+          Sistema de Cupos v2.0
+        </Typography>
         <ListItemButton
           onClick={handleLogout}
           sx={{
@@ -329,3 +360,4 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
 };
 
 export default AdminSidebar;
+

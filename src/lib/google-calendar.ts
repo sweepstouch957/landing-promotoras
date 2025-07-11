@@ -64,7 +64,7 @@ export class GoogleCalendarManager {
       let validCredentials = credentials;
       if (!this.authManager.isTokenValid(credentials)) {
         validCredentials = await this.authManager.refreshAccessToken(
-          credentials.refresh_token
+          credentials
         );
       }
 
@@ -138,7 +138,7 @@ export class GoogleCalendarManager {
       let validCredentials = credentials;
       if (!this.authManager.isTokenValid(credentials)) {
         validCredentials = await this.authManager.refreshAccessToken(
-          credentials.refresh_token
+          credentials
         );
       }
 
@@ -183,7 +183,7 @@ export class GoogleCalendarManager {
       let validCredentials = credentials;
       if (!this.authManager.isTokenValid(credentials)) {
         validCredentials = await this.authManager.refreshAccessToken(
-          credentials.refresh_token
+          credentials
         );
       }
 

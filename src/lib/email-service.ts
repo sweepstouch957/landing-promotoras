@@ -396,6 +396,11 @@ export class EmailService {
 
     await this.sendEmail(emailData);
   }
+
+  // En email-service.ts, dentro de la clase EmailService
+  async sendRawEmail(data: EmailData): Promise<void> {
+    await this.sendEmail(data);
+  }
 }
 
 // Singleton instance

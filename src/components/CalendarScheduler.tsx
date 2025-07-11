@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { format, parse, startOfWeek, getDay, addHours } from 'date-fns';
+import { format, parse, startOfWeek, getDay, addMinutes } from 'date-fns';
 import { es } from 'date-fns/locale';
 import {
   Box,
@@ -16,8 +16,10 @@ import {
   DialogActions,
   MenuItem,
   TextField,
+  Alert,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Warning, Schedule } from '@mui/icons-material';
 
 interface ScheduleData {
   date: string; // formato YYYY-MM-DD
@@ -36,6 +38,7 @@ interface FormData {
   edad: number;
   zip: string;
   supermercado: string;
+  idioma?: string;
   acepta: boolean;
 }
 
@@ -64,33 +67,54 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-// Helper para cargar config admin del localStorage
-function loadAdminScheduleConfig() {
+// Helper para generar horarios de media hora
+function generateHalfHourSlots(startHour: number, endHour: number): string[] {
+  const slots: string[] = [];
+  for (let hour = startHour; hour < endHour; hour++) {
+    slots.push(`${hour.toString().padStart(2, '0')}:00`);
+    slots.push(`${hour.toString().padStart(2, '0')}:30`);
+  }
+  return slots;
+}
+
+// Helper para cargar config admin del backend
+async function loadAdminScheduleConfig() {
   try {
-    const raw = localStorage.getItem('scheduleConfig');
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-
-    // Generar dailyTimes entre hora inicio y fin cada 1 hora
-    const dailyTimes: string[] = [];
-    const [startH] = parsed.startHour.split(':').map(Number);
-    const [endH] = parsed.endHour.split(':').map(Number);
-
-    let currentH = startH;
-    while (currentH < endH) {
-      const hStr = currentH.toString().padStart(2, '0');
-      dailyTimes.push(`${hStr}:00`);
-      currentH++;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/schedule-config`);
+    if (!response.ok) {
+      throw new Error('Error al obtener configuración de horarios');
+    }
+    
+    const configs = await response.json();
+    
+    // Buscar la configuración activa
+    const activeConfig = configs.find((config: any) => config.isActive);
+    
+    if (!activeConfig) {
+      // Fallback a configuración por defecto con intervalos de media hora
+      return {
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 días
+        allowedWeekDays: [1, 2, 3, 4, 5], // Lunes a Viernes
+        dailyTimes: generateHalfHourSlots(9, 17), // 9:00 AM a 5:00 PM con intervalos de 30 min
+      };
     }
 
     return {
-      startDate: parsed.startDate,
-      endDate: parsed.endDate,
-      allowedWeekDays: parsed.selectedDays,
-      dailyTimes,
+      startDate: activeConfig.startDate.split('T')[0],
+      endDate: activeConfig.endDate.split('T')[0],
+      allowedWeekDays: activeConfig.allowedWeekDays,
+      dailyTimes: activeConfig.dailyTimeSlots || generateHalfHourSlots(9, 17),
     };
-  } catch {
-    return null;
+  } catch (error) {
+    console.error('Error loading schedule config:', error);
+    // Fallback a configuración por defecto con intervalos de media hora
+    return {
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 días
+      allowedWeekDays: [1, 2, 3, 4, 5], // Lunes a Viernes
+      dailyTimes: generateHalfHourSlots(9, 17), // 9:00 AM a 5:00 PM con intervalos de 30 min
+    };
   }
 }
 
@@ -126,12 +150,19 @@ export default function CalendarScheduler({
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<string>('');
+  
+  // Estados para el modal de días bloqueados
+  const [showBlockedDayDialog, setShowBlockedDayDialog] = useState(false);
 
   useEffect(() => {
     if (open) {
       // Cargar config admin y agendas guardadas
-      const config = loadAdminScheduleConfig();
-      setAdminScheduleConfig(config);
+      const loadConfig = async () => {
+        const config = await loadAdminScheduleConfig();
+        setAdminScheduleConfig(config);
+      };
+      
+      loadConfig();
 
       const storedMeetings = loadScheduledMeetings();
       setMeetings(storedMeetings);
@@ -147,12 +178,26 @@ export default function CalendarScheduler({
       return {
         title: `${m.time} - Ocupado`,
         start: date,
-        end: addHours(date, 1),
+        end: addMinutes(date, 30), // Cambiar a 30 minutos en lugar de 1 hora
         allDay: false,
         resource: m,
       } as MyEvent;
     });
   }, [meetings]);
+
+  // Función para verificar si un día está bloqueado
+  const isDayBlocked = (date: Date): boolean => {
+    if (!adminScheduleConfig) return true;
+    
+    const dateStr = format(date, 'yyyy-MM-dd');
+    const dayOfWeek = date.getDay();
+
+    return (
+      dateStr < adminScheduleConfig.startDate ||
+      dateStr > adminScheduleConfig.endDate ||
+      !adminScheduleConfig.allowedWeekDays.includes(dayOfWeek)
+    );
+  };
 
   // Manejar selección de fecha en el calendario
   const handleSelectSlot = (slotInfo: {
@@ -167,11 +212,8 @@ export default function CalendarScheduler({
     const dayOfWeek = clickedDate.getDay();
 
     // Validar que la fecha esté dentro del rango permitido y en día permitido
-    if (
-      dateStr < adminScheduleConfig.startDate ||
-      dateStr > adminScheduleConfig.endDate ||
-      !adminScheduleConfig.allowedWeekDays.includes(dayOfWeek)
-    ) {
+    if (isDayBlocked(clickedDate)) {
+      setShowBlockedDayDialog(true);
       return;
     }
 
@@ -184,6 +226,7 @@ export default function CalendarScheduler({
     );
 
     if (freeTimes.length === 0) {
+      setShowBlockedDayDialog(true);
       return;
     }
 
@@ -193,7 +236,7 @@ export default function CalendarScheduler({
     setShowTimeDialog(true);
   };
 
-  const handleConfirmSchedule = () => {
+  const handleTimeConfirm = () => {
     if (!selectedDate || !selectedTime) return;
 
     const scheduleData: ScheduleData = {
@@ -210,19 +253,15 @@ export default function CalendarScheduler({
     onClose();
   };
 
-  const handleCloseTimeDialog = () => {
+  const handleTimeDialogClose = () => {
     setShowTimeDialog(false);
     setSelectedDate(null);
     setSelectedTime('');
   };
 
-  // Determinar el rango de fechas para mostrar en el calendario
-  const minDate = adminScheduleConfig
-    ? new Date(adminScheduleConfig.startDate)
-    : new Date();
-  const maxDate = adminScheduleConfig
-    ? new Date(adminScheduleConfig.endDate)
-    : new Date();
+  const handleBlockedDayDialogClose = () => {
+    setShowBlockedDayDialog(false);
+  };
 
   return (
     <>
@@ -234,7 +273,7 @@ export default function CalendarScheduler({
         PaperProps={{
           sx: {
             borderRadius: 3,
-            maxHeight: '90vh',
+            minHeight: '80vh',
           },
         }}
       >
@@ -245,34 +284,41 @@ export default function CalendarScheduler({
             color="#ED1F80"
             align="center"
           >
-            Selecciona la fecha de tu cita
+            Selecciona fecha y hora para tu cita
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             align="center"
-            mt={1}
+            sx={{ mt: 1 }}
           >
-            Haz clic en una fecha disponible para agendar tu reunión
+            Haz clic en una fecha disponible para ver los horarios
           </Typography>
         </DialogTitle>
 
         <DialogContent>
+          {adminScheduleConfig && (
+            <Alert severity="info" sx={{ mb: 2 }}>
+              Horarios disponibles: {adminScheduleConfig.dailyTimes[0]} - {adminScheduleConfig.dailyTimes[adminScheduleConfig.dailyTimes.length - 1]} 
+              (intervalos de 30 minutos)
+            </Alert>
+          )}
+
           <Box
             sx={{
               '& .rbc-calendar': {
                 backgroundColor: '#fff',
-                fontFamily: 'Roboto, sans-serif',
+                minHeight: '500px',
               },
               '& .rbc-toolbar': {
                 backgroundColor: '#f8f8f8',
                 borderRadius: 2,
-                padding: '12px',
+                padding: '8px',
                 marginBottom: 2,
               },
               '& .rbc-toolbar-label': {
                 fontWeight: 'bold',
-                fontSize: '1.2rem',
+                fontSize: '1.1rem',
                 color: '#ED1F80',
               },
               '& .rbc-btn-group button': {
@@ -289,7 +335,7 @@ export default function CalendarScheduler({
                   backgroundColor: '#c1045a',
                 },
               },
-              '& .rbc-month-view, & .rbc-time-view': {
+              '& .rbc-month-view, & .rbc-time-view, & .rbc-agenda-view': {
                 border: 'none',
               },
               '& .rbc-day-bg + .rbc-day-bg': {
@@ -300,25 +346,14 @@ export default function CalendarScheduler({
                 fontWeight: '600',
                 fontSize: '0.9rem',
                 borderBottom: '1px solid #e0e0e0',
-                color: '#ED1F80',
               },
               '& .rbc-date-cell': {
-                padding: '8px',
-                cursor: 'pointer',
-                '&:hover': {
-                  backgroundColor: '#fce4ec',
-                },
-              },
-              '& .rbc-off-range-bg': {
-                backgroundColor: '#f5f5f5',
-              },
-              '& .rbc-today': {
-                backgroundColor: '#fce4ec',
+                padding: '4px',
               },
               '& .rbc-event': {
                 borderRadius: '6px',
                 padding: '2px 4px',
-                fontSize: '0.75rem',
+                cursor: 'pointer',
               },
             }}
           >
@@ -327,44 +362,34 @@ export default function CalendarScheduler({
               events={events}
               startAccessor="start"
               endAccessor="end"
-              style={{ height: isMobile ? 400 : 500 }}
+              style={{ height: 500 }}
               selectable
               onSelectSlot={handleSelectSlot}
-              views={['month']}
+              views={['week', 'month']} // Agregar vista semanal
+              defaultView="week" // Vista por defecto semanal
               popup
-              min={minDate}
-              max={maxDate}
+              step={30} // Intervalos de 30 minutos
+              timeslots={2} // 2 slots por hora (30 min cada uno)
               eventPropGetter={() => ({
                 style: {
                   backgroundColor: '#ED1F80',
                   color: 'white',
                   borderRadius: '6px',
                   border: 'none',
-                  opacity: 0.8,
+                  padding: '2px 6px',
+                  fontSize: '0.8rem',
                 },
               })}
               dayPropGetter={(date) => {
-                if (!adminScheduleConfig) return {};
-
-                const dateStr = format(date, 'yyyy-MM-dd');
-                const dayOfWeek = date.getDay();
-
-                // Marcar días no disponibles
-                if (
-                  dateStr < adminScheduleConfig.startDate ||
-                  dateStr > adminScheduleConfig.endDate ||
-                  !adminScheduleConfig.allowedWeekDays.includes(dayOfWeek)
-                ) {
-                  return {
-                    style: {
-                      backgroundColor: '#f5f5f5',
-                      color: '#ccc',
-                      cursor: 'not-allowed',
-                    },
-                  };
-                }
-
-                return {};
+                const isBlocked = isDayBlocked(date);
+                return {
+                  style: {
+                    backgroundColor: isBlocked ? '#424242' : 'transparent', // Color más oscuro
+                    opacity: isBlocked ? 0.4 : 1, // Opacidad más baja
+                    cursor: isBlocked ? 'not-allowed' : 'pointer',
+                    color: isBlocked ? '#ffffff' : 'inherit',
+                  },
+                };
               }}
             />
           </Box>
@@ -376,10 +401,8 @@ export default function CalendarScheduler({
             sx={{
               color: '#ED1F80',
               borderColor: '#ED1F80',
-              '&:hover': {
-                borderColor: '#e50575',
-                backgroundColor: 'rgba(237, 31, 128, 0.04)',
-              },
+              borderRadius: '25px',
+              px: 3,
             }}
             variant="outlined"
           >
@@ -391,7 +414,7 @@ export default function CalendarScheduler({
       {/* Dialog para seleccionar hora */}
       <Dialog
         open={showTimeDialog}
-        onClose={handleCloseTimeDialog}
+        onClose={handleTimeDialogClose}
         maxWidth="sm"
         fullWidth
         PaperProps={{
@@ -407,20 +430,22 @@ export default function CalendarScheduler({
           >
             Selecciona la hora
           </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            mt={1}
-          >
-            {selectedDate && format(selectedDate, 'PPP', { locale: es })}
-          </Typography>
+          {selectedDate && (
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              align="center"
+              sx={{ mt: 1 }}
+            >
+              {format(selectedDate, 'EEEE, dd MMMM yyyy', { locale: es })}
+            </Typography>
+          )}
         </DialogTitle>
 
         <DialogContent>
           <TextField
-            label="Hora disponible"
             select
+            label="Hora disponible"
             value={selectedTime}
             onChange={(e) => setSelectedTime(e.target.value)}
             fullWidth
@@ -429,12 +454,6 @@ export default function CalendarScheduler({
                 color: '#ED1F80',
               },
               '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: '#ccc',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#ED1F80',
-                },
                 '&.Mui-focused fieldset': {
                   borderColor: '#ED1F80',
                 },
@@ -451,21 +470,19 @@ export default function CalendarScheduler({
 
         <DialogActions sx={{ p: 3 }}>
           <Button
-            onClick={handleCloseTimeDialog}
+            onClick={handleTimeDialogClose}
             sx={{
               color: '#ED1F80',
               borderColor: '#ED1F80',
-              '&:hover': {
-                borderColor: '#e50575',
-                backgroundColor: 'rgba(237, 31, 128, 0.04)',
-              },
+              borderRadius: '25px',
+              px: 3,
             }}
             variant="outlined"
           >
             Cancelar
           </Button>
           <Button
-            onClick={handleConfirmSchedule}
+            onClick={handleTimeConfirm}
             disabled={!selectedTime}
             sx={{
               backgroundColor: '#ED1F80',
@@ -476,9 +493,6 @@ export default function CalendarScheduler({
               '&:hover': {
                 backgroundColor: '#e50575',
               },
-              '&:disabled': {
-                backgroundColor: '#ccc',
-              },
             }}
             variant="contained"
           >
@@ -486,6 +500,76 @@ export default function CalendarScheduler({
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Modal elegante para días bloqueados */}
+      <Dialog
+        open={showBlockedDayDialog}
+        onClose={handleBlockedDayDialogClose}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: { 
+            borderRadius: 3,
+            textAlign: 'center',
+          },
+        }}
+      >
+        <DialogContent sx={{ pt: 4, pb: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+            <Warning 
+              sx={{ 
+                fontSize: 60, 
+                color: '#ff9800',
+                mb: 1,
+              }} 
+            />
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              color="#ff9800"
+              gutterBottom
+            >
+              Horarios no disponibles
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              align="center"
+              sx={{ maxWidth: 400 }}
+            >
+              La fecha seleccionada no está disponible para agendar citas. 
+              Por favor, inténtalo la próxima semana o selecciona una fecha diferente.
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
+              <Schedule sx={{ color: '#ED1F80' }} />
+              <Typography variant="body2" color="text.secondary">
+                Horarios disponibles: Lunes a Viernes
+              </Typography>
+            </Box>
+          </Box>
+        </DialogContent>
+
+        <DialogActions sx={{ p: 3, justifyContent: 'center' }}>
+          <Button
+            onClick={handleBlockedDayDialogClose}
+            sx={{
+              backgroundColor: '#ED1F80',
+              color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '25px',
+              px: 4,
+              py: 1,
+              '&:hover': {
+                backgroundColor: '#e50575',
+              },
+            }}
+            variant="contained"
+          >
+            Entendido
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
+
