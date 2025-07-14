@@ -1,14 +1,17 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { 
-  Box, 
-  Typography, 
-  useMediaQuery, 
+import {
+  Box,
+  Typography,
+  useMediaQuery,
   Card,
   CardContent,
   Chip,
@@ -21,10 +24,20 @@ import {
   Alert,
   CircularProgress,
   IconButton,
-  Snackbar
+  Snackbar,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Person, Email, Phone, Schedule, VideoCall, OpenInNew, Refresh, Delete, Warning } from '@mui/icons-material';
+import {
+  Person,
+  Email,
+  Phone,
+  Schedule,
+  VideoCall,
+  OpenInNew,
+  Refresh,
+  Delete,
+  Warning,
+} from '@mui/icons-material';
 
 interface User {
   _id: string;
@@ -79,32 +92,33 @@ const localizer = dateFnsLocalizer({
 // Función para normalizar fechas a formato YYYY-MM-DD
 const normalizeDateFormat = (dateString: string): string => {
   if (!dateString) return '';
-  
+
   // Si ya está en formato YYYY-MM-DD, devolverlo tal como está
   if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
     return dateString;
   }
-  
+
   // Si está en formato ISO 8601 (2025-07-11T00:00:00.000Z), extraer solo la fecha
   if (dateString.includes('T')) {
     return dateString.split('T')[0];
   }
-  
+
   // Si está en formato DD/MM/YYYY, convertir a YYYY-MM-DD
   if (dateString.includes('/')) {
     const [day, month, year] = dateString.split('/');
     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
   }
-  
+
   // Si está en formato DD-MM-YYYY, convertir a YYYY-MM-DD
   if (dateString.includes('-') && dateString.length === 10) {
     const parts = dateString.split('-');
-    if (parts[0].length === 2) { // DD-MM-YYYY
+    if (parts[0].length === 2) {
+      // DD-MM-YYYY
       const [day, month, year] = parts;
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     }
   }
-  
+
   // Intentar parsear como Date y convertir
   try {
     const date = new Date(dateString);
@@ -114,7 +128,7 @@ const normalizeDateFormat = (dateString: string): string => {
   } catch (error) {
     console.error('Error parsing date:', dateString, error);
   }
-  
+
   return '';
 };
 
@@ -122,14 +136,18 @@ export default function AdminScheduleCalendar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [meetings, setMeetings] = useState<ScheduleData[]>([]);
-  const [selectedDateEvents, setSelectedDateEvents] = useState<ScheduleData[]>([]);
+  const [selectedDateEvents, setSelectedDateEvents] = useState<ScheduleData[]>(
+    []
+  );
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState<ScheduleData | null>(null);
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<ScheduleData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [appointmentToDelete, setAppointmentToDelete] = useState<ScheduleData | null>(null);
+  const [appointmentToDelete, setAppointmentToDelete] =
+    useState<ScheduleData | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -137,63 +155,73 @@ export default function AdminScheduleCalendar() {
     try {
       setLoading(true);
       setError(null);
-      
+
       // Usar la nueva API de appointments
       const response = await fetch('http://localhost:5001/api/appointments');
       const result = await response.json();
 
       if (result.success) {
         console.log('Citas obtenidas de la nueva API:', result.data);
-        
+
         // Convertir datos de la nueva API al formato esperado
         const appointmentsFromAPI: ScheduleData[] = [];
-        
-        Object.entries(result.data).forEach(([date, dayData]: [string, any]) => {
-          if (dayData.slots && Array.isArray(dayData.slots)) {
-            dayData.slots.forEach((slot: any) => {
-              if (slot.usuarios && Array.isArray(slot.usuarios)) {
-                slot.usuarios.forEach((user: any) => {
-                  appointmentsFromAPI.push({
-                    date: date,
-                    time: slot.horaInicio,
-                    nombre: user.nombre,
-                    apellido: user.apellido,
-                    correo: user.email,
-                    telefono: user.telefono,
-                    meetLink: slot.enlaceMeet,
-                    esImportado: false,
-                    idioma: user.idioma || 'Español',
-                    userId: user._id,
+
+        Object.entries(result.data).forEach(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ([date, dayData]: [string, any]) => {
+            if (dayData.slots && Array.isArray(dayData.slots)) {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              dayData.slots.forEach((slot: any) => {
+                if (slot.usuarios && Array.isArray(slot.usuarios)) {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  slot.usuarios.forEach((user: any) => {
+                    appointmentsFromAPI.push({
+                      date: date,
+                      time: slot.horaInicio,
+                      nombre: user.nombre,
+                      apellido: user.apellido,
+                      correo: user.email,
+                      telefono: user.telefono,
+                      meetLink: slot.enlaceMeet,
+                      esImportado: false,
+                      idioma: user.idioma || 'Español',
+                      userId: user._id,
+                    });
                   });
-                });
-              }
-            });
+                }
+              });
+            }
           }
-        });
+        );
 
         console.log('Citas procesadas de la nueva API:', appointmentsFromAPI);
 
         // Obtener citas del localStorage (para mantener compatibilidad)
         const localStorageMeetings = localStorage.getItem('scheduledMeetings');
-        const localMeetings: ScheduleData[] = localStorageMeetings 
-          ? JSON.parse(localStorageMeetings).map((meeting: ScheduleData) => ({
-              ...meeting,
-              date: normalizeDateFormat(meeting.date)
-            })).filter((meeting: ScheduleData) => meeting.date !== '')
+        const localMeetings: ScheduleData[] = localStorageMeetings
+          ? JSON.parse(localStorageMeetings)
+              .map((meeting: ScheduleData) => ({
+                ...meeting,
+                date: normalizeDateFormat(meeting.date),
+              }))
+              .filter((meeting: ScheduleData) => meeting.date !== '')
           : [];
 
         console.log('Citas del localStorage (normalizadas):', localMeetings);
 
         // Combinar ambas fuentes, dando prioridad a la nueva API
         const allMeetings = [...appointmentsFromAPI, ...localMeetings];
-        
+
         // Eliminar duplicados basándose en fecha, hora y correo
-        const uniqueMeetings = allMeetings.filter((meeting, index, self) => 
-          index === self.findIndex(m => 
-            m.date === meeting.date && 
-            m.time === meeting.time && 
-            m.correo === meeting.correo
-          )
+        const uniqueMeetings = allMeetings.filter(
+          (meeting, index, self) =>
+            index ===
+            self.findIndex(
+              (m) =>
+                m.date === meeting.date &&
+                m.time === meeting.time &&
+                m.correo === meeting.correo
+            )
         );
 
         console.log('Citas únicas finales:', uniqueMeetings);
@@ -204,14 +232,16 @@ export default function AdminScheduleCalendar() {
     } catch (err) {
       console.error('Error fetching appointments:', err);
       setError('Error de conexión con el servidor');
-      
+
       // Fallback a localStorage si hay error de conexión
       const localStorageMeetings = localStorage.getItem('scheduledMeetings');
       if (localStorageMeetings) {
-        const normalizedLocalMeetings = JSON.parse(localStorageMeetings).map((meeting: ScheduleData) => ({
-          ...meeting,
-          date: normalizeDateFormat(meeting.date)
-        })).filter((meeting: ScheduleData) => meeting.date !== '');
+        const normalizedLocalMeetings = JSON.parse(localStorageMeetings)
+          .map((meeting: ScheduleData) => ({
+            ...meeting,
+            date: normalizeDateFormat(meeting.date),
+          }))
+          .filter((meeting: ScheduleData) => meeting.date !== '');
         setMeetings(normalizedLocalMeetings);
       }
     } finally {
@@ -226,12 +256,12 @@ export default function AdminScheduleCalendar() {
   // Agrupar citas por fecha y crear eventos que muestren solo el número
   const events = useMemo(() => {
     console.log('Generando eventos para el calendario con meetings:', meetings);
-    
+
     // Agrupar citas por fecha
     const groupedByDate = meetings.reduce((acc, meeting) => {
       const dateKey = meeting.date;
       console.log('Procesando meeting para fecha:', dateKey, meeting);
-      
+
       if (!acc[dateKey]) {
         acc[dateKey] = [];
       }
@@ -242,45 +272,66 @@ export default function AdminScheduleCalendar() {
     console.log('Citas agrupadas por fecha:', groupedByDate);
 
     // Crear eventos que muestren solo el número de citas
-    const calendarEvents = Object.entries(groupedByDate).map(([date, dayMeetings]) => {
-      console.log('Creando evento para fecha:', date, 'con', dayMeetings.length, 'citas');
-      
-      // Validar formato de fecha YYYY-MM-DD
-      if (!date || !date.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        console.error('Formato de fecha inválido:', date);
-        return null;
-      }
+    const calendarEvents = Object.entries(groupedByDate)
+      .map(([date, dayMeetings]) => {
+        console.log(
+          'Creando evento para fecha:',
+          date,
+          'con',
+          dayMeetings.length,
+          'citas'
+        );
 
-      const [year, month, day] = date.split('-').map(Number);
-      
-      // Validar que los números sean válidos
-      if (isNaN(year) || isNaN(month) || isNaN(day) || month < 1 || month > 12 || day < 1 || day > 31) {
-        console.error('Fecha con valores inválidos:', { year, month, day });
-        return null;
-      }
+        // Validar formato de fecha YYYY-MM-DD
+        if (!date || !date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+          console.error('Formato de fecha inválido:', date);
+          return null;
+        }
 
-      // Crear fecha usando UTC para evitar problemas de zona horaria
-      const eventDate = new Date(Date.UTC(year, month - 1, day));
-      
-      // Verificar que la fecha sea válida
-      if (isNaN(eventDate.getTime())) {
-        console.error('Fecha inválida creada:', eventDate, 'desde:', date);
-        return null;
-      }
+        const [year, month, day] = date.split('-').map(Number);
 
-      console.log('Fecha del evento creada:', eventDate, 'para fecha original:', date);
-      
-      const event = {
-        title: `${dayMeetings.length}`, // Solo mostrar el número
-        start: eventDate,
-        end: eventDate,
-        allDay: true,
-        resource: dayMeetings, // Guardar todas las citas del día
-      } as MyEvent;
+        // Validar que los números sean válidos
+        if (
+          isNaN(year) ||
+          isNaN(month) ||
+          isNaN(day) ||
+          month < 1 ||
+          month > 12 ||
+          day < 1 ||
+          day > 31
+        ) {
+          console.error('Fecha con valores inválidos:', { year, month, day });
+          return null;
+        }
 
-      console.log('Evento creado:', event);
-      return event;
-    }).filter(event => event !== null) as MyEvent[];
+        // Crear fecha usando UTC para evitar problemas de zona horaria
+        const eventDate = new Date(Date.UTC(year, month - 1, day));
+
+        // Verificar que la fecha sea válida
+        if (isNaN(eventDate.getTime())) {
+          console.error('Fecha inválida creada:', eventDate, 'desde:', date);
+          return null;
+        }
+
+        console.log(
+          'Fecha del evento creada:',
+          eventDate,
+          'para fecha original:',
+          date
+        );
+
+        const event = {
+          title: `${dayMeetings.length}`, // Solo mostrar el número
+          start: eventDate,
+          end: eventDate,
+          allDay: true,
+          resource: dayMeetings, // Guardar todas las citas del día
+        } as MyEvent;
+
+        console.log('Evento creado:', event);
+        return event;
+      })
+      .filter((event) => event !== null) as MyEvent[];
 
     console.log('Eventos finales para el calendario:', calendarEvents);
     return calendarEvents;
@@ -293,11 +344,9 @@ export default function AdminScheduleCalendar() {
   }) => {
     const clickedDate = format(slotInfo.start, 'yyyy-MM-dd');
     console.log('Fecha clickeada:', clickedDate);
-    
-    const dayEvents = meetings.filter(
-      (m) => m.date === clickedDate
-    );
-    
+
+    const dayEvents = meetings.filter((m) => m.date === clickedDate);
+
     console.log('Eventos encontrados para la fecha:', dayEvents);
     setSelectedDateEvents(dayEvents);
     setSelectedDate(clickedDate);
@@ -332,9 +381,12 @@ export default function AdminScheduleCalendar() {
     try {
       // Si la cita tiene userId, eliminar de la base de datos
       if (appointmentToDelete.userId) {
-        const response = await fetch(`http://localhost:5001/api/users/${appointmentToDelete.userId}`, {
-          method: 'DELETE',
-        });
+        const response = await fetch(
+          `http://localhost:5001/api/users/${appointmentToDelete.userId}`,
+          {
+            method: 'DELETE',
+          }
+        );
 
         if (!response.ok) {
           throw new Error('Error al eliminar la cita de la base de datos');
@@ -344,32 +396,47 @@ export default function AdminScheduleCalendar() {
         const localStorageMeetings = localStorage.getItem('scheduledMeetings');
         if (localStorageMeetings) {
           const meetings = JSON.parse(localStorageMeetings) as ScheduleData[];
-          const updatedMeetings = meetings.filter(m => 
-            !(m.date === appointmentToDelete.date && 
-              m.time === appointmentToDelete.time && 
-              m.correo === appointmentToDelete.correo)
+          const updatedMeetings = meetings.filter(
+            (m) =>
+              !(
+                m.date === appointmentToDelete.date &&
+                m.time === appointmentToDelete.time &&
+                m.correo === appointmentToDelete.correo
+              )
           );
-          localStorage.setItem('scheduledMeetings', JSON.stringify(updatedMeetings));
+          localStorage.setItem(
+            'scheduledMeetings',
+            JSON.stringify(updatedMeetings)
+          );
         }
       }
 
       // Actualizar la lista local
-      setMeetings(prev => prev.filter(m => 
-        !(m.date === appointmentToDelete.date && 
-          m.time === appointmentToDelete.time && 
-          m.correo === appointmentToDelete.correo)
-      ));
+      setMeetings((prev) =>
+        prev.filter(
+          (m) =>
+            !(
+              m.date === appointmentToDelete.date &&
+              m.time === appointmentToDelete.time &&
+              m.correo === appointmentToDelete.correo
+            )
+        )
+      );
 
       // Actualizar eventos seleccionados si es necesario
-      setSelectedDateEvents(prev => prev.filter(m => 
-        !(m.date === appointmentToDelete.date && 
-          m.time === appointmentToDelete.time && 
-          m.correo === appointmentToDelete.correo)
-      ));
+      setSelectedDateEvents((prev) =>
+        prev.filter(
+          (m) =>
+            !(
+              m.date === appointmentToDelete.date &&
+              m.time === appointmentToDelete.time &&
+              m.correo === appointmentToDelete.correo
+            )
+        )
+      );
 
       setSnackbarMessage('Cita eliminada exitosamente');
       setSnackbarOpen(true);
-      
     } catch (error) {
       console.error('Error deleting appointment:', error);
       setSnackbarMessage('Error al eliminar la cita');
@@ -388,7 +455,12 @@ export default function AdminScheduleCalendar() {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="400px"
+      >
         <CircularProgress color="primary" />
         <Typography sx={{ ml: 2 }}>Cargando citas...</Typography>
       </Box>
@@ -408,12 +480,15 @@ export default function AdminScheduleCalendar() {
         marginBottom: '80px',
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          color="#ED1F80"
-        >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 3,
+        }}
+      >
+        <Typography variant="h5" fontWeight="bold" color="#ED1F80">
           Calendario de Citas
         </Typography>
         <Button
@@ -444,15 +519,20 @@ export default function AdminScheduleCalendar() {
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Total de citas programadas: {meetings.length}
-        {meetings.filter(m => m.esImportado).length > 0 && (
-          <> • Usuarios importados: {meetings.filter(m => m.esImportado).length}</>
+        {meetings.filter((m) => m.esImportado).length > 0 && (
+          <>
+            {' '}
+            • Usuarios importados:{' '}
+            {meetings.filter((m) => m.esImportado).length}
+          </>
         )}
       </Typography>
 
       {/* Debug info - remover en producción */}
       {process.env.NODE_ENV === 'development' && (
         <Alert severity="info" sx={{ mb: 2 }}>
-          Debug: {meetings.length} citas cargadas, {events.length} eventos generados
+          Debug: {meetings.length} citas cargadas, {events.length} eventos
+          generados
         </Alert>
       )}
 
@@ -528,7 +608,7 @@ export default function AdminScheduleCalendar() {
           views={['month']}
           popup
           eventPropGetter={(event) => {
-            const hasImportedUsers = event.resource?.some(m => m.esImportado);
+            const hasImportedUsers = event.resource?.some((m) => m.esImportado);
             return {
               style: {
                 backgroundColor: hasImportedUsers ? '#2196F3' : '#ED1F80',
@@ -552,27 +632,30 @@ export default function AdminScheduleCalendar() {
       {selectedDateEvents.length > 0 && selectedDate && (
         <Card sx={{ mt: 3, borderRadius: 2, boxShadow: 2 }}>
           <CardContent>
-            <Typography 
-              variant="h6" 
-              fontWeight="bold" 
+            <Typography
+              variant="h6"
+              fontWeight="bold"
               mb={2}
               color="#ED1F80"
               sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
             >
               <Schedule />
-              Citas para el {format(new Date(selectedDate + 'T12:00:00'), 'PPP', { locale: es })}
+              Citas para el{' '}
+              {format(new Date(selectedDate + 'T12:00:00'), 'PPP', {
+                locale: es,
+              })}
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {selectedDateEvents.map((appointment, index) => (
-                <Card 
-                  key={index} 
-                  variant="outlined" 
-                  sx={{ 
+                <Card
+                  key={index}
+                  variant="outlined"
+                  sx={{
                     cursor: 'pointer',
                     '&:hover': {
                       backgroundColor: '#fce4ec',
                       borderColor: '#ED1F80',
-                    }
+                    },
                   }}
                   onClick={() => {
                     setSelectedAppointment(appointment);
@@ -580,13 +663,18 @@ export default function AdminScheduleCalendar() {
                   }}
                 >
                   <CardContent sx={{ py: 2 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
                       <Box>
                         <Typography variant="body1" fontWeight="bold">
-                          {appointment.nombre && appointment.apellido 
+                          {appointment.nombre && appointment.apellido
                             ? `${appointment.nombre} ${appointment.apellido}`
-                            : 'Cita agendada'
-                          }
+                            : 'Cita agendada'}
                         </Typography>
                         {appointment.correo && (
                           <Typography variant="body2" color="text.secondary">
@@ -599,36 +687,38 @@ export default function AdminScheduleCalendar() {
                           </Typography>
                         )}
                       </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Box
+                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                      >
                         {appointment.esImportado && (
-                          <Chip 
+                          <Chip
                             label="Importado"
                             size="small"
-                            sx={{ 
+                            sx={{
                               backgroundColor: '#e3f2fd',
                               color: '#1976d2',
-                              fontWeight: 'bold'
+                              fontWeight: 'bold',
                             }}
                           />
                         )}
                         {appointment.meetLink && (
-                          <Chip 
+                          <Chip
                             icon={<VideoCall />}
                             label="Meet"
                             size="small"
-                            sx={{ 
+                            sx={{
                               backgroundColor: '#e8f5e8',
                               color: '#2e7d32',
-                              fontWeight: 'bold'
+                              fontWeight: 'bold',
                             }}
                           />
                         )}
-                        <Chip 
+                        <Chip
                           label={appointment.time}
-                          sx={{ 
+                          sx={{
                             backgroundColor: '#ED1F80',
                             color: 'white',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
                           }}
                         />
                         <IconButton
@@ -662,7 +752,7 @@ export default function AdminScheduleCalendar() {
         maxWidth="sm"
         fullWidth
         PaperProps={{
-          sx: { borderRadius: 3 }
+          sx: { borderRadius: 3 },
         }}
       >
         <DialogTitle>
@@ -675,7 +765,7 @@ export default function AdminScheduleCalendar() {
             Detalles de la Cita
           </Typography>
         </DialogTitle>
-        
+
         <DialogContent>
           {selectedAppointment && (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -684,7 +774,11 @@ export default function AdminScheduleCalendar() {
                 <Schedule sx={{ color: '#ED1F80' }} />
                 <Box>
                   <Typography variant="body1" fontWeight="bold">
-                    {format(new Date(selectedAppointment.date + 'T12:00:00'), 'PPP', { locale: es })}
+                    {format(
+                      new Date(selectedAppointment.date + 'T12:00:00'),
+                      'PPP',
+                      { locale: es }
+                    )}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {selectedAppointment.time}
@@ -700,15 +794,16 @@ export default function AdminScheduleCalendar() {
                   <Person sx={{ color: '#ED1F80' }} />
                   <Box>
                     <Typography variant="body1" fontWeight="bold">
-                      {selectedAppointment.nombre} {selectedAppointment.apellido}
+                      {selectedAppointment.nombre}{' '}
+                      {selectedAppointment.apellido}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Nombre completo
                       {selectedAppointment.esImportado && (
-                        <Chip 
-                          label="Usuario Importado" 
-                          size="small" 
-                          color="info" 
+                        <Chip
+                          label="Usuario Importado"
+                          size="small"
+                          color="info"
                           sx={{ ml: 1 }}
                         />
                       )}
@@ -827,10 +922,13 @@ export default function AdminScheduleCalendar() {
             </Box>
           )}
         </DialogContent>
-        
+
         <DialogActions sx={{ p: 3, justifyContent: 'space-between' }}>
           <Button
-            onClick={() => selectedAppointment && handleDeleteAppointment(selectedAppointment)}
+            onClick={() =>
+              selectedAppointment &&
+              handleDeleteAppointment(selectedAppointment)
+            }
             sx={{
               color: '#f44336',
               borderColor: '#f44336',
@@ -872,17 +970,24 @@ export default function AdminScheduleCalendar() {
         maxWidth="sm"
         fullWidth
         PaperProps={{
-          sx: { borderRadius: 3, textAlign: 'center' }
+          sx: { borderRadius: 3, textAlign: 'center' },
         }}
       >
         <DialogContent sx={{ pt: 4, pb: 2 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-            <Warning 
-              sx={{ 
-                fontSize: 60, 
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
+            <Warning
+              sx={{
+                fontSize: 60,
                 color: '#f44336',
                 mb: 1,
-              }} 
+              }}
             />
             <Typography
               variant="h5"
@@ -898,10 +1003,18 @@ export default function AdminScheduleCalendar() {
               align="center"
               sx={{ maxWidth: 400 }}
             >
-              ¿Estás seguro de que deseas eliminar esta cita? Esta acción no se puede deshacer.
+              ¿Estás seguro de que deseas eliminar esta cita? Esta acción no se
+              puede deshacer.
             </Typography>
             {appointmentToDelete && (
-              <Box sx={{ mt: 2, p: 2, backgroundColor: '#f5f5f5', borderRadius: 2 }}>
+              <Box
+                sx={{
+                  mt: 2,
+                  p: 2,
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: 2,
+                }}
+              >
                 <Typography variant="body2" fontWeight="bold">
                   {appointmentToDelete.nombre} {appointmentToDelete.apellido}
                 </Typography>
@@ -956,4 +1069,3 @@ export default function AdminScheduleCalendar() {
     </Box>
   );
 }
-

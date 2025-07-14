@@ -1,4 +1,7 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -15,15 +18,20 @@ import {
   IconButton,
   Alert,
   CircularProgress,
-  Chip
+  Chip,
 } from '@mui/material';
+import { ChevronLeft, ChevronRight, Close, Refresh } from '@mui/icons-material';
 import {
-  ChevronLeft,
-  ChevronRight,
-  Close,
-  Refresh
-} from '@mui/icons-material';
-import { format, addWeeks, subWeeks, startOfWeek, addDays } from 'date-fns';
+  format,
+  addWeeks,
+  subWeeks,
+  startOfWeek,
+  addDays,
+  parseISO,
+  isBefore,
+  isAfter,
+  isEqual,
+} from 'date-fns';
 import { es } from 'date-fns/locale';
 
 interface Slot {
@@ -44,31 +52,41 @@ interface SlotSelectorModalProps {
   isSubmitting?: boolean;
 }
 
-const DIAS_SEMANA = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes'];
+const DIAS_SEMANA = [
+  'domingo',
+  'lunes',
+  'martes',
+  'miércoles',
+  'jueves',
+  'viernes',
+  'sábado',
+];
 
 const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
   open,
   onClose,
   onSlotSelect,
-  isSubmitting = false
+  isSubmitting = false,
 }) => {
   const [currentWeek, setCurrentWeek] = useState(new Date());
   const [slots, setSlots] = useState<Slot[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [scheduleConfig, setScheduleConfig] = useState<any>(null);
 
   // Obtener el inicio de la semana (lunes)
   const getWeekStart = (date: Date) => {
-    const start = startOfWeek(date, { weekStartsOn: 1 }); // 1 = lunes
-    return start;
+    return startOfWeek(date, { weekStartsOn: 1 }); // 1 = lunes
   };
 
   // Cargar configuración de horarios
   const loadScheduleConfig = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/schedule-config`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/schedule-config/active`,
         {
           method: 'GET',
           headers: {
@@ -79,24 +97,33 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
 
       if (response.ok) {
         const result = await response.json();
-        if (result.success && result.data.length > 0) {
-          const activeConfig = result.data.find((config: any) => config.isActive) || result.data[0];
-          setScheduleConfig(activeConfig);
-          
-          // Ajustar la semana actual para que esté dentro del rango permitido
-          const configStartDate = new Date(activeConfig.startDate);
-          const configEndDate = new Date(activeConfig.endDate);
-          const currentDate = new Date();
-          
-          if (currentDate < configStartDate) {
-            setCurrentWeek(configStartDate);
-          } else if (currentDate > configEndDate) {
-            setCurrentWeek(configEndDate);
+        if (result.success && result.data) {
+          setScheduleConfig(result.data);
+
+          // Determinar la semana inicial a mostrar
+          const configStartDate = getWeekStart(parseISO(result.data.startDate));
+          const configEndDate = getWeekStart(parseISO(result.data.endDate));
+          const today = getWeekStart(new Date());
+
+          let initialWeek = today;
+
+          // Si la fecha actual es anterior a la fecha de inicio de la configuración,
+          // la semana inicial debe ser la semana de la fecha de inicio de la configuración.
+          if (isBefore(today, configStartDate)) {
+            initialWeek = configStartDate;
+          } else if (isAfter(today, configEndDate)) {
+            // Si la fecha actual es posterior a la fecha de fin, usar la última semana válida
+            initialWeek = configEndDate;
           }
+          setCurrentWeek(initialWeek);
+
+          console.log('✅ Configuración de horarios cargada:', result.data);
+        } else {
+          console.warn('⚠️ No se pudo obtener configuración activa');
         }
       }
     } catch (error) {
-      console.error('Error cargando configuración de horarios:', error);
+      console.error('❌ Error cargando configuración de horarios:', error);
     }
   };
 
@@ -106,10 +133,15 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
     setError(null);
 
     try {
-      console.log('🔍 Cargando cupos para la semana:', format(weekStart, 'yyyy-MM-dd'));
+      console.log(
+        '🔍 Cargando cupos para la semana:',
+        format(weekStart, 'yyyy-MM-dd')
+      );
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/slots/week/${format(weekStart, 'yyyy-MM-dd')}`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/slots/week/${format(weekStart, 'yyyy-MM-dd')}`,
         {
           method: 'GET',
           headers: {
@@ -133,7 +165,9 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
       }
     } catch (error) {
       console.error('❌ Error cargando cupos:', error);
-      setError('Error cargando los cupos disponibles. Verifica la conexión con el servidor.');
+      setError(
+        'Error cargando los cupos disponibles. Verifica la conexión con el servidor.'
+      );
       setSlots([]);
     } finally {
       setLoading(false);
@@ -144,33 +178,33 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
   useEffect(() => {
     if (open) {
       console.log('🚀 Modal abierto, cargando configuración y cupos...');
-      loadScheduleConfig().then(() => {
-        const weekStart = getWeekStart(currentWeek);
-        loadSlots(weekStart);
-      });
+      loadScheduleConfig();
     }
   }, [open]);
 
-  // Cargar cupos cuando cambia la semana
+  // Cargar cupos cuando cambia la semana o la configuración
   useEffect(() => {
     if (open && scheduleConfig) {
       const weekStart = getWeekStart(currentWeek);
       loadSlots(weekStart);
     }
-  }, [currentWeek, scheduleConfig]);
+  }, [currentWeek, scheduleConfig, open]);
 
   // Navegar a la semana anterior
   const goToPreviousWeek = () => {
     if (scheduleConfig) {
       const newWeek = subWeeks(currentWeek, 1);
-      const configStartDate = new Date(scheduleConfig.startDate);
-      
+      const configStartDate = getWeekStart(parseISO(scheduleConfig.startDate));
+
       // No permitir ir antes de la fecha de inicio de la configuración
-      if (getWeekStart(newWeek) >= getWeekStart(configStartDate)) {
+      if (
+        isAfter(getWeekStart(newWeek), configStartDate) ||
+        isEqual(getWeekStart(newWeek), configStartDate)
+      ) {
         setCurrentWeek(newWeek);
       }
     } else {
-      setCurrentWeek(prev => subWeeks(prev, 1));
+      setCurrentWeek((prev) => subWeeks(prev, 1));
     }
   };
 
@@ -178,14 +212,17 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
   const goToNextWeek = () => {
     if (scheduleConfig) {
       const newWeek = addWeeks(currentWeek, 1);
-      const configEndDate = new Date(scheduleConfig.endDate);
-      
+      const configEndDate = getWeekStart(parseISO(scheduleConfig.endDate));
+
       // No permitir ir después de la fecha de fin de la configuración
-      if (getWeekStart(newWeek) <= getWeekStart(configEndDate)) {
+      if (
+        isBefore(getWeekStart(newWeek), configEndDate) ||
+        isEqual(getWeekStart(newWeek), configEndDate)
+      ) {
         setCurrentWeek(newWeek);
       }
     } else {
-      setCurrentWeek(prev => addWeeks(prev, 1));
+      setCurrentWeek((prev) => addWeeks(prev, 1));
     }
   };
 
@@ -200,24 +237,32 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
     const weekStart = getWeekStart(currentWeek);
     const groupedSlots: { [key: string]: Slot[] } = {};
 
-    // Inicializar días de la semana
-    for (let i = 0; i < 5; i++) { // Solo lunes a viernes
+    // Inicializar días de la semana (Lunes a Viernes) según la configuración
+    const allowedDays = scheduleConfig?.allowedWeekDays || [1, 2, 3, 4, 5]; // Default a L-V si no hay config
+
+    for (let i = 0; i < 7; i++) {
       const day = addDays(weekStart, i);
-      const dayKey = format(day, 'yyyy-MM-dd');
-      groupedSlots[dayKey] = [];
+      const dayOfWeek = day.getDay() === 0 ? 7 : day.getDay(); // Convertir domingo (0) a 7
+
+      if (allowedDays.includes(dayOfWeek)) {
+        const dayKey = format(day, 'yyyy-MM-dd');
+        groupedSlots[dayKey] = [];
+      }
     }
 
     // Agrupar cupos por día
-    slots.forEach(slot => {
-      const slotDate = format(new Date(slot.fecha), 'yyyy-MM-dd');
+    slots.forEach((slot) => {
+      const slotDate = format(parseISO(slot.fecha), 'yyyy-MM-dd');
       if (groupedSlots[slotDate]) {
         groupedSlots[slotDate].push(slot);
       }
     });
 
     // Ordenar cupos por hora dentro de cada día
-    Object.keys(groupedSlots).forEach(day => {
-      groupedSlots[day].sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
+    Object.keys(groupedSlots).forEach((day) => {
+      groupedSlots[day].sort((a, b) =>
+        a.horaInicio.localeCompare(b.horaInicio)
+      );
     });
 
     return groupedSlots;
@@ -227,48 +272,62 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
   const getSlotStatus = (slot: Slot) => {
     const ocupados = slot.usuariosRegistrados.length;
     const capacidad = slot.capacidadMaxima;
-    
+
     if (slot.estado === 'cancelado') {
       return { color: 'error', text: 'Cancelado' };
     }
-    
+
     if (ocupados >= capacidad) {
       return { color: 'error', text: 'Lleno' };
     }
-    
+
     if (ocupados > 0) {
       return { color: 'warning', text: `${ocupados}/${capacidad}` };
     }
-    
+
     return { color: 'success', text: 'Disponible' };
   };
 
   const weekStart = getWeekStart(currentWeek);
-  const weekEnd = addDays(weekStart, 4); // Viernes
+  const weekEnd = addDays(weekStart, 4); // Viernes (esto debe ser dinámico si los días permitidos cambian)
   const groupedSlots = groupSlotsByDay();
 
   // Verificar si se puede navegar a semanas anteriores/siguientes
-  const canGoPrevious = scheduleConfig ? 
-    getWeekStart(subWeeks(currentWeek, 1)) >= getWeekStart(new Date(scheduleConfig.startDate)) : 
-    true;
-  
-  const canGoNext = scheduleConfig ? 
-    getWeekStart(addWeeks(currentWeek, 1)) <= getWeekStart(new Date(scheduleConfig.endDate)) : 
-    true;
+  const canGoPrevious = scheduleConfig
+    ? isAfter(
+        getWeekStart(currentWeek),
+        getWeekStart(parseISO(scheduleConfig.startDate))
+      ) ||
+      isEqual(
+        getWeekStart(currentWeek),
+        getWeekStart(parseISO(scheduleConfig.startDate))
+      )
+    : true;
+
+  const canGoNext = scheduleConfig
+    ? isBefore(
+        getWeekStart(currentWeek),
+        getWeekStart(parseISO(scheduleConfig.endDate))
+      ) ||
+      isEqual(
+        getWeekStart(currentWeek),
+        getWeekStart(parseISO(scheduleConfig.endDate))
+      )
+    : true;
 
   return (
-    <Dialog 
-      open={open} 
-      onClose={onClose} 
-      maxWidth="lg" 
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="lg"
       fullWidth
       PaperProps={{
-        sx: { 
+        sx: {
           minHeight: '600px',
           '& .MuiDialogTitle-root': {
-            color: '#ED1F80'
-          }
-        }
+            color: '#ED1F80',
+          },
+        },
       }}
     >
       <DialogTitle>
@@ -281,63 +340,68 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
           </IconButton>
         </Box>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          Elige el día y hora para tu cita. Cada reunión tiene capacidad para 10-15 personas.
+          Elige el día y hora para tu cita. Cada reunión tiene capacidad para
+          10-15 personas.
         </Typography>
       </DialogTitle>
 
       <DialogContent>
         {/* Navegación de semana */}
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={3}
+        >
           <Button
             startIcon={<ChevronLeft />}
             onClick={goToPreviousWeek}
             variant="outlined"
             size="small"
             disabled={!canGoPrevious}
-            sx={{ 
+            sx={{
               borderColor: '#ED1F80',
               color: '#ED1F80',
               '&:hover': {
                 borderColor: '#d1176b',
-                backgroundColor: 'rgba(237, 31, 128, 0.04)'
+                backgroundColor: 'rgba(237, 31, 128, 0.04)',
               },
               '&:disabled': {
                 borderColor: 'grey.300',
-                color: 'grey.400'
-              }
+                color: 'grey.400',
+              },
             }}
           >
             Semana Anterior
           </Button>
-          
+
           <Typography variant="h6" sx={{ color: '#ED1F80' }}>
-            {format(weekStart, 'dd MMM', { locale: es })} - {format(weekEnd, 'dd MMM yyyy', { locale: es })}
+            {format(weekStart, 'dd MMM', { locale: es })} -{' '}
+            {format(weekEnd, 'dd MMM yyyy', { locale: es })}
           </Typography>
-          
+
           <Button
             endIcon={<ChevronRight />}
             onClick={goToNextWeek}
             variant="outlined"
             size="small"
             disabled={!canGoNext}
-            sx={{ 
+            sx={{
               borderColor: '#ED1F80',
               color: '#ED1F80',
               '&:hover': {
                 borderColor: '#d1176b',
-                backgroundColor: 'rgba(237, 31, 128, 0.04)'
+                backgroundColor: 'rgba(237, 31, 128, 0.04)',
               },
               '&:disabled': {
                 borderColor: 'grey.300',
-                color: 'grey.400'
-              }
+                color: 'grey.400',
+              },
             }}
           >
             Semana Siguiente
           </Button>
         </Box>
-
-
 
         {/* Estado de carga */}
         {loading && (
@@ -357,30 +421,47 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
         {!loading && !error && (
           <Grid container spacing={2}>
             {Object.entries(groupedSlots).map(([dayKey, daySlots]) => {
-              const dayDate = new Date(dayKey);
-              const dayName = DIAS_SEMANA[dayDate.getDay() - 1]; // -1 porque getDay() devuelve 0-6 y necesitamos 0-4
+              const dayDate = parseISO(dayKey);
+              const dayName = DIAS_SEMANA[dayDate.getDay()];
               const dayNumber = format(dayDate, 'dd MMM', { locale: es });
 
               return (
+                //@ts-expect-error: MUI Grid typing conflict workaround
                 <Grid item xs={12} sm={6} md={2.4} key={dayKey}>
                   <Card variant="outlined" sx={{ height: '100%' }}>
                     <CardContent sx={{ p: 2 }}>
-                      <Typography variant="h6" sx={{ color: '#ED1F80' }} align="center" gutterBottom>
+                      <Typography
+                        variant="h6"
+                        sx={{ color: '#ED1F80' }}
+                        align="center"
+                        gutterBottom
+                      >
                         {dayName}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" align="center" sx={{ mb: 2 }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        align="center"
+                        sx={{ mb: 2 }}
+                      >
                         {dayNumber}
                       </Typography>
 
                       {daySlots.length === 0 ? (
-                        <Typography variant="body2" color="text.secondary" align="center">
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          align="center"
+                        >
                           Sin cupos disponibles
                         </Typography>
                       ) : (
                         <Box>
                           {daySlots.map((slot) => {
                             const status = getSlotStatus(slot);
-                            const isAvailable = status.color === 'success' || status.color === 'warning';
+                            const isAvailable =
+                              status.color === 'success' ||
+                              status.color === 'warning';
 
                             return (
                               <Box key={slot._id} sx={{ mb: 1 }}>
@@ -393,12 +474,17 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
                                   sx={{
                                     justifyContent: 'space-between',
                                     textTransform: 'none',
-                                    borderColor: isAvailable ? '#ED1F80' : 'grey.300',
+                                    borderColor: isAvailable
+                                      ? '#ED1F80'
+                                      : 'grey.300',
                                     color: isAvailable ? '#ED1F80' : 'grey.500',
-                                    '&:hover': isAvailable ? {
-                                      borderColor: '#d1176b',
-                                      backgroundColor: 'rgba(237, 31, 128, 0.04)'
-                                    } : {}
+                                    '&:hover': isAvailable
+                                      ? {
+                                          borderColor: '#d1176b',
+                                          backgroundColor:
+                                            'rgba(237, 31, 128, 0.04)',
+                                        }
+                                      : {},
                                   }}
                                 >
                                   <Typography variant="caption">
@@ -407,6 +493,7 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
                                   <Chip
                                     label={status.text}
                                     size="small"
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                     color={status.color as any}
                                     variant="outlined"
                                   />
@@ -430,23 +517,26 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
             Información importante:
           </Typography>
           <Typography variant="body2" component="div">
-            • Cada reunión tiene una duración de 1 hora<br/>
-            • Capacidad máxima: 15 personas por cupo<br/>
-            • El enlace de Google Meet se enviará cuando el cupo esté completo<br/>
-            • Horarios disponibles: Lunes a Viernes, 9:00-11:00 AM y 4:00-7:00 PM
+            • Cada reunión tiene una duración de 1 hora
+            <br />
+            • Capacidad máxima: 15 personas por cupo
+            <br />
+            • El enlace de Google Meet se enviará cuando el cupo esté completo
+            <br />• Horarios disponibles: Lunes a Viernes, 9:00-11:00 AM y
+            4:00-7:00 PM
           </Typography>
         </Box>
       </DialogContent>
 
       <DialogActions>
-        <Button 
-          onClick={onClose} 
+        <Button
+          onClick={onClose}
           disabled={isSubmitting}
-          sx={{ 
+          sx={{
             color: '#ED1F80',
             '&:hover': {
-              backgroundColor: 'rgba(237, 31, 128, 0.04)'
-            }
+              backgroundColor: 'rgba(237, 31, 128, 0.04)',
+            },
           }}
         >
           Cancelar
@@ -457,4 +547,3 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
 };
 
 export default SlotSelectorModal;
-

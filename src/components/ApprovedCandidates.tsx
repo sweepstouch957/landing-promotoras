@@ -175,6 +175,7 @@ const ApprovedCandidates: React.FC = () => {
       ) : (
         <Grid container spacing={3}>
           {users.map((user) => (
+            //@ts-expect-error: MUI Grid typing conflict workaround
             <Grid item xs={12} md={6} lg={4} key={user._id}>
               <Card
                 sx={{

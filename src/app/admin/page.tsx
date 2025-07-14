@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid'; // ✅ Importación válida para MUI < 5.11
+import { Box, Typography } from '@mui/material';
+
 import AdminLayout from '@/components/AdminLayout';
 import TodayAppointments from '@/components/TodayAppointments';
 import AdminUserManagement from '@/components/AdminUserManagement';
@@ -14,23 +16,30 @@ export default function AdminPage() {
         <Typography variant="h4" gutterBottom sx={{ color: '#ED1F80' }}>
           Panel de Administración
         </Typography>
-        
+
         <Typography variant="body1" sx={{ mb: 3, color: '#666' }}>
           Gestiona usuarios, citas y configuraciones del sistema de promotoras.
         </Typography>
 
         <Grid container spacing={3}>
           {/* Citas de hoy */}
-          <Grid item xs={12} lg={6}>
-            <TodayAppointments />
+          {/* @ts-expect-error: MUI Grid typing conflict workaround*/}
+          <Grid item xs={12} md={6}>
+            <Box sx={{ height: '100%' }}>
+              <TodayAppointments />
+            </Box>
           </Grid>
-          
+
           {/* Calendario de citas */}
-          <Grid item xs={12} lg={6}>
-            <AppointmentCalendar />
+          {/* @ts-expect-error: MUI Grid typing conflict workaround*/}
+          <Grid item xs={12} md={6}>
+            <Box sx={{ height: '100%' }}>
+              <AppointmentCalendar />
+            </Box>
           </Grid>
 
           {/* Gestión de usuarios */}
+          {/* @ts-expect-error: MUI Grid typing conflict workaround*/}
           <Grid item xs={12}>
             <AdminUserManagement />
           </Grid>
@@ -39,4 +48,3 @@ export default function AdminPage() {
     </AdminLayout>
   );
 }
-

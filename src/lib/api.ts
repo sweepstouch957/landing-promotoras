@@ -3,6 +3,7 @@ const API_BASE_URL =
 
 export const api = {
   // Usuarios
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createUser: async (userData: any) => {
     const response = await fetch(`${API_BASE_URL}/users`, {
       method: 'POST',
@@ -59,7 +60,7 @@ export const api = {
 
     return data;
   },
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   importUsers: async (users: any[]) => {
     const response = await fetch(`${API_BASE_URL}/users/import`, {
       method: 'POST',

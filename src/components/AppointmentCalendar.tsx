@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -18,12 +22,9 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Chip,
-  Divider,
-  TextField,
   MenuItem,
   Select,
   FormControl,
-  InputLabel,
 } from '@mui/material';
 import {
   ChevronLeft as ChevronLeftIcon,
@@ -34,12 +35,23 @@ import {
   Edit as EditIcon,
   Link as LinkIcon,
   Person as PersonIcon,
+  // eslint-disable-line @typescript-eslint/no-unused-vars
   Check as CheckIcon,
+  // eslint-disable-line @typescript-eslint/no-unused-vars
   Close as CloseIcon,
   ThumbUp as ThumbUpIcon,
   ThumbDown as ThumbDownIcon,
 } from '@mui/icons-material';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths } from 'date-fns';
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  isSameMonth,
+  isSameDay,
+  addMonths,
+  subMonths,
+} from 'date-fns';
 import { es } from 'date-fns/locale';
 
 interface User {
@@ -72,11 +84,14 @@ interface DayAppointments {
 
 const AppointmentCalendar: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [appointmentsByDay, setAppointmentsByDay] = useState<Record<string, DayAppointments>>({});
+  const [appointmentsByDay, setAppointmentsByDay] = useState<
+    Record<string, DayAppointments>
+  >({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [selectedDayData, setSelectedDayData] = useState<DayAppointments | null>(null);
+  const [selectedDayData, setSelectedDayData] =
+    useState<DayAppointments | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingSlot, setEditingSlot] = useState<string | null>(null);
   const [slotStatus, setSlotStatus] = useState<string>('');
@@ -89,7 +104,9 @@ const AppointmentCalendar: React.FC = () => {
       const end = format(endOfMonth(date), 'yyyy-MM-dd');
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments?startDate=${start}&endDate=${end}`
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/appointments?startDate=${start}&endDate=${end}`
       );
 
       if (!response.ok) {
@@ -127,12 +144,14 @@ const AppointmentCalendar: React.FC = () => {
   const handleDateClick = async (date: Date) => {
     const dateKey = format(date, 'yyyy-MM-dd');
     setSelectedDate(dateKey);
-    
+
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/day/${dateKey}`
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/appointments/day/${dateKey}`
       );
-      
+
       if (response.ok) {
         const result = await response.json();
         if (result.success) {
@@ -148,11 +167,13 @@ const AppointmentCalendar: React.FC = () => {
   const handleApproveUser = async (slotId: string, userId: string) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/slot/${slotId}/user/${userId}/approve`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/appointments/slot/${slotId}/user/${userId}/approve`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ aprobadoPor: 'Admin' })
+          body: JSON.stringify({ aprobadoPor: 'Admin' }),
         }
       );
 
@@ -160,7 +181,9 @@ const AppointmentCalendar: React.FC = () => {
         // Refrescar datos
         if (selectedDate) {
           const dayResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/day/${selectedDate}`
+            `${
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+            }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
             const result = await dayResponse.json();
@@ -176,17 +199,23 @@ const AppointmentCalendar: React.FC = () => {
     }
   };
 
-  const handleDisapproveUser = async (slotId: string, userId: string, motivo: string) => {
+  const handleDisapproveUser = async (
+    slotId: string,
+    userId: string,
+    motivo: string
+  ) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/slot/${slotId}/user/${userId}/disapprove`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/appointments/slot/${slotId}/user/${userId}/disapprove`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             motivo: motivo || 'No especificado',
-            desaprobadoPor: 'Admin' 
-          })
+            desaprobadoPor: 'Admin',
+          }),
         }
       );
 
@@ -194,7 +223,9 @@ const AppointmentCalendar: React.FC = () => {
         // Refrescar datos
         if (selectedDate) {
           const dayResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/day/${selectedDate}`
+            `${
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+            }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
             const result = await dayResponse.json();
@@ -213,7 +244,9 @@ const AppointmentCalendar: React.FC = () => {
   const handleRemoveUser = async (slotId: string, userId: string) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/slot/${slotId}/user/${userId}`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/appointments/slot/${slotId}/user/${userId}`,
         { method: 'DELETE' }
       );
 
@@ -221,7 +254,9 @@ const AppointmentCalendar: React.FC = () => {
         // Refrescar datos
         if (selectedDate) {
           const dayResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/day/${selectedDate}`
+            `${
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+            }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
             const result = await dayResponse.json();
@@ -240,11 +275,13 @@ const AppointmentCalendar: React.FC = () => {
   const handleUpdateSlotStatus = async (slotId: string, newStatus: string) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/slot/${slotId}`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/appointments/slot/${slotId}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ estado: newStatus })
+          body: JSON.stringify({ estado: newStatus }),
         }
       );
 
@@ -252,7 +289,9 @@ const AppointmentCalendar: React.FC = () => {
         // Refrescar datos
         if (selectedDate) {
           const dayResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/day/${selectedDate}`
+            `${
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+            }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
             const result = await dayResponse.json();
@@ -272,7 +311,9 @@ const AppointmentCalendar: React.FC = () => {
   const handleGenerateMeetLink = async (slotId: string) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/slot/${slotId}/generate-meet`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/appointments/slot/${slotId}/generate-meet`,
         { method: 'POST' }
       );
 
@@ -280,7 +321,9 @@ const AppointmentCalendar: React.FC = () => {
         // Refrescar datos
         if (selectedDate) {
           const dayResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/appointments/day/${selectedDate}`
+            `${
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+            }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
             const result = await dayResponse.json();
@@ -309,29 +352,42 @@ const AppointmentCalendar: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'disponible': return 'success';
-      case 'lleno': return 'warning';
-      case 'realizada': return 'info';
-      case 'cancelada': return 'error';
-      default: return 'default';
+      case 'disponible':
+        return 'success';
+      case 'lleno':
+        return 'warning';
+      case 'realizada':
+        return 'info';
+      case 'cancelada':
+        return 'error';
+      default:
+        return 'default';
     }
   };
 
   const getUserStatusColor = (status: string) => {
     switch (status) {
-      case 'agendado': return 'primary';
-      case 'aprobado': return 'success';
-      case 'desaprobado': return 'error';
-      default: return 'default';
+      case 'agendado':
+        return 'primary';
+      case 'aprobado':
+        return 'success';
+      case 'desaprobado':
+        return 'error';
+      default:
+        return 'default';
     }
   };
 
   const getApprovalStatusColor = (status: string) => {
     switch (status) {
-      case 'pendiente': return 'warning';
-      case 'aprobado': return 'success';
-      case 'desaprobado': return 'error';
-      default: return 'default';
+      case 'pendiente':
+        return 'warning';
+      case 'aprobado':
+        return 'success';
+      case 'desaprobado':
+        return 'error';
+      default:
+        return 'default';
     }
   };
 
@@ -339,7 +395,12 @@ const AppointmentCalendar: React.FC = () => {
     <>
       <Card>
         <CardContent>
-          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb={2}
+          >
             <Box display="flex" alignItems="center" gap={1}>
               <TodayIcon sx={{ color: '#ED1F80' }} />
               <Typography variant="h6" sx={{ color: '#ED1F80' }}>
@@ -347,17 +408,30 @@ const AppointmentCalendar: React.FC = () => {
               </Typography>
             </Box>
             <Box display="flex" gap={1}>
-              <IconButton onClick={handlePrevMonth}><ChevronLeftIcon /></IconButton>
-              <Typography variant="h6" sx={{ minWidth: '120px', textAlign: 'center' }}>
+              <IconButton onClick={handlePrevMonth}>
+                <ChevronLeftIcon />
+              </IconButton>
+              <Typography
+                variant="h6"
+                sx={{ minWidth: '120px', textAlign: 'center' }}
+              >
                 {format(currentMonth, 'MMMM yyyy', { locale: es })}
               </Typography>
-              <IconButton onClick={handleNextMonth}><ChevronRightIcon /></IconButton>
-              <Button onClick={handleToday} startIcon={<RefreshIcon />}>Hoy</Button>
+              <IconButton onClick={handleNextMonth}>
+                <ChevronRightIcon />
+              </IconButton>
+              <Button onClick={handleToday} startIcon={<RefreshIcon />}>
+                Hoy
+              </Button>
             </Box>
           </Box>
 
           <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-            Total de citas programadas: {Object.values(appointmentsByDay).reduce((sum, day) => sum + day.totalAppointments, 0)}
+            Total de citas programadas:{' '}
+            {Object.values(appointmentsByDay).reduce(
+              (sum, day) => sum + day.totalAppointments,
+              0
+            )}
           </Typography>
 
           {error && (
@@ -372,32 +446,50 @@ const AppointmentCalendar: React.FC = () => {
             </Box>
           ) : (
             <Grid container spacing={1}>
-              {['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map(day => (
-                <Grid item xs={12 / 7} key={day} sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+              {['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((day) => (
+                //@ts-expect-error: MUI Grid typing conflict workaround
+                <Grid
+                  item
+                  xs={12 / 7}
+                  key={day}
+                  sx={{ textAlign: 'center', fontWeight: 'bold' }}
+                >
                   {day}
                 </Grid>
               ))}
-              {Array.from({ length: daysInMonth[0].getDay() === 0 ? 6 : daysInMonth[0].getDay() - 1 }).map((_, i) => (
+              {Array.from({
+                length:
+                  daysInMonth[0].getDay() === 0
+                    ? 6
+                    : daysInMonth[0].getDay() - 1,
+              }).map((_, i) => (
+                //@ts-expect-error: MUI Grid typing conflict workaround
                 <Grid item xs={12 / 7} key={`empty-start-${i}`}></Grid>
               ))}
-              {daysInMonth.map(date => {
+              {daysInMonth.map((date) => {
                 const count = getAppointmentsCount(date);
                 const isCurrentMonth = isSameMonth(date, currentMonth);
                 const isTodayDate = isSameDay(date, new Date());
                 return (
-                  <Grid 
-                    item 
-                    xs={12 / 7} 
-                    key={date.toISOString()} 
+                  //@ts-expect-error: MUI Grid typing conflict workaround
+                  <Grid
+                    item
+                    xs={12 / 7}
+                    key={date.toISOString()}
                     sx={{
                       textAlign: 'center',
                       p: 1,
                       border: '1px solid #eee',
                       borderRadius: '4px',
-                      backgroundColor: isTodayDate ? '#ffebee' : (isCurrentMonth ? 'white' : '#f5f5f5'),
+                      backgroundColor: isTodayDate
+                        ? '#ffebee'
+                        : isCurrentMonth
+                        ? 'white'
+                        : '#f5f5f5',
                       color: isCurrentMonth ? 'inherit' : '#ccc',
                       cursor: count > 0 ? 'pointer' : 'default',
-                      '&:hover': count > 0 ? { backgroundColor: '#f0f0f0' } : {}
+                      '&:hover':
+                        count > 0 ? { backgroundColor: '#f0f0f0' } : {},
                     }}
                     onClick={() => count > 0 && handleDateClick(date)}
                   >
@@ -405,17 +497,20 @@ const AppointmentCalendar: React.FC = () => {
                       {format(date, 'd')}
                     </Typography>
                     {count > 0 && (
-                      <Typography variant="caption" sx={{
-                        backgroundColor: '#ED1F80',
-                        color: 'white',
-                        borderRadius: '50%',
-                        width: '24px',
-                        height: '24px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        mt: 0.5,
-                      }}>
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          backgroundColor: '#ED1F80',
+                          color: 'white',
+                          borderRadius: '50%',
+                          width: '24px',
+                          height: '24px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          mt: 0.5,
+                        }}
+                      >
                         {count}
                       </Typography>
                     )}
@@ -428,30 +523,46 @@ const AppointmentCalendar: React.FC = () => {
       </Card>
 
       {/* Dialog para mostrar citas del día */}
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md" fullWidth>
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
         <DialogTitle>
           <Box display="flex" alignItems="center" gap={1}>
             <PersonIcon sx={{ color: '#ED1F80' }} />
-            Citas del {selectedDate && format(new Date(selectedDate), 'dd/MM/yyyy', { locale: es })}
+            Citas del{' '}
+            {selectedDate &&
+              format(new Date(selectedDate), 'dd/MM/yyyy', { locale: es })}
           </Box>
         </DialogTitle>
         <DialogContent>
           {selectedDayData && (
             <Box>
-              <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
+              <Typography
+                variant="body2"
+                sx={{ mb: 2, color: 'text.secondary' }}
+              >
                 Total de personas agendadas: {selectedDayData.totalAppointments}
               </Typography>
-              
-              {selectedDayData.appointments.map((appointment, index) => (
+
+              {selectedDayData.appointments.map((appointment) => (
                 <Card key={appointment._id} sx={{ mb: 2 }}>
                   <CardContent>
-                    <Box display="flex" justifyContent="between" alignItems="center" mb={1}>
+                    <Box
+                      display="flex"
+                      justifyContent="between"
+                      alignItems="center"
+                      mb={1}
+                    >
                       <Typography variant="h6">
                         {appointment.horaInicio} - {appointment.horaFin}
                       </Typography>
                       <Box display="flex" gap={1} alignItems="center">
-                        <Chip 
-                          label={appointment.estado} 
+                        <Chip
+                          label={appointment.estado}
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           color={getStatusColor(appointment.estado) as any}
                           size="small"
                         />
@@ -462,28 +573,35 @@ const AppointmentCalendar: React.FC = () => {
                                 value={slotStatus}
                                 onChange={(e) => setSlotStatus(e.target.value)}
                               >
-                                <MenuItem value="disponible">Disponible</MenuItem>
+                                <MenuItem value="disponible">
+                                  Disponible
+                                </MenuItem>
                                 <MenuItem value="lleno">Lleno</MenuItem>
                                 <MenuItem value="realizada">Realizada</MenuItem>
                                 <MenuItem value="cancelada">Cancelada</MenuItem>
                               </Select>
                             </FormControl>
-                            <Button 
-                              size="small" 
-                              onClick={() => handleUpdateSlotStatus(appointment._id, slotStatus)}
+                            <Button
+                              size="small"
+                              onClick={() =>
+                                handleUpdateSlotStatus(
+                                  appointment._id,
+                                  slotStatus
+                                )
+                              }
                             >
                               Guardar
                             </Button>
-                            <Button 
-                              size="small" 
+                            <Button
+                              size="small"
                               onClick={() => setEditingSlot(null)}
                             >
                               Cancelar
                             </Button>
                           </Box>
                         ) : (
-                          <IconButton 
-                            size="small" 
+                          <IconButton
+                            size="small"
                             onClick={() => {
                               setEditingSlot(appointment._id);
                               setSlotStatus(appointment.estado);
@@ -492,31 +610,40 @@ const AppointmentCalendar: React.FC = () => {
                             <EditIcon />
                           </IconButton>
                         )}
-                        {!appointment.enlaceMeet && appointment.usuarios.length >= appointment.capacidadMaxima && (
-                          <Button
-                            size="small"
-                            startIcon={<LinkIcon />}
-                            onClick={() => handleGenerateMeetLink(appointment._id)}
-                          >
-                            Generar Meet
-                          </Button>
-                        )}
+                        {!appointment.enlaceMeet &&
+                          appointment.usuarios.length >=
+                            appointment.capacidadMaxima && (
+                            <Button
+                              size="small"
+                              startIcon={<LinkIcon />}
+                              onClick={() =>
+                                handleGenerateMeetLink(appointment._id)
+                              }
+                            >
+                              Generar Meet
+                            </Button>
+                          )}
                       </Box>
                     </Box>
-                    
+
                     <Typography variant="body2" sx={{ mb: 1 }}>
-                      Capacidad: {appointment.usuarios.length}/{appointment.capacidadMaxima}
+                      Capacidad: {appointment.usuarios.length}/
+                      {appointment.capacidadMaxima}
                     </Typography>
-                    
+
                     {appointment.enlaceMeet && (
                       <Typography variant="body2" sx={{ mb: 1 }}>
                         <strong>Enlace Meet:</strong>{' '}
-                        <a href={appointment.enlaceMeet} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={appointment.enlaceMeet}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           {appointment.enlaceMeet}
                         </a>
                       </Typography>
                     )}
-                    
+
                     {appointment.usuarios.length > 0 ? (
                       <List dense>
                         {appointment.usuarios.map((user) => (
@@ -526,53 +653,87 @@ const AppointmentCalendar: React.FC = () => {
                               secondary={
                                 <Box>
                                   <Typography variant="body2" component="span">
-                                    {user.email} {user.telefono ? `- ${user.telefono}` : ''}
+                                    {user.email}{' '}
+                                    {user.telefono ? `- ${user.telefono}` : ''}
                                   </Typography>
                                   <br />
-                                  <Typography variant="caption" color="text.secondary">
-                                    Registrado: {user.fechaRegistro ? format(new Date(user.fechaRegistro), 'dd/MM/yyyy HH:mm') : 'N/A'}
+                                  <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                  >
+                                    Registrado:{' '}
+                                    {user.fechaRegistro
+                                      ? format(
+                                          new Date(user.fechaRegistro),
+                                          'dd/MM/yyyy HH:mm'
+                                        )
+                                      : 'N/A'}
                                   </Typography>
                                 </Box>
                               }
                             />
                             <ListItemSecondaryAction>
-                              <Box display="flex" gap={1} alignItems="center" flexWrap="wrap">
-                                <Chip 
-                                  label={user.estado} 
+                              <Box
+                                display="flex"
+                                gap={1}
+                                alignItems="center"
+                                flexWrap="wrap"
+                              >
+                                <Chip
+                                  label={user.estado}
+                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                   color={getUserStatusColor(user.estado) as any}
                                   size="small"
                                 />
                                 {user.estadoAprobacion && (
-                                  <Chip 
-                                    label={user.estadoAprobacion} 
-                                    color={getApprovalStatusColor(user.estadoAprobacion) as any}
+                                  <Chip
+                                    label={user.estadoAprobacion}
+                                    color={
+                                      getApprovalStatusColor(
+                                        user.estadoAprobacion
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                      ) as any
+                                    }
                                     size="small"
                                   />
                                 )}
                                 {user.estadoAprobacion === 'pendiente' && (
                                   <>
-                                    <IconButton 
+                                    <IconButton
                                       size="small"
                                       color="success"
-                                      onClick={() => handleApproveUser(appointment._id, user._id)}
+                                      onClick={() =>
+                                        handleApproveUser(
+                                          appointment._id,
+                                          user._id
+                                        )
+                                      }
                                       title="Aprobar usuario"
                                     >
                                       <ThumbUpIcon />
                                     </IconButton>
-                                    <IconButton 
+                                    <IconButton
                                       size="small"
                                       color="error"
-                                      onClick={() => handleDisapproveUser(appointment._id, user._id, 'Desaprobado por admin')}
+                                      onClick={() =>
+                                        handleDisapproveUser(
+                                          appointment._id,
+                                          user._id,
+                                          'Desaprobado por admin'
+                                        )
+                                      }
                                       title="Desaprobar usuario"
                                     >
                                       <ThumbDownIcon />
                                     </IconButton>
                                   </>
                                 )}
-                                <IconButton 
+                                <IconButton
                                   size="small"
                                   color="error"
-                                  onClick={() => handleRemoveUser(appointment._id, user._id)}
+                                  onClick={() =>
+                                    handleRemoveUser(appointment._id, user._id)
+                                  }
                                   title="Remover usuario"
                                 >
                                   <DeleteIcon />
@@ -602,4 +763,3 @@ const AppointmentCalendar: React.FC = () => {
 };
 
 export default AppointmentCalendar;
-

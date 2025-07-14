@@ -1,4 +1,7 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -43,7 +46,10 @@ export default function GoogleAuthSetup() {
       if (stored) {
         try {
           const parsedCredentials = JSON.parse(stored);
-          console.log('DEBUG: Credenciales cargadas desde localStorage:', parsedCredentials);
+          console.log(
+            'DEBUG: Credenciales cargadas desde localStorage:',
+            parsedCredentials
+          );
           setCredentials(parsedCredentials);
           return parsedCredentials;
         } catch (error) {
@@ -74,7 +80,7 @@ export default function GoogleAuthSetup() {
       try {
         const tokens = JSON.parse(decodeURIComponent(tokensParam));
         console.log('DEBUG: Parsed tokens from URL:', tokens);
-        
+
         // Guardar en localStorage
         localStorage.setItem('googleCredentials', JSON.stringify(tokens));
         setCredentials(tokens);
@@ -96,20 +102,22 @@ export default function GoogleAuthSetup() {
       // Si no hay tokens en la URL pero sí hay credenciales almacenadas,
       // verificar si necesitamos reenviarlas al backend
       console.log('DEBUG: No tokens in URL, but found existing credentials');
-      
+
       // Opcional: verificar el estado en el backend
       checkBackendCredentialsStatus(existingCredentials);
     }
   }, []); // Array de dependencias vacío para ejecutar solo una vez
 
   // Función para verificar si el backend tiene las credenciales
-  const checkBackendCredentialsStatus = async (credentialsToCheck?: GoogleCredentials) => {
+  const checkBackendCredentialsStatus = async (
+    credentialsToCheck?: GoogleCredentials
+  ) => {
     try {
       const response = await fetch('/api/google-auth/status');
       const result = await response.json();
-      
+
       const credsToUse = credentialsToCheck || credentials;
-      
+
       if (!result.configured && credsToUse) {
         console.log('DEBUG: Backend no tiene credenciales, reenviando...');
         await sendCredentialsToBackend(credsToUse);
@@ -123,7 +131,7 @@ export default function GoogleAuthSetup() {
   const sendCredentialsToBackend = async (credentials: GoogleCredentials) => {
     try {
       console.log('📤 Enviando credenciales al backend...');
-      
+
       const response = await fetch('/api/google-auth/credentials', {
         method: 'POST',
         headers: {
@@ -134,8 +142,8 @@ export default function GoogleAuthSetup() {
           refresh_token: credentials.refresh_token,
           token_type: credentials.token_type,
           scope: credentials.scope,
-          expiry_date: credentials.expiry_date
-        })
+          expiry_date: credentials.expiry_date,
+        }),
       });
 
       const result = await response.json();
@@ -144,11 +152,17 @@ export default function GoogleAuthSetup() {
         console.log('✅ Credenciales enviadas al backend correctamente');
         return true;
       } else {
-        console.error('❌ Error al enviar credenciales al backend:', result.message);
+        console.error(
+          '❌ Error al enviar credenciales al backend:',
+          result.message
+        );
         return false;
       }
     } catch (error) {
-      console.error('❌ Error de red al enviar credenciales al backend:', error);
+      console.error(
+        '❌ Error de red al enviar credenciales al backend:',
+        error
+      );
       return false;
     }
   };

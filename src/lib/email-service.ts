@@ -38,7 +38,7 @@ export class EmailService {
   async sendEmail(emailData: EmailData): Promise<void> {
     try {
       const mailOptions = {
-        from: `"Landing Promoters" <${process.env.SMTP_USER}>`,
+        from: `"Sweepstouch Team" <${process.env.SMTP_USER}>`,
         to: emailData.to,
         subject: emailData.subject,
         html: emailData.html,

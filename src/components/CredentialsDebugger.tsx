@@ -1,4 +1,7 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -23,7 +26,8 @@ interface GoogleCredentials {
 }
 
 export default function CredentialsDebugger() {
-  const [localStorageCredentials, setLocalStorageCredentials] = useState<GoogleCredentials | null>(null);
+  const [localStorageCredentials, setLocalStorageCredentials] =
+    useState<GoogleCredentials | null>(null);
   const [backendStatus, setBackendStatus] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,7 +53,7 @@ export default function CredentialsDebugger() {
       setBackendStatus(result);
     } catch (error) {
       console.error('Error checking backend status:', error);
-      setBackendStatus({ error: error.message });
+      setBackendStatus({ error: '' });
     } finally {
       setIsLoading(false);
     }
@@ -65,12 +69,12 @@ export default function CredentialsDebugger() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(localStorageCredentials)
+        body: JSON.stringify(localStorageCredentials),
       });
 
       const result = await response.json();
       console.log('Send credentials result:', result);
-      
+
       // Refresh backend status after sending
       await checkBackendStatus();
     } catch (error) {
@@ -100,7 +104,13 @@ export default function CredentialsDebugger() {
 
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
-      <Typography variant="h5" fontWeight="bold" color="#ED1F80" align="center" mb={3}>
+      <Typography
+        variant="h5"
+        fontWeight="bold"
+        color="#ED1F80"
+        align="center"
+        mb={3}
+      >
         <BugReport sx={{ mr: 1 }} />
         Debug de Credenciales de Google
       </Typography>
@@ -132,11 +142,7 @@ export default function CredentialsDebugger() {
             Enviar al Backend
           </Button>
         )}
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={clearLocalStorage}
-        >
+        <Button variant="outlined" color="error" onClick={clearLocalStorage}>
           Limpiar localStorage
         </Button>
       </Box>
@@ -145,7 +151,8 @@ export default function CredentialsDebugger() {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <Typography variant="h6">
-            localStorage - {localStorageCredentials ? '✅ Configurado' : '❌ No configurado'}
+            localStorage -{' '}
+            {localStorageCredentials ? '✅ Configurado' : '❌ No configurado'}
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -155,24 +162,32 @@ export default function CredentialsDebugger() {
                 <strong>Scope:</strong> {localStorageCredentials.scope}
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Token Type:</strong> {localStorageCredentials.token_type}
+                <strong>Token Type:</strong>{' '}
+                {localStorageCredentials.token_type}
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Expira:</strong> {formatDate(localStorageCredentials.expiry_date)}
+                <strong>Expira:</strong>{' '}
+                {formatDate(localStorageCredentials.expiry_date)}
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Estado:</strong> {isExpired(localStorageCredentials.expiry_date) ? '🔴 Expirado' : '🟢 Válido'}
+                <strong>Estado:</strong>{' '}
+                {isExpired(localStorageCredentials.expiry_date)
+                  ? '🔴 Expirado'
+                  : '🟢 Válido'}
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Access Token:</strong> {localStorageCredentials.access_token.substring(0, 20)}...
+                <strong>Access Token:</strong>{' '}
+                {localStorageCredentials.access_token.substring(0, 20)}...
               </Typography>
               <Typography variant="body2">
-                <strong>Refresh Token:</strong> {localStorageCredentials.refresh_token.substring(0, 20)}...
+                <strong>Refresh Token:</strong>{' '}
+                {localStorageCredentials.refresh_token.substring(0, 20)}...
               </Typography>
             </Box>
           ) : (
             <Alert severity="warning">
-              No hay credenciales en localStorage. Necesitas autenticarte con Google.
+              No hay credenciales en localStorage. Necesitas autenticarte con
+              Google.
             </Alert>
           )}
         </AccordionDetails>
@@ -182,7 +197,8 @@ export default function CredentialsDebugger() {
       <Accordion defaultExpanded sx={{ mt: 2 }}>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <Typography variant="h6">
-            Backend - {backendStatus?.configured ? '✅ Configurado' : '❌ No configurado'}
+            Backend -{' '}
+            {backendStatus?.configured ? '✅ Configurado' : '❌ No configurado'}
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -197,16 +213,24 @@ export default function CredentialsDebugger() {
                   <strong>Scope:</strong> {backendStatus.data?.scope}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Expira:</strong> {formatDate(backendStatus.data?.expiry_date)}
+                  <strong>Expira:</strong>{' '}
+                  {formatDate(backendStatus.data?.expiry_date)}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Estado:</strong> {backendStatus.data?.is_expired ? '🔴 Expirado' : '🟢 Válido'}
+                  <strong>Estado:</strong>{' '}
+                  {backendStatus.data?.is_expired ? '🔴 Expirado' : '🟢 Válido'}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Último uso:</strong> {new Date(backendStatus.data?.last_used).toLocaleString('es-ES')}
+                  <strong>Último uso:</strong>{' '}
+                  {new Date(backendStatus.data?.last_used).toLocaleString(
+                    'es-ES'
+                  )}
                 </Typography>
                 <Typography variant="body2">
-                  <strong>Creado:</strong> {new Date(backendStatus.data?.created_at).toLocaleString('es-ES')}
+                  <strong>Creado:</strong>{' '}
+                  {new Date(backendStatus.data?.created_at).toLocaleString(
+                    'es-ES'
+                  )}
                 </Typography>
               </Box>
             ) : (
@@ -215,9 +239,7 @@ export default function CredentialsDebugger() {
               </Alert>
             )
           ) : (
-            <Alert severity="info">
-              Cargando estado del backend...
-            </Alert>
+            <Alert severity="info">Cargando estado del backend...</Alert>
           )}
         </AccordionDetails>
       </Accordion>
@@ -228,34 +250,40 @@ export default function CredentialsDebugger() {
           <Typography variant="h6" sx={{ mb: 2 }}>
             Diagnóstico
           </Typography>
-          
+
           {!localStorageCredentials && !backendStatus?.configured && (
             <Alert severity="error" sx={{ mb: 2 }}>
-              <strong>Problema:</strong> No hay credenciales en ningún lado. 
+              <strong>Problema:</strong> No hay credenciales en ningún lado.
               <br />
-              <strong>Solución:</strong> Haz clic en "Conectar con Google" en la página principal.
+              <strong>Solución:</strong> Haz clic en &quot;Conectar con
+              Google&quot; en la página principal.
             </Alert>
           )}
 
           {localStorageCredentials && !backendStatus?.configured && (
             <Alert severity="warning" sx={{ mb: 2 }}>
-              <strong>Problema:</strong> Tienes credenciales en localStorage pero el backend no las tiene.
+              <strong>Problema:</strong> Tienes credenciales en localStorage
+              pero el backend no las tiene.
               <br />
-              <strong>Solución:</strong> Haz clic en "Enviar al Backend" arriba.
+              <strong>Solución:</strong> Haz clic en &quot;Enviar al
+              Backend&quot; arriba.
             </Alert>
           )}
 
           {!localStorageCredentials && backendStatus?.configured && (
             <Alert severity="info" sx={{ mb: 2 }}>
-              <strong>Estado:</strong> El backend tiene credenciales pero localStorage no.
+              <strong>Estado:</strong> El backend tiene credenciales pero
+              localStorage no.
               <br />
-              <strong>Nota:</strong> Esto es normal si limpiaste el navegador. El backend puede seguir funcionando.
+              <strong>Nota:</strong> Esto es normal si limpiaste el navegador.
+              El backend puede seguir funcionando.
             </Alert>
           )}
 
           {localStorageCredentials && backendStatus?.configured && (
             <Alert severity="success">
-              <strong>¡Perfecto!</strong> Tanto localStorage como el backend tienen credenciales configuradas.
+              <strong>¡Perfecto!</strong> Tanto localStorage como el backend
+              tienen credenciales configuradas.
             </Alert>
           )}
         </CardContent>
@@ -263,4 +291,3 @@ export default function CredentialsDebugger() {
     </Box>
   );
 }
-

@@ -22,7 +22,6 @@ import {
   DialogActions,
   Alert,
   CircularProgress,
-  Grid,
   Tooltip,
   FormControl,
   InputLabel,
@@ -33,6 +32,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
 } from '@mui/material';
+
 import {
   VideoCall as VideoCallIcon,
   Refresh as RefreshIcon,
@@ -169,6 +169,7 @@ export default function CuposPage() {
       const normalized: Record<string, DayAppointments> = {};
 
       Object.entries(data).forEach(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ([date, raw]: [string, any /* según backend */]) => {
           const originales: Appointment[] = raw.appointments ?? [];
           const filtradas =
@@ -188,6 +189,7 @@ export default function CuposPage() {
       );
 
       setAppointmentsByDay(normalized);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error('Error fetching appointments:', err);
       setError(err?.message || 'Error desconocido');
@@ -398,51 +400,54 @@ export default function CuposPage() {
 
         {/* Estadísticas */}
         {stats && (
-          <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Card>
-                <CardContent sx={{ textAlign: 'center' }}>
-                  <Typography variant="h4" sx={{ color: '#ED1F80' }}>
-                    {stats.slots.total}
-                  </Typography>
-                  <Typography variant="body2">Total Cupos</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+                md: 'repeat(4, 1fr)',
+              },
+              gap: 3,
+              mb: 3,
+            }}
+          >
+            <Card>
+              <CardContent sx={{ textAlign: 'center' }}>
+                <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+                  {stats.slots.total}
+                </Typography>
+                <Typography variant="body2">Total Cupos</Typography>
+              </CardContent>
+            </Card>
 
-            <Grid item xs={12} sm={6} md={3}>
-              <Card>
-                <CardContent sx={{ textAlign: 'center' }}>
-                  <Typography variant="h4" sx={{ color: '#4caf50' }}>
-                    {stats.slots.available}
-                  </Typography>
-                  <Typography variant="body2">Disponibles</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <Card>
+              <CardContent sx={{ textAlign: 'center' }}>
+                <Typography variant="h4" sx={{ color: '#4caf50' }}>
+                  {stats.slots.available}
+                </Typography>
+                <Typography variant="body2">Disponibles</Typography>
+              </CardContent>
+            </Card>
 
-            <Grid item xs={12} sm={6} md={3}>
-              <Card>
-                <CardContent sx={{ textAlign: 'center' }}>
-                  <Typography variant="h4" sx={{ color: '#ff9800' }}>
-                    {stats.slots.full}
-                  </Typography>
-                  <Typography variant="body2">Llenos</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <Card>
+              <CardContent sx={{ textAlign: 'center' }}>
+                <Typography variant="h4" sx={{ color: '#ff9800' }}>
+                  {stats.slots.full}
+                </Typography>
+                <Typography variant="body2">Llenos</Typography>
+              </CardContent>
+            </Card>
 
-            <Grid item xs={12} sm={6} md={3}>
-              <Card>
-                <CardContent sx={{ textAlign: 'center' }}>
-                  <Typography variant="h4" sx={{ color: '#2196f3' }}>
-                    {stats.users.total}
-                  </Typography>
-                  <Typography variant="body2">Total Usuarios</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
+            <Card>
+              <CardContent sx={{ textAlign: 'center' }}>
+                <Typography variant="h4" sx={{ color: '#2196f3' }}>
+                  {stats.users.total}
+                </Typography>
+                <Typography variant="body2">Total Usuarios</Typography>
+              </CardContent>
+            </Card>
+          </Box>
         )}
 
         {/* Errores */}
@@ -535,6 +540,7 @@ export default function CuposPage() {
                               <TableCell>
                                 <Chip
                                   label={app.estado}
+                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                   color={getStatusColor(app.estado) as any}
                                   size="small"
                                 />
@@ -643,6 +649,7 @@ export default function CuposPage() {
                   Estado:{' '}
                   <Chip
                     label={selectedAppointment.estado}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     color={getStatusColor(selectedAppointment.estado) as any}
                     size="small"
                   />
@@ -689,6 +696,7 @@ export default function CuposPage() {
                                 color={
                                   getApprovalStatusColor(
                                     u.estadoAprobacion ?? 'pendiente'
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                   ) as any
                                 }
                               />

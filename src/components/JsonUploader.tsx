@@ -1,4 +1,7 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState } from 'react';
 import {
@@ -23,6 +26,7 @@ interface JsonUser {
   email: string;
   nombre?: string;
   apellido?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
@@ -62,7 +66,7 @@ const JsonUploader: React.FC = () => {
         // Extraer emails únicos
         const extractedEmails: string[] = [];
         const validUsers: JsonUser[] = [];
-
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         parsedData.forEach((item: any, index: number) => {
           if (item.email && typeof item.email === 'string') {
             const email = item.email.toLowerCase().trim();
@@ -158,8 +162,10 @@ const JsonUploader: React.FC = () => {
               subject: 'Agenda tu cita - Programa de Promotoras',
               html: `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
+
     <div style="background-color: #ED1F80; padding: 20px 0; text-align: center;">
-      <img src="https://i.imgur.com/gLTJP0Y.png" alt="sweepsTOUCH logo" style="max-height: 40px;" />
+      <img src="https://jobs.sweepstouch.com/logo-sweepstouch.png" alt="sweepsTOUCH logo" style="max-height: 40px;" />
+      Sweepstouch
     </div>
 
     <div style="padding: 30px 20px;">

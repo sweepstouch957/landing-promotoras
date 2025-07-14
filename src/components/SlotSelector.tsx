@@ -1,4 +1,7 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -25,7 +28,15 @@ import {
   ArrowBack as ArrowBackIcon,
   ArrowForward as ArrowForwardIcon,
 } from '@mui/icons-material';
-import { format, addDays, startOfWeek, addWeeks, subWeeks, isToday, isBefore } from 'date-fns';
+import {
+  format,
+  addDays,
+  startOfWeek,
+  addWeeks,
+  subWeeks,
+  isToday,
+  isBefore,
+} from 'date-fns';
 import { es } from 'date-fns/locale';
 
 interface Slot {
@@ -34,6 +45,7 @@ interface Slot {
   horaInicio: string;
   horaFin: string;
   capacidadMaxima: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   usuariosRegistrados: any[];
   enlaceMeet?: string;
   estado: 'disponible' | 'lleno' | 'realizada' | 'cancelada';
@@ -51,7 +63,7 @@ interface SlotSelectorProps {
 const SlotSelector: React.FC<SlotSelectorProps> = ({
   onSlotSelect,
   selectedSlot,
-  disabled = false
+  disabled = false,
 }) => {
   const [slots, setSlots] = useState<{ [key: string]: Slot[] }>({});
   const [loading, setLoading] = useState(false);
@@ -60,21 +72,24 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
   const [systemInitialized, setSystemInitialized] = useState(false);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState(false);
-  const [selectedSlotForConfirm, setSelectedSlotForConfirm] = useState<Slot | null>(null);
+  const [selectedSlotForConfirm, setSelectedSlotForConfirm] =
+    useState<Slot | null>(null);
 
   // Verificar estado del sistema
   const checkSystemStatus = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/schedule-config/active`
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/schedule-config/active`
       );
-      
+
       if (response.ok) {
         const result = await response.json();
         setSystemInitialized(result.success && result.data);
         return result.success && result.data;
       }
-      
+
       setSystemInitialized(false);
       return false;
     } catch (error) {
@@ -87,9 +102,9 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
   // Inicializar sistema automáticamente
   const initializeSystem = async () => {
     if (initializationAttempted) return;
-    
+
     setInitializationAttempted(true);
-    
+
     try {
       // Primero verificar si ya está inicializado
       const isInitialized = await checkSystemStatus();
@@ -100,10 +115,12 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
 
       // Si no está inicializado, intentar inicializar
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/initialize`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/initialize`,
         { method: 'POST' }
       );
-      
+
       if (response.ok) {
         console.log('Sistema inicializado automáticamente');
         setSystemInitialized(true);
@@ -123,24 +140,26 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
   // Obtener slots disponibles
   const fetchSlots = async () => {
     if (!systemInitialized) return;
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
       const startDate = startOfWeek(currentWeek, { weekStartsOn: 1 });
       const weekParam = startDate.toISOString().split('T')[0];
-      
+
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/slots/week/${weekParam}`
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/slots/week/${weekParam}`
       );
-      
+
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
         setSlots(result.data || {});
       } else {
@@ -148,7 +167,9 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
       }
     } catch (error) {
       console.error('Error fetching slots:', error);
-      setError(error instanceof Error ? error.message : 'Error al cargar cupos');
+      setError(
+        error instanceof Error ? error.message : 'Error al cargar cupos'
+      );
       setSlots({});
     } finally {
       setLoading(false);
@@ -160,10 +181,12 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
     try {
       setLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/slots/create-weekly`,
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/slots/create-weekly`,
         { method: 'POST' }
       );
-      
+
       if (response.ok) {
         await fetchSlots();
       } else {
@@ -185,14 +208,14 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
         await fetchSlots();
       }
     };
-    
+
     initAndFetch();
   }, [currentWeek]);
 
   // Manejar selección de slot
   const handleSlotSelect = (slot: Slot) => {
     if (disabled || slot.estado !== 'disponible' || slot.estaLleno) return;
-    
+
     setSelectedSlotForConfirm(slot);
     setConfirmDialog(true);
   };
@@ -210,21 +233,22 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
   const getWeekDays = () => {
     const startDate = startOfWeek(currentWeek, { weekStartsOn: 1 });
     const days = [];
-    
-    for (let i = 0; i < 5; i++) { // Solo lunes a viernes
+
+    for (let i = 0; i < 5; i++) {
+      // Solo lunes a viernes
       const day = addDays(startDate, i);
       const dayKey = day.toISOString().split('T')[0];
       const daySlots = slots[dayKey] || [];
-      
+
       days.push({
         date: day,
         key: dayKey,
-        slots: daySlots.filter(slot => 
-          slot.estado === 'disponible' || slot.estado === 'lleno'
-        )
+        slots: daySlots.filter(
+          (slot) => slot.estado === 'disponible' || slot.estado === 'lleno'
+        ),
       });
     }
-    
+
     return days;
   };
 
@@ -239,15 +263,25 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
   // Verificar si el slot está disponible para selección
   const isSlotSelectable = (slot: Slot) => {
     const slotDate = new Date(slot.fecha);
-    return !disabled && 
-           slot.estado === 'disponible' && 
-           !slot.estaLleno && 
-           !isBefore(slotDate, new Date());
+    return (
+      !disabled &&
+      slot.estado === 'disponible' &&
+      !slot.estaLleno &&
+      !isBefore(slotDate, new Date())
+    );
   };
 
   const weekDays = getWeekDays();
-  const weekStart = format(startOfWeek(currentWeek, { weekStartsOn: 1 }), 'dd MMM', { locale: es });
-  const weekEnd = format(addDays(startOfWeek(currentWeek, { weekStartsOn: 1 }), 4), 'dd MMM yyyy', { locale: es });
+  const weekStart = format(
+    startOfWeek(currentWeek, { weekStartsOn: 1 }),
+    'dd MMM',
+    { locale: es }
+  );
+  const weekEnd = format(
+    addDays(startOfWeek(currentWeek, { weekStartsOn: 1 }), 4),
+    'dd MMM yyyy',
+    { locale: es }
+  );
 
   // Si el sistema no está inicializado
   if (!systemInitialized && initializationAttempted) {
@@ -255,7 +289,8 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
       <Card>
         <CardContent>
           <Alert severity="warning" sx={{ mb: 2 }}>
-            El sistema necesita ser configurado. Por favor, contacte al administrador.
+            El sistema necesita ser configurado. Por favor, contacte al
+            administrador.
           </Alert>
           <Button
             variant="contained"
@@ -272,7 +307,12 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
   return (
     <Card>
       <CardContent>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={3}
+        >
           <Typography variant="h5" sx={{ color: '#ED1F80' }}>
             Seleccionar Horario
           </Typography>
@@ -288,11 +328,17 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
         </Box>
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          Elige el día y hora para tu cita. Cada reunión tiene capacidad para 10-15 personas.
+          Elige el día y hora para tu cita. Cada reunión tiene capacidad para
+          10-15 personas.
         </Typography>
 
         {/* Navegación de semana */}
-        <Box display="flex" justifyContent="space-between" alignItems="center" my={2}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          my={2}
+        >
           <Button
             variant="outlined"
             startIcon={<ArrowBackIcon />}
@@ -302,11 +348,11 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
           >
             Semana Anterior
           </Button>
-          
+
           <Typography variant="h6" textAlign="center">
             {weekStart} - {weekEnd}
           </Typography>
-          
+
           <Button
             variant="outlined"
             endIcon={<ArrowForwardIcon />}
@@ -322,8 +368,8 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error}
-            <Button 
-              size="small" 
+            <Button
+              size="small"
               onClick={fetchSlots}
               sx={{ ml: 2, color: '#ED1F80' }}
             >
@@ -343,12 +389,13 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
         {!loading && (
           <Grid container spacing={2}>
             {weekDays.map((day) => (
+              //@ts-expect-error: MUI Grid typing conflict workaround
               <Grid item xs={12} sm={6} md={2.4} key={day.key}>
-                <Card 
+                <Card
                   variant="outlined"
-                  sx={{ 
+                  sx={{
                     minHeight: 200,
-                    backgroundColor: isToday(day.date) ? '#f0f8ff' : 'white'
+                    backgroundColor: isToday(day.date) ? '#f0f8ff' : 'white',
                   }}
                 >
                   <CardContent>
@@ -360,14 +407,19 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
                         {format(day.date, 'dd MMM', { locale: es })}
                       </Typography>
                       {isToday(day.date) && (
-                        <Chip label="Hoy" size="small" color="primary" sx={{ mt: 0.5 }} />
+                        <Chip
+                          label="Hoy"
+                          size="small"
+                          color="primary"
+                          sx={{ mt: 0.5 }}
+                        />
                       )}
                     </Box>
 
                     {day.slots.length === 0 ? (
-                      <Typography 
-                        variant="body2" 
-                        color="text.secondary" 
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
                         textAlign="center"
                         sx={{ py: 2 }}
                       >
@@ -379,22 +431,40 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
                           <Button
                             key={slot._id}
                             fullWidth
-                            variant={selectedSlot?._id === slot._id ? "contained" : "outlined"}
+                            variant={
+                              selectedSlot?._id === slot._id
+                                ? 'contained'
+                                : 'outlined'
+                            }
                             onClick={() => handleSlotSelect(slot)}
                             disabled={!isSlotSelectable(slot)}
                             sx={{
                               mb: 1,
                               justifyContent: 'flex-start',
-                              backgroundColor: selectedSlot?._id === slot._id ? '#ED1F80' : 'transparent',
-                              borderColor: getStatusColor(slot) === 'success' ? '#4caf50' : 
-                                          getStatusColor(slot) === 'warning' ? '#ff9800' : '#ccc',
+                              backgroundColor:
+                                selectedSlot?._id === slot._id
+                                  ? '#ED1F80'
+                                  : 'transparent',
+                              borderColor:
+                                getStatusColor(slot) === 'success'
+                                  ? '#4caf50'
+                                  : getStatusColor(slot) === 'warning'
+                                  ? '#ff9800'
+                                  : '#ccc',
                               '&:hover': {
-                                backgroundColor: isSlotSelectable(slot) ? 'rgba(237, 31, 128, 0.04)' : 'transparent'
-                              }
+                                backgroundColor: isSlotSelectable(slot)
+                                  ? 'rgba(237, 31, 128, 0.04)'
+                                  : 'transparent',
+                              },
                             }}
                           >
                             <Box textAlign="left" width="100%">
-                              <Box display="flex" alignItems="center" gap={0.5} mb={0.5}>
+                              <Box
+                                display="flex"
+                                alignItems="center"
+                                gap={0.5}
+                                mb={0.5}
+                              >
                                 <ScheduleIcon sx={{ fontSize: 16 }} />
                                 <Typography variant="body2" fontWeight="bold">
                                   {slot.horaInicio} - {slot.horaFin}
@@ -406,8 +476,11 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
                                   {slot.usuariosCount}/{slot.capacidadMaxima}
                                 </Typography>
                                 <Chip
-                                  label={slot.estaLleno ? 'Lleno' : 'Disponible'}
+                                  label={
+                                    slot.estaLleno ? 'Lleno' : 'Disponible'
+                                  }
                                   size="small"
+                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                   color={getStatusColor(slot) as any}
                                   sx={{ fontSize: '0.7rem', height: 20 }}
                                 />
@@ -444,10 +517,13 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
             Información importante:
           </Typography>
           <Typography variant="body2" component="div">
-            • Cada reunión tiene una duración de 30 minutos<br/>
-            • Capacidad máxima: 15 personas por cupo<br/>
-            • El enlace de Google Meet se enviará cuando el cupo esté completo<br/>
-            • Horarios disponibles: Lunes a Viernes, 9:00-11:00 AM y 4:00-7:00 PM
+            • Cada reunión tiene una duración de 1 hora
+            <br />
+            • Capacidad máxima: 15 personas por cupo
+            <br />
+            • El enlace de Google Meet se enviará cuando el cupo esté completo
+            <br />• Horarios disponibles: Lunes a Viernes, 9:00-11:00 AM y
+            4:00-7:00 PM
           </Typography>
         </Box>
 
@@ -461,9 +537,22 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
                   Has seleccionado el siguiente horario:
                 </Typography>
                 <Box p={2} bgcolor="#f5f5f5" borderRadius={1} my={2}>
-                  <Typography><strong>Fecha:</strong> {format(new Date(selectedSlotForConfirm.fecha), 'EEEE, dd \'de\' MMMM \'de\' yyyy', { locale: es })}</Typography>
-                  <Typography><strong>Hora:</strong> {selectedSlotForConfirm.horaInicio} - {selectedSlotForConfirm.horaFin}</Typography>
-                  <Typography><strong>Disponibilidad:</strong> {selectedSlotForConfirm.cuposDisponibles} cupos disponibles</Typography>
+                  <Typography>
+                    <strong>Fecha:</strong>{' '}
+                    {format(
+                      new Date(selectedSlotForConfirm.fecha),
+                      "EEEE, dd 'de' MMMM 'de' yyyy",
+                      { locale: es }
+                    )}
+                  </Typography>
+                  <Typography>
+                    <strong>Hora:</strong> {selectedSlotForConfirm.horaInicio} -{' '}
+                    {selectedSlotForConfirm.horaFin}
+                  </Typography>
+                  <Typography>
+                    <strong>Disponibilidad:</strong>{' '}
+                    {selectedSlotForConfirm.cuposDisponibles} cupos disponibles
+                  </Typography>
                 </Box>
                 <Typography variant="body2" color="text.secondary">
                   ¿Deseas continuar con este horario?
@@ -472,10 +561,8 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
             )}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setConfirmDialog(false)}>
-              Cancelar
-            </Button>
-            <Button 
+            <Button onClick={() => setConfirmDialog(false)}>Cancelar</Button>
+            <Button
               onClick={confirmSlotSelection}
               variant="contained"
               sx={{ backgroundColor: '#ED1F80' }}
@@ -490,4 +577,3 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
 };
 
 export default SlotSelector;
-

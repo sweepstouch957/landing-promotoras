@@ -74,11 +74,15 @@ export async function POST(request: NextRequest) {
         throw new Error('Token inválido');
       }
     } catch (error) {
-      // Intentar refrescar el token
+      console.log(error);
+
       try {
-        const { credentials: newCredentials } = await oauth2Client.refreshAccessToken();
+        const { credentials: newCredentials } =
+          await oauth2Client.refreshAccessToken();
         oauth2Client.setCredentials(newCredentials);
       } catch (refreshError) {
+        console.log(refreshError);
+
         return NextResponse.json(
           { success: false, message: 'Error al refrescar token de Google' },
           { status: 401 }
@@ -128,6 +132,7 @@ export async function POST(request: NextRequest) {
     const createdEvent = response.data;
     const meetLink =
       createdEvent.conferenceData?.entryPoints?.find(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entry: any) => entry.entryPointType === 'video'
       )?.uri || '';
 
@@ -142,16 +147,16 @@ export async function POST(request: NextRequest) {
       message: 'Evento creado exitosamente',
       data: meetingDetails,
     });
-
   } catch (error) {
     console.error('Error creating calendar event:', error);
     return NextResponse.json(
       {
         success: false,
-        message: `Error al crear el evento: ${error instanceof Error ? error.message : 'Error desconocido'}`,
+        message: `Error al crear el evento: ${
+          error instanceof Error ? error.message : 'Error desconocido'
+        }`,
       },
       { status: 500 }
     );
   }
 }
-
