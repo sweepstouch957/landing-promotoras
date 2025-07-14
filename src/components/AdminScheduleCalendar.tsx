@@ -157,7 +157,9 @@ export default function AdminScheduleCalendar() {
       setError(null);
 
       // Usar la nueva API de appointments
-      const response = await fetch('http://localhost:5001/api/appointments');
+      const response = await fetch(
+        'https://backend-promotoras.onrender.com/api/appointments'
+      );
       const result = await response.json();
 
       if (result.success) {
@@ -382,7 +384,7 @@ export default function AdminScheduleCalendar() {
       // Si la cita tiene userId, eliminar de la base de datos
       if (appointmentToDelete.userId) {
         const response = await fetch(
-          `http://localhost:5001/api/users/${appointmentToDelete.userId}`,
+          `https://backend-promotoras.onrender.com/api/users/${appointmentToDelete.userId}`,
           {
             method: 'DELETE',
           }

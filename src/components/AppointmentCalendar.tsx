@@ -105,7 +105,8 @@ const AppointmentCalendar: React.FC = () => {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments?startDate=${start}&endDate=${end}`
       );
 
@@ -148,7 +149,8 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/day/${dateKey}`
       );
 
@@ -168,7 +170,8 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${slotId}/user/${userId}/approve`,
         {
           method: 'PUT',
@@ -182,7 +185,8 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+              process.env.NEXT_PUBLIC_API_URL ||
+              'https://backend-promotoras.onrender.com'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -207,7 +211,8 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${slotId}/user/${userId}/disapprove`,
         {
           method: 'PUT',
@@ -224,7 +229,8 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+              process.env.NEXT_PUBLIC_API_URL ||
+              'https://backend-promotoras.onrender.com'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -245,7 +251,8 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${slotId}/user/${userId}`,
         { method: 'DELETE' }
       );
@@ -255,7 +262,8 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+              process.env.NEXT_PUBLIC_API_URL ||
+              'https://backend-promotoras.onrender.com'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -276,7 +284,8 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${slotId}`,
         {
           method: 'PUT',
@@ -290,7 +299,8 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+              process.env.NEXT_PUBLIC_API_URL ||
+              'https://backend-promotoras.onrender.com'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -312,7 +322,8 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${slotId}/generate-meet`,
         { method: 'POST' }
       );
@@ -322,7 +333,8 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+              process.env.NEXT_PUBLIC_API_URL ||
+              'https://backend-promotoras.onrender.com'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {

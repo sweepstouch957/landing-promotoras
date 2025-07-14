@@ -85,7 +85,8 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/schedule-config/active`,
         {
           method: 'GET',
@@ -140,7 +141,8 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/slots/week/${format(weekStart, 'yyyy-MM-dd')}`,
         {
           method: 'GET',

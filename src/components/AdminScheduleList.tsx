@@ -86,7 +86,9 @@ export default function AdminScheduleList() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5001/api/users');
+      const response = await fetch(
+        'https://backend-promotoras.onrender.com/api/users'
+      );
       const result = await response.json();
 
       if (result.success) {
@@ -111,7 +113,7 @@ export default function AdminScheduleList() {
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/users/${userToDisapprove._id}`,
+        `https://backend-promotoras.onrender.com/api/users/${userToDisapprove._id}`,
         {
           method: 'DELETE',
         }
@@ -165,7 +167,7 @@ export default function AdminScheduleList() {
     try {
       if (action === 'disapprove') {
         const response = await fetch(
-          `http://localhost:5001/api/users/${meetingUser._id}`,
+          `https://backend-promotoras.onrender.com/api/users/${meetingUser._id}`,
           {
             method: 'DELETE',
           }
@@ -180,7 +182,7 @@ export default function AdminScheduleList() {
         }
       } else if (action === 'approve') {
         const response = await fetch(
-          `http://localhost:5001/api/users/${meetingUser._id}/approve`,
+          `https://backend-promotoras.onrender.com/api/users/${meetingUser._id}/approve`,
           {
             method: 'POST',
           }

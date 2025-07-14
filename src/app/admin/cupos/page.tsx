@@ -127,7 +127,8 @@ export default function CuposPage() {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/schedule-config`
       );
       if (response.ok) {
@@ -155,7 +156,8 @@ export default function CuposPage() {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments?startDate=${format(
           startDate,
           'yyyy-MM-dd'
@@ -206,7 +208,8 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/stats`
       );
       if (res.ok) {
@@ -226,7 +229,8 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${id}/generate-meet`,
         { method: 'POST' }
       );
@@ -242,7 +246,8 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${appId}/user/${userId}/approve`,
         {
           method: 'PUT',
@@ -263,7 +268,8 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${appId}/user/${userId}/disapprove`,
         {
           method: 'PUT',
