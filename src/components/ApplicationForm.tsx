@@ -61,7 +61,7 @@ const ApplicationForm: React.FC = () => {
     register,
     handleSubmit,
     // eslint-disable-line @typescript-eslint/no-unused-vars
-    formState: { errors },
+    formState: { errors, isValid },
     setValue,
     watch,
     reset,
@@ -69,6 +69,7 @@ const ApplicationForm: React.FC = () => {
     defaultValues: {
       idiomas: ['Español'],
     },
+    mode: 'onChange',
   });
 
   // Observar cambios en idiomas
@@ -261,7 +262,7 @@ const ApplicationForm: React.FC = () => {
             {/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12} sm={6}>
               <TextField
-                {...register('nombre')}
+                {...register('nombre', { required: true })}
                 label="Nombre *"
                 fullWidth
                 variant="outlined"
@@ -282,7 +283,7 @@ const ApplicationForm: React.FC = () => {
             {/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12} sm={6}>
               <TextField
-                {...register('apellido')}
+                {...register('apellido', { required: true })}
                 label="Apellido *"
                 fullWidth
                 variant="outlined"
@@ -303,7 +304,10 @@ const ApplicationForm: React.FC = () => {
             {/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12}>
               <TextField
-                {...register('email')}
+                {...register('email', {
+                  required: true,
+                  pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+                })}
                 label="Email *"
                 type="email"
                 fullWidth
@@ -441,6 +445,7 @@ const ApplicationForm: React.FC = () => {
                 variant="contained"
                 size="large"
                 fullWidth
+                disabled={!isValid}
                 sx={{
                   mt: 2,
                   py: 1.5,

@@ -60,7 +60,7 @@ const InvitationForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     setValue,
     watch,
     reset,
@@ -68,7 +68,9 @@ const InvitationForm: React.FC = () => {
     defaultValues: {
       idiomas: ['Español'],
     },
+    mode: 'onChange',
   });
+
   const watchedIdiomas = watch('idiomas');
 
   useEffect(() => {
@@ -274,7 +276,7 @@ const InvitationForm: React.FC = () => {
             {/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12}>
               <TextField
-                {...register('nombre')}
+                {...register('nombre', { required: true })}
                 label="Nombre *"
                 fullWidth
                 variant="outlined"
@@ -283,7 +285,7 @@ const InvitationForm: React.FC = () => {
             {/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12}>
               <TextField
-                {...register('apellido')}
+                {...register('apellido', { required: true })}
                 label="Apellido *"
                 fullWidth
                 variant="outlined"
@@ -292,7 +294,10 @@ const InvitationForm: React.FC = () => {
             {/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12}>
               <TextField
-                {...register('correo')}
+                {...register('correo', {
+                  required: true,
+                  pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+                })}
                 label="Email de la persona a invitar *"
                 type="email"
                 fullWidth
@@ -343,6 +348,7 @@ const InvitationForm: React.FC = () => {
                 variant="contained"
                 size="large"
                 fullWidth
+                disabled={!isValid}
                 sx={{
                   mt: 2,
                   py: 1.5,
