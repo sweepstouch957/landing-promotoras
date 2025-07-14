@@ -1,16 +1,13 @@
-'use client';
-
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Container } from '@mui/material';
 import InvitationForm from '@/components/InvitationForm';
 
-const InvitacionPage: React.FC = () => {
+export default function InvitacionPage() {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <InvitationForm />
+      <Suspense fallback={<div>Cargando invitación...</div>}>
+        <InvitationForm />
+      </Suspense>
     </Container>
   );
-};
-
-export default InvitacionPage;
-
+}
