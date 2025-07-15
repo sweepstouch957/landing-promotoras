@@ -116,8 +116,7 @@ const InvitationForm: React.FC = () => {
     try {
       const checkResponse = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users`,
         {
           method: 'GET',
@@ -163,8 +162,7 @@ const InvitationForm: React.FC = () => {
       // Crear usuario de invitación con slot seleccionado
       const userResponse = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users/invitation`,
         {
           method: 'POST',

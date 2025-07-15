@@ -105,8 +105,7 @@ const AppointmentCalendar: React.FC = () => {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments?startDate=${start}&endDate=${end}`
       );
 
@@ -138,19 +137,28 @@ const AppointmentCalendar: React.FC = () => {
   });
 
   const getAppointmentsCount = (date: Date) => {
-    const dateKey = format(date, 'yyyy-MM-dd');
+    // Usar la fecha local sin conversión UTC para evitar desfase
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateKey = `${year}-${month}-${day}`;
+    
     return appointmentsByDay[dateKey]?.totalAppointments || 0;
   };
 
   const handleDateClick = async (date: Date) => {
-    const dateKey = format(date, 'yyyy-MM-dd');
+    // Usar la fecha local sin conversión UTC para evitar desfase
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateKey = `${year}-${month}-${day}`;
+    
     setSelectedDate(dateKey);
 
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/day/${dateKey}`
       );
 
@@ -170,8 +178,7 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/slot/${slotId}/user/${userId}/approve`,
         {
           method: 'PUT',
@@ -185,8 +192,7 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL ||
-              'https://backend-promotoras.onrender.com'
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -211,8 +217,7 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/slot/${slotId}/user/${userId}/disapprove`,
         {
           method: 'PUT',
@@ -229,8 +234,7 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL ||
-              'https://backend-promotoras.onrender.com'
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -251,8 +255,7 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/slot/${slotId}/user/${userId}`,
         { method: 'DELETE' }
       );
@@ -262,8 +265,7 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL ||
-              'https://backend-promotoras.onrender.com'
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -284,8 +286,7 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/slot/${slotId}`,
         {
           method: 'PUT',
@@ -299,8 +300,7 @@ const AppointmentCalendar: React.FC = () => {
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL ||
-              'https://backend-promotoras.onrender.com'
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -322,19 +322,30 @@ const AppointmentCalendar: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
-        }/api/appointments/slot/${slotId}/generate-meet`,
-        { method: 'POST' }
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/slots/${slotId}/generate-meet`,
+        { 
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
 
       if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          // Mostrar mensaje de éxito
+          alert('Enlace de Google Meet generado y correos enviados exitosamente');
+        } else {
+          alert('Error: ' + result.message);
+        }
+        
         // Refrescar datos
         if (selectedDate) {
           const dayResponse = await fetch(
             `${
-              process.env.NEXT_PUBLIC_API_URL ||
-              'https://backend-promotoras.onrender.com'
+              process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
             }/api/appointments/day/${selectedDate}`
           );
           if (dayResponse.ok) {
@@ -344,9 +355,13 @@ const AppointmentCalendar: React.FC = () => {
             }
           }
         }
+      } else {
+        const errorResult = await response.json();
+        alert('Error generando enlace de Meet: ' + (errorResult.message || 'Error desconocido'));
       }
     } catch (err) {
       console.error('Error generating meet link:', err);
+      alert('Error de conexión al generar enlace de Meet');
     }
   };
 
@@ -546,7 +561,11 @@ const AppointmentCalendar: React.FC = () => {
             <PersonIcon sx={{ color: '#ED1F80' }} />
             Citas del{' '}
             {selectedDate &&
-              format(new Date(selectedDate), 'dd/MM/yyyy', { locale: es })}
+              (() => {
+                const [year, month, day] = selectedDate.split('-');
+                const localDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                return format(localDate, 'dd/MM/yyyy', { locale: es });
+              })()}
           </Box>
         </DialogTitle>
         <DialogContent>
@@ -623,18 +642,41 @@ const AppointmentCalendar: React.FC = () => {
                           </IconButton>
                         )}
                         {!appointment.enlaceMeet &&
-                          appointment.usuarios.length >=
-                            appointment.capacidadMaxima && (
+                          appointment.usuarios.length > 0 && (
                             <Button
                               size="small"
                               startIcon={<LinkIcon />}
                               onClick={() =>
                                 handleGenerateMeetLink(appointment._id)
                               }
+                              sx={{
+                                backgroundColor: '#ED1F80',
+                                color: 'white',
+                                '&:hover': {
+                                  backgroundColor: '#c91a6b',
+                                },
+                              }}
                             >
-                              Generar Meet
+                              Generar Meet y Enviar Correos
                             </Button>
                           )}
+                        {appointment.enlaceMeet && (
+                          <Button
+                            size="small"
+                            startIcon={<LinkIcon />}
+                            href={appointment.enlaceMeet}
+                            target="_blank"
+                            sx={{
+                              backgroundColor: '#4caf50',
+                              color: 'white',
+                              '&:hover': {
+                                backgroundColor: '#45a049',
+                              },
+                            }}
+                          >
+                            Abrir Meet
+                          </Button>
+                        )}
                       </Box>
                     </Box>
 

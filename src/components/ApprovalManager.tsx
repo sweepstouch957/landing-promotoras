@@ -109,8 +109,7 @@ const ApprovalManager: React.FC = () => {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users?${params}`
       );
 
@@ -144,8 +143,7 @@ const ApprovalManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/attendance/filter?asistio=true`
       );
 
@@ -184,8 +182,7 @@ const ApprovalManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users/${selectedUser._id}`,
         {
           method: 'PUT',
@@ -202,8 +199,7 @@ const ApprovalManager: React.FC = () => {
       try {
         await fetch(
           `${
-            process.env.NEXT_PUBLIC_API_URL ||
-            'https://backend-promotoras.onrender.com'
+            process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
           }/api/approval/approve`,
           {
             method: 'POST',
@@ -238,8 +234,7 @@ const ApprovalManager: React.FC = () => {
       // Actualizar estado a rechazado
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users/${selectedUser._id}`,
         {
           method: 'PUT',
@@ -256,8 +251,7 @@ const ApprovalManager: React.FC = () => {
       try {
         await fetch(
           `${
-            process.env.NEXT_PUBLIC_API_URL ||
-            'https://backend-promotoras.onrender.com'
+            process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
           }/api/approval/reject`,
           {
             method: 'POST',

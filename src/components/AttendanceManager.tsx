@@ -33,6 +33,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
 import {
   ExpandMore as ExpandMoreIcon,
@@ -44,6 +48,9 @@ import {
   Schedule as ScheduleIcon,
   Person as PersonIcon,
   Refresh as RefreshIcon,
+  Check as CheckIcon,
+  Close as CloseIcon,
+  ThumbUp as ThumbUpIcon,
 } from '@mui/icons-material';
 import { format, addDays, startOfWeek, endOfWeek } from 'date-fns';
 
@@ -55,6 +62,7 @@ interface User {
   telefono?: string;
   estado: string;
   estadoAprobacion?: string;
+  asistencia?: boolean | null; // null = sin marcar, true = asistió, false = no asistió
 }
 
 interface Appointment {
@@ -124,14 +132,53 @@ const AttendanceManager: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState(new Date());
   const [filterStatus, setFilterStatus] = useState<string>('realizada');
+  const [attendanceState, setAttendanceState] = useState<{
+    [appointmentId: string]: { [userId: string]: boolean | null };
+  }>({});
+
+  // Función para aprobar usuario
+  const approveUser = async (appointmentId: string, userId: string) => {
+    try {
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/appointments/slot/${appointmentId}/user/${userId}/approve`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ aprobadoPor: 'Admin' }),
+        }
+      );
+
+      if (response.ok) {
+        await fetchAppointmentsWithAttendance();
+        alert('Usuario aprobado exitosamente');
+      } else {
+        alert('Error al aprobar usuario');
+      }
+    } catch (error) {
+      console.error('Error approving user:', error);
+      alert('Error al aprobar usuario');
+    }
+  };
+
+  // Función para marcar/desmarcar asistencia
+  const toggleAttendance = (appointmentId: string, userId: string, attended: boolean | null) => {
+    setAttendanceState(prev => ({
+      ...prev,
+      [appointmentId]: {
+        ...prev[appointmentId],
+        [userId]: attended
+      }
+    }));
+  };
 
   // Cargar configuración de horarios
   const fetchScheduleConfig = async () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/schedule-config`
       );
 
@@ -158,8 +205,7 @@ const AttendanceManager: React.FC = () => {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments?startDate=${format(
           startDate,
           'yyyy-MM-dd'
@@ -219,8 +265,7 @@ const AttendanceManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/attendance`,
         {
           method: 'POST',
@@ -497,50 +542,123 @@ const AttendanceManager: React.FC = () => {
                                       <TableCell>Email</TableCell>
                                       <TableCell>Estado</TableCell>
                                       <TableCell>Asistencia</TableCell>
+                                      <TableCell>Acciones</TableCell>
                                     </TableRow>
                                   </TableHead>
                                   <TableBody>
-                                    {appointment.usuarios.map((user) => (
-                                      <TableRow key={user._id}>
-                                        <TableCell>
-                                          <Box
-                                            display="flex"
-                                            alignItems="center"
-                                            gap={1}
-                                          >
-                                            <PersonIcon sx={{ fontSize: 16 }} />
-                                            {user.nombre} {user.apellido}
-                                          </Box>
-                                        </TableCell>
-                                        <TableCell>{user.email}</TableCell>
-                                        <TableCell>
-                                          <Chip
-                                            label={
-                                              user.estadoAprobacion ||
-                                              user.estado
-                                            }
-                                            size="small"
-                                            color={
-                                              user.estadoAprobacion ===
-                                              'aprobado'
-                                                ? 'success'
-                                                : 'default'
-                                            }
-                                          />
-                                        </TableCell>
-                                        <TableCell>
-                                          <Chip
-                                            icon={<PendingIcon />}
-                                            label="Sin marcar"
-                                            size="small"
-                                            color="warning"
-                                          />
-                                        </TableCell>
-                                      </TableRow>
-                                    ))}
+                                    {appointment.usuarios.map((user) => {
+                                      const userAttendance = attendanceState[appointment._id]?.[user._id] ?? null;
+                                      return (
+                                        <TableRow key={user._id}>
+                                          <TableCell>
+                                            <Box
+                                              display="flex"
+                                              alignItems="center"
+                                              gap={1}
+                                            >
+                                              <PersonIcon sx={{ fontSize: 16 }} />
+                                              {user.nombre} {user.apellido}
+                                            </Box>
+                                          </TableCell>
+                                          <TableCell>{user.email}</TableCell>
+                                          <TableCell>
+                                            <Chip
+                                              label={
+                                                user.estadoAprobacion ||
+                                                user.estado
+                                              }
+                                              size="small"
+                                              color={
+                                                user.estadoAprobacion ===
+                                                'aprobado'
+                                                  ? 'success'
+                                                  : user.estadoAprobacion === 'pendiente'
+                                                  ? 'warning'
+                                                  : 'default'
+                                              }
+                                            />
+                                          </TableCell>
+                                          <TableCell>
+                                            <Box display="flex" alignItems="center" gap={1}>
+                                              <FormControlLabel
+                                                control={
+                                                  <Checkbox
+                                                    checked={userAttendance === true}
+                                                    indeterminate={userAttendance === null}
+                                                    onChange={(e) => {
+                                                      const newValue = e.target.checked ? true : 
+                                                        userAttendance === true ? false : null;
+                                                      toggleAttendance(appointment._id, user._id, newValue);
+                                                    }}
+                                                    icon={<CloseIcon />}
+                                                    checkedIcon={<CheckIcon />}
+                                                    indeterminateIcon={<PendingIcon />}
+                                                  />
+                                                }
+                                                label={
+                                                  userAttendance === true ? 'Asistió' :
+                                                  userAttendance === false ? 'No asistió' : 'Sin marcar'
+                                                }
+                                              />
+                                            </Box>
+                                          </TableCell>
+                                          <TableCell>
+                                            <Box display="flex" gap={1}>
+                                              {user.estadoAprobacion === 'pendiente' && (
+                                                <Tooltip title="Aprobar usuario">
+                                                  <IconButton
+                                                    size="small"
+                                                    color="success"
+                                                    onClick={() => approveUser(appointment._id, user._id)}
+                                                  >
+                                                    <ThumbUpIcon />
+                                                  </IconButton>
+                                                </Tooltip>
+                                              )}
+                                            </Box>
+                                          </TableCell>
+                                        </TableRow>
+                                      );
+                                    })}
                                   </TableBody>
                                 </Table>
                               </TableContainer>
+
+                              {/* Resumen de asistencias */}
+                              <Box mt={2} p={2} bgcolor="#f5f5f5" borderRadius={1}>
+                                <Typography variant="subtitle2" gutterBottom>
+                                  Resumen de Asistencias:
+                                </Typography>
+                                <Grid container spacing={2}>
+                                  {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+                                  <Grid item xs={4}>
+                                    <Box textAlign="center">
+                                      <Typography variant="h6" color="success.main">
+                                        {Object.values(attendanceState[appointment._id] || {}).filter(a => a === true).length}
+                                      </Typography>
+                                      <Typography variant="caption">Asistieron</Typography>
+                                    </Box>
+                                  </Grid>
+                                  {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+                                  <Grid item xs={4}>
+                                    <Box textAlign="center">
+                                      <Typography variant="h6" color="error.main">
+                                        {Object.values(attendanceState[appointment._id] || {}).filter(a => a === false).length}
+                                      </Typography>
+                                      <Typography variant="caption">No asistieron</Typography>
+                                    </Box>
+                                  </Grid>
+                                  {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+                                  <Grid item xs={4}>
+                                    <Box textAlign="center">
+                                      <Typography variant="h6" color="warning.main">
+                                        {appointment.usuarios.length - Object.keys(attendanceState[appointment._id] || {}).length}
+                                      </Typography>
+                                      <Typography variant="caption">Sin marcar</Typography>
+                                    </Box>
+                                  </Grid>
+                                </Grid>
+                              </Box>
                             </Box>
                           </AccordionDetails>
                         </Accordion>

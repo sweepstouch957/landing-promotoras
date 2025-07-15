@@ -86,8 +86,7 @@ async function loadAdminScheduleConfig() {
   try {
     const response = await fetch(
       `${
-        process.env.NEXT_PUBLIC_API_URL ||
-        'https://backend-promotoras.onrender.com'
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
       }/api/schedule-config`
     );
     if (!response.ok) {

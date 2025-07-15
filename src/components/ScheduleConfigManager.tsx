@@ -114,8 +114,7 @@ const ScheduleConfigManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/schedule-config`
       );
 
@@ -144,8 +143,7 @@ const ScheduleConfigManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/schedule-config/active`
       );
 
@@ -185,12 +183,10 @@ const ScheduleConfigManager: React.FC = () => {
     try {
       const url = editingConfig._id
         ? `${
-            process.env.NEXT_PUBLIC_API_URL ||
-            'https://backend-promotoras.onrender.com'
+            process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
           }/api/schedule-config/${editingConfig._id}`
         : `${
-            process.env.NEXT_PUBLIC_API_URL ||
-            'https://backend-promotoras.onrender.com'
+            process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
           }/api/schedule-config`;
 
       const method = editingConfig._id ? 'PUT' : 'POST';
@@ -228,8 +224,7 @@ const ScheduleConfigManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/schedule-config/activate/${configId}`,
         { method: 'POST' }
       );
@@ -252,8 +247,7 @@ const ScheduleConfigManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/schedule-config/${configId}/generate-slots`,
         { method: 'POST' }
       );

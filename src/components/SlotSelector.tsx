@@ -80,8 +80,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/schedule-config/active`
       );
 
@@ -117,8 +116,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
       // Si no está inicializado, intentar inicializar
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/initialize`,
         { method: 'POST' }
       );
@@ -152,8 +150,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/slots/week/${weekParam}`
       );
 
@@ -185,8 +182,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
       setLoading(true);
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/slots/create-weekly`,
         { method: 'POST' }
       );

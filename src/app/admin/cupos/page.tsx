@@ -27,6 +27,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Divider,
   List,
   ListItem,
   ListItemText,
@@ -42,6 +43,9 @@ import {
   CheckCircle as CheckCircleIcon,
   Pending as PendingIcon,
   Cancel as CancelIcon,
+  Delete as DeleteIcon,
+  ExpandMore as ExpandMoreIcon,
+  ExpandLess as ExpandLessIcon,
 } from '@mui/icons-material';
 import AdminLayout from '@/components/AdminLayout';
 import { format, addDays, startOfWeek, endOfWeek } from 'date-fns';
@@ -62,6 +66,7 @@ interface User {
 
 interface Appointment {
   _id: string;
+  fecha?: string;
   horaInicio: string;
   horaFin: string;
   capacidadMaxima: number;
@@ -100,6 +105,295 @@ interface ScheduleConfig {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Componente para mostrar slots llenos                              */
+/* ------------------------------------------------------------------ */
+
+interface FilledSlotsSectionProps {
+  selectedWeek: Date;
+  onRefresh: () => void;
+}
+
+const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({ 
+  selectedWeek, 
+  onRefresh 
+}) => {
+  const [filledSlots, setFilledSlots] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [expandedSlot, setExpandedSlot] = useState<string | null>(null);
+
+  const fetchFilledSlots = async () => {
+    setLoading(true);
+    try {
+      const startDate = startOfWeek(selectedWeek, { weekStartsOn: 1 });
+      const endDate = endOfWeek(selectedWeek, { weekStartsOn: 1 });
+
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/slots/filled?startDate=${format(
+          startDate,
+          'yyyy-MM-dd'
+        )}&endDate=${format(endDate, 'yyyy-MM-dd')}`
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          setFilledSlots(result.data);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching filled slots:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteSlot = async (slotId: string) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar este cupo? Esta acción no se puede deshacer.')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/slots/${slotId}`,
+        { method: 'DELETE' }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          alert('Cupo eliminado exitosamente');
+          fetchFilledSlots();
+          onRefresh();
+        } else {
+          alert('Error: ' + result.message);
+        }
+      } else {
+        const errorResult = await response.json();
+        alert('Error eliminando cupo: ' + (errorResult.message || 'Error desconocido'));
+      }
+    } catch (error) {
+      console.error('Error deleting slot:', error);
+      alert('Error de conexión al eliminar cupo');
+    }
+  };
+
+  const generateMeetAndSendEmails = async (slotId: string) => {
+    try {
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+        }/api/slots/${slotId}/generate-meet`,
+        { 
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          alert('Enlace de Google Meet generado y correos enviados exitosamente');
+          fetchFilledSlots();
+          onRefresh();
+        } else {
+          alert('Error: ' + result.message);
+        }
+      } else {
+        const errorResult = await response.json();
+        alert('Error generando enlace de Meet: ' + (errorResult.message || 'Error desconocido'));
+      }
+    } catch (error) {
+      console.error('Error generating meet link:', error);
+      alert('Error de conexión al generar enlace de Meet');
+    }
+  };
+
+  useEffect(() => {
+    fetchFilledSlots();
+  }, [selectedWeek]);
+
+  if (loading) {
+    return (
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Box display="flex" justifyContent="center" py={2}>
+            <CircularProgress sx={{ color: '#ED1F80' }} />
+          </Box>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (filledSlots.length === 0) {
+    return (
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Typography variant="h6" sx={{ color: '#ED1F80', mb: 2 }}>
+            Cupos Llenos
+          </Typography>
+          <Alert severity="info">
+            No hay cupos llenos para esta semana.
+          </Alert>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card sx={{ mb: 3 }}>
+      <CardContent>
+        <Typography variant="h6" sx={{ color: '#ED1F80', mb: 2 }}>
+          Cupos Llenos ({filledSlots.length})
+        </Typography>
+        
+        {filledSlots.map((slot) => (
+          <Card key={slot._id} sx={{ mb: 2, border: '1px solid #ff9800' }}>
+            <CardContent>
+              <Box 
+                display="flex" 
+                justifyContent="space-between" 
+                alignItems="center"
+                sx={{ cursor: 'pointer' }}
+                onClick={() => setExpandedSlot(
+                  expandedSlot === slot._id ? null : slot._id
+                )}
+              >
+                <Box display="flex" alignItems="center" gap={2}>
+                  <ScheduleIcon sx={{ color: '#ff9800' }} />
+                  <Box>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {format(new Date(slot.fecha || ''), 'dd/MM/yyyy')} - {slot.horaInicio} a {slot.horaFin}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {slot.usuarios.length}/{slot.capacidadMaxima} participantes
+                    </Typography>
+                  </Box>
+                </Box>
+                
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Chip label="LLENO" color="warning" size="small" />
+                  {expandedSlot === slot._id ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                </Box>
+              </Box>
+
+              {expandedSlot === slot._id && (
+                <Box mt={2}>
+                  <Divider sx={{ mb: 2 }} />
+                  
+                  {/* Acciones */}
+                  <Box display="flex" gap={1} mb={2}>
+                    {!slot.enlaceMeet && (
+                      <Button
+                        size="small"
+                        startIcon={<VideoCallIcon />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          generateMeetAndSendEmails(slot._id);
+                        }}
+                        sx={{
+                          backgroundColor: '#ED1F80',
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: '#c91a6b',
+                          },
+                        }}
+                      >
+                        Generar Meet y Enviar Correos
+                      </Button>
+                    )}
+                    
+                    {slot.enlaceMeet && (
+                      <Button
+                        size="small"
+                        startIcon={<VideoCallIcon />}
+                        href={slot.enlaceMeet}
+                        target="_blank"
+                        sx={{
+                          backgroundColor: '#4caf50',
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: '#45a049',
+                          },
+                        }}
+                      >
+                        Abrir Meet
+                      </Button>
+                    )}
+                    
+                    <Button
+                      size="small"
+                      startIcon={<DeleteIcon />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteSlot(slot._id);
+                      }}
+                      sx={{
+                        backgroundColor: '#f44336',
+                        color: 'white',
+                        '&:hover': {
+                          backgroundColor: '#d32f2f',
+                        },
+                      }}
+                    >
+                      Eliminar Cupo
+                    </Button>
+                  </Box>
+
+                  {/* Lista de usuarios */}
+                  <Typography variant="subtitle2" gutterBottom>
+                    Participantes:
+                  </Typography>
+                  <List dense>
+                    {slot.usuarios.map((user) => (
+                      <ListItem key={user._id} sx={{ py: 0.5 }}>
+                        <ListItemText
+                          primary={`${user.nombre} ${user.apellido}`}
+                          secondary={
+                            <Box>
+                              <Typography variant="body2" component="span">
+                                {user.email}
+                                {user.telefono ? ` - ${user.telefono}` : ''}
+                              </Typography>
+                              <Box display="flex" gap={1} mt={0.5}>
+                                <Chip
+                                  label={user.estado}
+                                  size="small"
+                                  color={user.estado === 'aprobado' ? 'success' : 'default'}
+                                />
+                                {user.estadoAprobacion && (
+                                  <Chip
+                                    label={user.estadoAprobacion}
+                                    size="small"
+                                    color={
+                                      user.estadoAprobacion === 'aprobado' ? 'success' :
+                                      user.estadoAprobacion === 'desaprobado' ? 'error' : 'warning'
+                                    }
+                                  />
+                                )}
+                              </Box>
+                            </Box>
+                          }
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </CardContent>
+    </Card>
+  );
+};
+
+/* ------------------------------------------------------------------ */
 /*  Componente principal                                               */
 /* ------------------------------------------------------------------ */
 
@@ -127,8 +421,7 @@ export default function CuposPage() {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/schedule-config`
       );
       if (response.ok) {
@@ -156,8 +449,7 @@ export default function CuposPage() {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments?startDate=${format(
           startDate,
           'yyyy-MM-dd'
@@ -208,8 +500,7 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/stats`
       );
       if (res.ok) {
@@ -229,8 +520,7 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/slot/${id}/generate-meet`,
         { method: 'POST' }
       );
@@ -246,8 +536,7 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/slot/${appId}/user/${userId}/approve`,
         {
           method: 'PUT',
@@ -268,8 +557,7 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/slot/${appId}/user/${userId}/disapprove`,
         {
           method: 'PUT',
@@ -507,6 +795,15 @@ export default function CuposPage() {
             <Typography variant="h5" sx={{ mb: 2 }}>
               Citas Agrupadas (Grupos de 15)
             </Typography>
+
+            {/* Sección de slots llenos */}
+            <FilledSlotsSection 
+              selectedWeek={selectedWeek}
+              onRefresh={() => {
+                fetchAppointments();
+                fetchStats();
+              }}
+            />
 
             {appointmentGroups.length === 0 ? (
               <Alert severity="info">

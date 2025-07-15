@@ -79,8 +79,7 @@ const TodayAppointments: React.FC = () => {
       const today = new Date().toISOString().split('T')[0];
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/appointments/day/${today}`
       );
 

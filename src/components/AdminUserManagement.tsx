@@ -105,8 +105,7 @@ const AdminUserManagement: React.FC = () => {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users?${params}`
       );
 
@@ -135,8 +134,7 @@ const AdminUserManagement: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users/stats/overview`
       );
 
@@ -163,8 +161,7 @@ const AdminUserManagement: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users/${selectedUser._id}`,
         {
           method: 'PUT',
@@ -194,8 +191,7 @@ const AdminUserManagement: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL ||
-          'https://backend-promotoras.onrender.com'
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
         }/api/users/${selectedUser._id}`,
         { method: 'DELETE' }
       );
