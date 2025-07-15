@@ -113,9 +113,9 @@ interface FilledSlotsSectionProps {
   onRefresh: () => void;
 }
 
-const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({ 
-  selectedWeek, 
-  onRefresh 
+const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
+  selectedWeek,
+  onRefresh,
 }) => {
   const [filledSlots, setFilledSlots] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(false);
@@ -129,7 +129,8 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/slots/filled?startDate=${format(
           startDate,
           'yyyy-MM-dd'
@@ -150,14 +151,19 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
   };
 
   const deleteSlot = async (slotId: string) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar este cupo? Esta acción no se puede deshacer.')) {
+    if (
+      !confirm(
+        '¿Estás seguro de que quieres eliminar este cupo? Esta acción no se puede deshacer.'
+      )
+    ) {
       return;
     }
 
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/slots/${slotId}`,
         { method: 'DELETE' }
       );
@@ -173,7 +179,10 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
         }
       } else {
         const errorResult = await response.json();
-        alert('Error eliminando cupo: ' + (errorResult.message || 'Error desconocido'));
+        alert(
+          'Error eliminando cupo: ' +
+            (errorResult.message || 'Error desconocido')
+        );
       }
     } catch (error) {
       console.error('Error deleting slot:', error);
@@ -185,20 +194,23 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/slots/${slotId}/generate-meet`,
-        { 
+        {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         }
       );
 
       if (response.ok) {
         const result = await response.json();
         if (result.success) {
-          alert('Enlace de Google Meet generado y correos enviados exitosamente');
+          alert(
+            'Enlace de Google Meet generado y correos enviados exitosamente'
+          );
           fetchFilledSlots();
           onRefresh();
         } else {
@@ -206,7 +218,10 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
         }
       } else {
         const errorResult = await response.json();
-        alert('Error generando enlace de Meet: ' + (errorResult.message || 'Error desconocido'));
+        alert(
+          'Error generando enlace de Meet: ' +
+            (errorResult.message || 'Error desconocido')
+        );
       }
     } catch (error) {
       console.error('Error generating meet link:', error);
@@ -237,9 +252,7 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
           <Typography variant="h6" sx={{ color: '#ED1F80', mb: 2 }}>
             Cupos Llenos
           </Typography>
-          <Alert severity="info">
-            No hay cupos llenos para esta semana.
-          </Alert>
+          <Alert severity="info">No hay cupos llenos para esta semana.</Alert>
         </CardContent>
       </Card>
     );
@@ -251,41 +264,47 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
         <Typography variant="h6" sx={{ color: '#ED1F80', mb: 2 }}>
           Cupos Llenos ({filledSlots.length})
         </Typography>
-        
+
         {filledSlots.map((slot) => (
           <Card key={slot._id} sx={{ mb: 2, border: '1px solid #ff9800' }}>
             <CardContent>
-              <Box 
-                display="flex" 
-                justifyContent="space-between" 
+              <Box
+                display="flex"
+                justifyContent="space-between"
                 alignItems="center"
                 sx={{ cursor: 'pointer' }}
-                onClick={() => setExpandedSlot(
-                  expandedSlot === slot._id ? null : slot._id
-                )}
+                onClick={() =>
+                  setExpandedSlot(expandedSlot === slot._id ? null : slot._id)
+                }
               >
                 <Box display="flex" alignItems="center" gap={2}>
                   <ScheduleIcon sx={{ color: '#ff9800' }} />
                   <Box>
                     <Typography variant="subtitle1" fontWeight="bold">
-                      {format(new Date(slot.fecha || ''), 'dd/MM/yyyy')} - {slot.horaInicio} a {slot.horaFin}
+                      {format(new Date(slot.fecha || ''), 'dd/MM/yyyy')} -{' '}
+                      {slot.horaInicio} a {slot.horaFin}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {slot.usuarios.length}/{slot.capacidadMaxima} participantes
+                      {slot.usuarios.length}/{slot.capacidadMaxima}{' '}
+                      participantes
                     </Typography>
                   </Box>
                 </Box>
-                
+
                 <Box display="flex" alignItems="center" gap={1}>
                   <Chip label="LLENO" color="warning" size="small" />
-                  {expandedSlot === slot._id ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                  {expandedSlot === slot._id ? (
+                    <ExpandLessIcon />
+                  ) : (
+                    <ExpandMoreIcon />
+                  )}
                 </Box>
               </Box>
 
               {expandedSlot === slot._id && (
                 <Box mt={2}>
                   <Divider sx={{ mb: 2 }} />
-                  
+
                   {/* Acciones */}
                   <Box display="flex" gap={1} mb={2}>
                     {!slot.enlaceMeet && (
@@ -307,7 +326,7 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
                         Generar Meet y Enviar Correos
                       </Button>
                     )}
-                    
+
                     {slot.enlaceMeet && (
                       <Button
                         size="small"
@@ -325,7 +344,7 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
                         Abrir Meet
                       </Button>
                     )}
-                    
+
                     <Button
                       size="small"
                       startIcon={<DeleteIcon />}
@@ -364,15 +383,23 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
                                 <Chip
                                   label={user.estado}
                                   size="small"
-                                  color={user.estado === 'aprobado' ? 'success' : 'default'}
+                                  color={
+                                    user.estado === 'aprobado'
+                                      ? 'success'
+                                      : 'default'
+                                  }
                                 />
                                 {user.estadoAprobacion && (
                                   <Chip
                                     label={user.estadoAprobacion}
                                     size="small"
                                     color={
-                                      user.estadoAprobacion === 'aprobado' ? 'success' :
-                                      user.estadoAprobacion === 'desaprobado' ? 'error' : 'warning'
+                                      user.estadoAprobacion === 'aprobado'
+                                        ? 'success'
+                                        : user.estadoAprobacion ===
+                                          'desaprobado'
+                                        ? 'error'
+                                        : 'warning'
                                     }
                                   />
                                 )}
@@ -421,7 +448,8 @@ export default function CuposPage() {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/schedule-config`
       );
       if (response.ok) {
@@ -449,7 +477,8 @@ export default function CuposPage() {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments?startDate=${format(
           startDate,
           'yyyy-MM-dd'
@@ -500,7 +529,8 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/stats`
       );
       if (res.ok) {
@@ -520,7 +550,8 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${id}/generate-meet`,
         { method: 'POST' }
       );
@@ -536,7 +567,8 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${appId}/user/${userId}/approve`,
         {
           method: 'PUT',
@@ -557,7 +589,8 @@ export default function CuposPage() {
     try {
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${appId}/user/${userId}/disapprove`,
         {
           method: 'PUT',
@@ -797,7 +830,7 @@ export default function CuposPage() {
             </Typography>
 
             {/* Sección de slots llenos */}
-            <FilledSlotsSection 
+            <FilledSlotsSection
               selectedWeek={selectedWeek}
               onRefresh={() => {
                 fetchAppointments();

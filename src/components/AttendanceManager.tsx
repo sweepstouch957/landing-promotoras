@@ -141,7 +141,8 @@ const AttendanceManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments/slot/${appointmentId}/user/${userId}/approve`,
         {
           method: 'PUT',
@@ -163,13 +164,17 @@ const AttendanceManager: React.FC = () => {
   };
 
   // Función para marcar/desmarcar asistencia
-  const toggleAttendance = (appointmentId: string, userId: string, attended: boolean | null) => {
-    setAttendanceState(prev => ({
+  const toggleAttendance = (
+    appointmentId: string,
+    userId: string,
+    attended: boolean | null
+  ) => {
+    setAttendanceState((prev) => ({
       ...prev,
       [appointmentId]: {
         ...prev[appointmentId],
-        [userId]: attended
-      }
+        [userId]: attended,
+      },
     }));
   };
 
@@ -178,7 +183,8 @@ const AttendanceManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/schedule-config`
       );
 
@@ -205,7 +211,8 @@ const AttendanceManager: React.FC = () => {
 
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/appointments?startDate=${format(
           startDate,
           'yyyy-MM-dd'
@@ -265,7 +272,8 @@ const AttendanceManager: React.FC = () => {
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
+          process.env.NEXT_PUBLIC_API_URL ||
+          'https://backend-promotoras.onrender.com'
         }/api/attendance`,
         {
           method: 'POST',
@@ -547,7 +555,10 @@ const AttendanceManager: React.FC = () => {
                                   </TableHead>
                                   <TableBody>
                                     {appointment.usuarios.map((user) => {
-                                      const userAttendance = attendanceState[appointment._id]?.[user._id] ?? null;
+                                      const userAttendance =
+                                        attendanceState[appointment._id]?.[
+                                          user._id
+                                        ] ?? null;
                                       return (
                                         <TableRow key={user._id}>
                                           <TableCell>
@@ -556,7 +567,9 @@ const AttendanceManager: React.FC = () => {
                                               alignItems="center"
                                               gap={1}
                                             >
-                                              <PersonIcon sx={{ fontSize: 16 }} />
+                                              <PersonIcon
+                                                sx={{ fontSize: 16 }}
+                                              />
                                               {user.nombre} {user.apellido}
                                             </Box>
                                           </TableCell>
@@ -572,44 +585,73 @@ const AttendanceManager: React.FC = () => {
                                                 user.estadoAprobacion ===
                                                 'aprobado'
                                                   ? 'success'
-                                                  : user.estadoAprobacion === 'pendiente'
+                                                  : user.estadoAprobacion ===
+                                                    'pendiente'
                                                   ? 'warning'
                                                   : 'default'
                                               }
                                             />
                                           </TableCell>
                                           <TableCell>
-                                            <Box display="flex" alignItems="center" gap={1}>
+                                            <Box
+                                              display="flex"
+                                              alignItems="center"
+                                              gap={1}
+                                            >
                                               <FormControlLabel
                                                 control={
                                                   <Checkbox
-                                                    checked={userAttendance === true}
-                                                    indeterminate={userAttendance === null}
+                                                    checked={
+                                                      userAttendance === true
+                                                    }
+                                                    indeterminate={
+                                                      userAttendance === null
+                                                    }
                                                     onChange={(e) => {
-                                                      const newValue = e.target.checked ? true : 
-                                                        userAttendance === true ? false : null;
-                                                      toggleAttendance(appointment._id, user._id, newValue);
+                                                      const newValue = e.target
+                                                        .checked
+                                                        ? true
+                                                        : userAttendance ===
+                                                          true
+                                                        ? false
+                                                        : null;
+                                                      toggleAttendance(
+                                                        appointment._id,
+                                                        user._id,
+                                                        newValue
+                                                      );
                                                     }}
                                                     icon={<CloseIcon />}
                                                     checkedIcon={<CheckIcon />}
-                                                    indeterminateIcon={<PendingIcon />}
+                                                    indeterminateIcon={
+                                                      <PendingIcon />
+                                                    }
                                                   />
                                                 }
                                                 label={
-                                                  userAttendance === true ? 'Asistió' :
-                                                  userAttendance === false ? 'No asistió' : 'Sin marcar'
+                                                  userAttendance === true
+                                                    ? 'Asistió'
+                                                    : userAttendance === false
+                                                    ? 'No asistió'
+                                                    : 'Sin marcar'
                                                 }
                                               />
                                             </Box>
                                           </TableCell>
                                           <TableCell>
                                             <Box display="flex" gap={1}>
-                                              {user.estadoAprobacion === 'pendiente' && (
+                                              {user.estadoAprobacion ===
+                                                'pendiente' && (
                                                 <Tooltip title="Aprobar usuario">
                                                   <IconButton
                                                     size="small"
                                                     color="success"
-                                                    onClick={() => approveUser(appointment._id, user._id)}
+                                                    onClick={() =>
+                                                      approveUser(
+                                                        appointment._id,
+                                                        user._id
+                                                      )
+                                                    }
                                                   >
                                                     <ThumbUpIcon />
                                                   </IconButton>
@@ -625,7 +667,12 @@ const AttendanceManager: React.FC = () => {
                               </TableContainer>
 
                               {/* Resumen de asistencias */}
-                              <Box mt={2} p={2} bgcolor="#f5f5f5" borderRadius={1}>
+                              <Box
+                                mt={2}
+                                p={2}
+                                bgcolor="#f5f5f5"
+                                borderRadius={1}
+                              >
                                 <Typography variant="subtitle2" gutterBottom>
                                   Resumen de Asistencias:
                                 </Typography>
@@ -633,28 +680,57 @@ const AttendanceManager: React.FC = () => {
                                   {/* @ts-expect-error: MUI Grid typing conflict workaround */}
                                   <Grid item xs={4}>
                                     <Box textAlign="center">
-                                      <Typography variant="h6" color="success.main">
-                                        {Object.values(attendanceState[appointment._id] || {}).filter(a => a === true).length}
+                                      <Typography
+                                        variant="h6"
+                                        color="success.main"
+                                      >
+                                        {
+                                          Object.values(
+                                            attendanceState[appointment._id] ||
+                                              {}
+                                          ).filter((a) => a === true).length
+                                        }
                                       </Typography>
-                                      <Typography variant="caption">Asistieron</Typography>
+                                      <Typography variant="caption">
+                                        Asistieron
+                                      </Typography>
                                     </Box>
                                   </Grid>
                                   {/* @ts-expect-error: MUI Grid typing conflict workaround */}
                                   <Grid item xs={4}>
                                     <Box textAlign="center">
-                                      <Typography variant="h6" color="error.main">
-                                        {Object.values(attendanceState[appointment._id] || {}).filter(a => a === false).length}
+                                      <Typography
+                                        variant="h6"
+                                        color="error.main"
+                                      >
+                                        {
+                                          Object.values(
+                                            attendanceState[appointment._id] ||
+                                              {}
+                                          ).filter((a) => a === false).length
+                                        }
                                       </Typography>
-                                      <Typography variant="caption">No asistieron</Typography>
+                                      <Typography variant="caption">
+                                        No asistieron
+                                      </Typography>
                                     </Box>
                                   </Grid>
                                   {/* @ts-expect-error: MUI Grid typing conflict workaround */}
                                   <Grid item xs={4}>
                                     <Box textAlign="center">
-                                      <Typography variant="h6" color="warning.main">
-                                        {appointment.usuarios.length - Object.keys(attendanceState[appointment._id] || {}).length}
+                                      <Typography
+                                        variant="h6"
+                                        color="warning.main"
+                                      >
+                                        {appointment.usuarios.length -
+                                          Object.keys(
+                                            attendanceState[appointment._id] ||
+                                              {}
+                                          ).length}
                                       </Typography>
-                                      <Typography variant="caption">Sin marcar</Typography>
+                                      <Typography variant="caption">
+                                        Sin marcar
+                                      </Typography>
                                     </Box>
                                   </Grid>
                                 </Grid>

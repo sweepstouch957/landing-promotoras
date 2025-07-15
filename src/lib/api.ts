@@ -1,5 +1,6 @@
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+  process.env.NEXT_PUBLIC_API_URL ||
+  'https://backend-promotoras.onrender.com/api';
 
 export const api = {
   // Usuarios
