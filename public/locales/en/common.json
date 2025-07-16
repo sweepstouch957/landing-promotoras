@@ -119,9 +119,25 @@
   "form_error_telefono_invalido": "Invalid phone number",
   "form_error_edad_minima": "Must be 18 or older",
 
-  "form_success_title": "Application sent!",
-  "form_success_text": "Thank you! We'll be in touch soon.",
-  "form_error_title": "Error",
-  "form_error_text": "There was a problem submitting your application. Please try again.",
-  "form_button_ok": "OK"
+  "form": {
+    "title": "Application Form",
+    "subtitle": "Fill in your information to schedule an appointment. Fields marked with * are required.",
+    "name": "First Name",
+    "lastname": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "age": "Age",
+    "ageRequired": "Age is required",
+    "ageNumber": "Age must be a number",
+    "ageMin": "You must be at least 18 years old",
+    "ageMax": "Maximum allowed age is 100",
+    "zip": "ZIP Code",
+    "languages": "Languages you speak",
+    "submit": "Submit Information"
+  },
+  "modal": {
+    "title": "Thank you, {{nombre}}!",
+    "description": "We have received your information. You will soon receive an email with informational videos about your potential job position.",
+    "close": "Close"
+  }
 }

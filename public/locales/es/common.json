@@ -119,9 +119,25 @@
   "form_error_telefono_invalido": "Teléfono inválido",
   "form_error_edad_minima": "Debe ser mayor de edad",
 
-  "form_success_title": "¡Solicitud enviada!",
-  "form_success_text": "Gracias por participar. Te contactaremos pronto.",
-  "form_error_title": "Error",
-  "form_error_text": "Hubo un problema al enviar tu solicitud. Inténtalo más tarde.",
-  "form_button_ok": "Aceptar"
+  "form": {
+    "title": "Formulario de Aplicación",
+    "subtitle": "Completa tus datos para agendar una cita. Los campos marcados con * son obligatorios.",
+    "name": "Nombre",
+    "lastname": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "age": "Edad",
+    "ageRequired": "La edad es obligatoria",
+    "ageNumber": "La edad debe ser un número",
+    "ageMin": "Debes tener al menos 18 años",
+    "ageMax": "Edad máxima permitida: 100 años",
+    "zip": "Código Postal (Zip Code)",
+    "languages": "Idiomas que hablas",
+    "submit": "Enviar datos"
+  },
+  "modal": {
+    "title": "¡Gracias, {{nombre}}!",
+    "description": "Hemos recibido tu información. Pronto recibirás un correo con videos informativos sobre tu posible puesto de trabajo.",
+    "close": "Cerrar"
+  }
 }
