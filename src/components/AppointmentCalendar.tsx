@@ -138,21 +138,13 @@ const AppointmentCalendar: React.FC = () => {
   });
 
   const getAppointmentsCount = (date: Date) => {
-    // Usar la fecha local sin conversión UTC para evitar desfase
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const dateKey = `${year}-${month}-${day}`;
+    const dateKey = format(date, 'yyyy-MM-dd');
 
     return appointmentsByDay[dateKey]?.totalAppointments || 0;
   };
 
   const handleDateClick = async (date: Date) => {
-    // Usar la fecha local sin conversión UTC para evitar desfase
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const dateKey = `${year}-${month}-${day}`;
+    const dateKey = format(date, 'yyyy-MM-dd');
 
     setSelectedDate(dateKey);
 

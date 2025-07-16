@@ -93,18 +93,24 @@ const ApplicationForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     console.log('📝 Datos del formulario antes de enviar:', data);
 
-    // Asegurar que los idiomas estén incluidos
-    const formDataWithIdiomas = {
+    // Para tu backend (mantener tipo original con idiomas como array)
+    const formDataWithIdiomas: FormData = {
       ...data,
       idiomas: selectedIdiomas,
+    };
+
+    // Para la hoja de cálculo (idiomas como string)
+    const formDataForSheet = {
+      ...data,
+      idiomas: selectedIdiomas.join(', '),
     };
 
     console.log('✅ Datos del formulario procesados:', formDataWithIdiomas);
     setCurrentFormData(formDataWithIdiomas);
     setSubmitError(null);
 
-    // Verificar si el usuario ya existe
     try {
+      // Verificar si el usuario ya existe
       const checkResponse = await fetch(
         `${
           process.env.NEXT_PUBLIC_API_URL ||
@@ -129,7 +135,27 @@ const ApplicationForm: React.FC = () => {
         }
       }
 
-      // Si no existe, mostrar selector de slot
+      // Enviar datos a la hoja de cálculo (SheetDB)
+      try {
+        const sheetResponse = await fetch(
+          'https://sheetdb.io/api/v1/5rnrmuhqeq1h4',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data: formDataForSheet }),
+          }
+        );
+
+        if (!sheetResponse.ok) {
+          console.warn('⚠️ No se pudieron guardar los datos en SheetDB');
+        } else {
+          console.log('📋 Datos enviados exitosamente a SheetDB');
+        }
+      } catch (sheetError) {
+        console.warn('⚠️ Error al enviar a SheetDB:', sheetError);
+      }
+
+      // Mostrar el selector de horarios (flujo original)
       setShowSlotSelector(true);
     } catch (error) {
       console.error('❌ Error verificando usuario:', error);

@@ -306,8 +306,7 @@ export default function AdminScheduleCalendar() {
           return null;
         }
 
-        // Crear fecha usando UTC para evitar problemas de zona horaria
-        const eventDate = new Date(Date.UTC(year, month - 1, day));
+        const eventDate = new Date(year, month - 1, day);
 
         // Verificar que la fecha sea válida
         if (isNaN(eventDate.getTime())) {
