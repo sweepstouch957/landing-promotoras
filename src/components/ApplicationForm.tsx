@@ -32,6 +32,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: React.ReactElement<any, any>;
   },
   ref: React.Ref<unknown>
@@ -171,6 +172,7 @@ const ApplicationForm: React.FC = () => {
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <Grid container spacing={3}>
+            {/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('nombre', { required: true })}
@@ -180,7 +182,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('apellido', { required: true })}
@@ -190,7 +192,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12}>
               <TextField
                 {...register('email', {
@@ -204,7 +206,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('telefono')}
@@ -214,7 +216,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('edad', {
@@ -235,7 +237,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12}>
               <TextField
                 {...register('zipCode')}
@@ -245,7 +247,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12}>
               <TextField
                 {...register('supermercado', { required: t('form.storeRequired') })}
@@ -257,7 +259,7 @@ const ApplicationForm: React.FC = () => {
                 helperText={errors.supermercado?.message}
               />
             </Grid>
-
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel sx={{ '&.Mui-focused': { color: '#ED1F80' } }}>
@@ -295,6 +297,7 @@ const ApplicationForm: React.FC = () => {
             </Grid>
 
             {isFormReady && (
+              //@ts-expect-error: MUI Grid typing conflict workaround 
               <Grid item xs={12}>
                 <Button
                   type="submit"
