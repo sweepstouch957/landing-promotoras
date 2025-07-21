@@ -133,7 +133,9 @@
     "ageMax": "Edad máxima permitida: 100 años",
     "zip": "Código Postal (Zip Code)",
     "languages": "Idiomas que hablas",
-    "submit": "Enviar datos"
+    "submit": "Enviar datos",
+    "store": "Supermercado",
+    "storeRequired": "El supermercado es obligatorio"
   },
   "modal": {
     "title": "¡Gracias, {{nombre}}!",

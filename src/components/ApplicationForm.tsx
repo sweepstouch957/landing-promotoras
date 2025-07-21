@@ -24,13 +24,14 @@ import {
   DialogContent,
   DialogActions,
   Slide,
+  Backdrop,
+  CircularProgress,
 } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: React.ReactElement<any, any>;
   },
   ref: React.Ref<unknown>
@@ -45,6 +46,7 @@ type FormData = {
   telefono?: string;
   edad?: string;
   zipCode?: string;
+  supermercado: string;
   idiomas: string[];
 };
 
@@ -81,6 +83,7 @@ const ApplicationForm: React.FC = () => {
   const [selectedIdiomas, setSelectedIdiomas] = useState<string[]>(['Español']);
   const [modalOpen, setModalOpen] = useState(false);
   const [nombre, setNombre] = useState('');
+  const [loading, setLoading] = useState(false); // Estado de carga
 
   const {
     register,
@@ -108,12 +111,20 @@ const ApplicationForm: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     setNombre(data.nombre);
+
     const formDataForSheet = {
-      ...data,
+      Nombre: data.nombre,
+      apellido: data.apellido,
+      edad: data.edad ?? '',
+      telefono: data.telefono ?? '',
+      zip: data.zipCode ?? '',
+      correo: data.email,
+      supermercado: data.supermercado,
       idiomas: selectedIdiomas.join(', '),
     };
 
     try {
+      setLoading(true); // Mostrar loading
       await fetch('https://sheetdb.io/api/v1/5rnrmuhqeq1h4', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -124,6 +135,8 @@ const ApplicationForm: React.FC = () => {
       setSelectedIdiomas(['Español']);
     } catch (error) {
       console.error('❌ Error al enviar a SheetDB:', error);
+    } finally {
+      setLoading(false); // Ocultar loading
     }
   };
 
@@ -158,7 +171,6 @@ const ApplicationForm: React.FC = () => {
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <Grid container spacing={3}>
-            {/* @ts-expect-error: MUI Grid typing conflict workaround */}
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('nombre', { required: true })}
@@ -168,7 +180,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-            {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('apellido', { required: true })}
@@ -178,7 +190,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-            {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+
             <Grid item xs={12}>
               <TextField
                 {...register('email', {
@@ -192,7 +204,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-            {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('telefono')}
@@ -202,7 +214,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-            {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('edad', {
@@ -223,7 +235,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-            {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+
             <Grid item xs={12}>
               <TextField
                 {...register('zipCode')}
@@ -233,7 +245,19 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-            {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+
+            <Grid item xs={12}>
+              <TextField
+                {...register('supermercado', { required: t('form.storeRequired') })}
+                label={`${t('form.store')} *`}
+                fullWidth
+                variant="outlined"
+                sx={inputStyles}
+                error={!!errors.supermercado}
+                helperText={errors.supermercado?.message}
+              />
+            </Grid>
+
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel sx={{ '&.Mui-focused': { color: '#ED1F80' } }}>
@@ -269,8 +293,8 @@ const ApplicationForm: React.FC = () => {
                 </Select>
               </FormControl>
             </Grid>
+
             {isFormReady && (
-              //@ts-expect-error: MUI Grid typing conflict workaround
               <Grid item xs={12}>
                 <Button
                   type="submit"
@@ -292,7 +316,7 @@ const ApplicationForm: React.FC = () => {
         </Box>
       </Paper>
 
-      {/* Modal con animación y blur */}
+      {/* Modal de éxito */}
       <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -346,6 +370,14 @@ const ApplicationForm: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Loading Spinner */}
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };
