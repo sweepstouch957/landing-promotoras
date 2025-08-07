@@ -6,21 +6,19 @@ export default function PaymentStructure() {
   const { t } = useTranslation('common');
 
   const paymentData = [
-    { participaciones: 100, pagoTurno: '$40', pagoHora: '$10' },
-    { participaciones: 150, pagoTurno: '$60', pagoHora: '$15' },
-    { participaciones: 175, pagoTurno: '$70', pagoHora: '$17.50' },
+    { participaciones: 100, pagoTurno: '$50', pagoHora: '$12.5' },
+    { participaciones: 150, pagoTurno: '$75', pagoHora: '$18.75' },
     {
       participaciones: '200 (Meta)',
-      pagoTurno: '$80',
-      pagoHora: '$20',
-      highlighted: true,
-    },
-    { participaciones: 250, pagoTurno: '$86', pagoHora: '$21.50' },
-    { participaciones: 300, pagoTurno: '$92', pagoHora: '$23' },
-    {
-      participaciones: 350,
       pagoTurno: '$100',
       pagoHora: '$25',
+      highlighted: true,
+    },
+    { participaciones: 250, pagoTurno: '$125', pagoHora: '$31.25' },
+    {
+      participaciones: 400,
+      pagoTurno: '$200',
+      pagoHora: '$50',
       highlighted: true,
     },
   ];
@@ -28,7 +26,11 @@ export default function PaymentStructure() {
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{t('payment_title')}</h2>
-      <p className={styles.subtitle}>{t('payment_subtitle')}</p>
+      <p
+  className={styles.subtitle}
+  dangerouslySetInnerHTML={{ __html: t('payment_subtitle') }}
+></p>
+
 
       <div className={styles.tableContainer}>
         <h3 className={styles.tableTitle}>{t('payment_table_title')}</h3>
@@ -51,9 +53,7 @@ export default function PaymentStructure() {
               {paymentData.map((row, index) => (
                 <tr
                   key={index}
-                  className={`${styles.dataRow} ${
-                    row.highlighted ? styles.highlighted : ''
-                  }`}
+                  className={`${styles.dataRow} ${row.highlighted ? styles.highlighted : ''}`}
                 >
                   <td className={styles.dataCell}>{row.participaciones}</td>
                   <td className={styles.dataCell}>{row.pagoTurno}</td>
