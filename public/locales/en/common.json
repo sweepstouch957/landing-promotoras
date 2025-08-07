@@ -139,5 +139,17 @@
     "title": "Thank you, {{nombre}}!",
     "description": "We have received your information. You will soon receive an email with informational videos about your potential job position.",
     "close": "Close"
-  }
+  },
+  "modal_payment_title": "Participation Payment",
+"modal_type": "Participation Type",
+"modal_payment": "Payment per Participation",
+"modal_new": "New Participation",
+"modal_existing": "Existing Participation",
+"modal_share_zip": "Share with ZipCode",
+"modal_zip_match": "Matches the supermarket",
+"modal_share_nozip": "Share without ZipCode",
+"modal_zip_nomatch": "Does not match the supermarket",
+"modal_note_title": "Note",
+"modal_note_text": "Your total payment will be proportional to the type and number of participations made, calculated based on the rate indicated for each action."
+
 }

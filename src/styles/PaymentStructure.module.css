@@ -29,6 +29,17 @@
     sans-serif;
 }
 
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.infoIcon {
+  cursor: pointer;
+}
+
+
 .subtitle strong{
   color: #333333;
 }
@@ -235,4 +246,18 @@
     padding: 12px 10px;
     font-size: 0.8rem;
   }
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5f5f5; /* Igual que .tableTitle */
+}
+
+.iconWrapper {
+  background-color: #f5f5f5; /* Fondo igual al del título */
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
 }

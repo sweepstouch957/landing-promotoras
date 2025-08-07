@@ -141,5 +141,18 @@
     "title": "¡Gracias, {{nombre}}!",
     "description": "Hemos recibido tu información. Pronto recibirás un correo con videos informativos sobre tu posible puesto de trabajo.",
     "close": "Cerrar"
-  }
+  },
+
+  "modal_payment_title": "Pago por Participación",
+"modal_type": "Tipo de Participación",
+"modal_payment": "Pago por Participación",
+"modal_new": "Participación Nueva",
+"modal_existing": "Participación Existente",
+"modal_share_zip": "Share con ZipCode",
+"modal_zip_match": "Coincide con el supermercado",
+"modal_share_nozip": "Share sin ZipCode",
+"modal_zip_nomatch": "No coincide con el supermercado",
+"modal_note_title": "Nota",
+"modal_note_text": "Su pago total será proporcional al tipo y número de participaciones que realice, calculado según la tarifa indicada para cada acción."
+
 }
