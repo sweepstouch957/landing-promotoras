@@ -7,6 +7,7 @@ import ProgressBar from '@/components/ProgressBar';
 import SubmitSection from '@/components/SubmitSection';
 import DemoControls from '@/components/DemoControls';
 import Header from '@/components/Header';
+import styles from './training.module.css';
 
 interface Video {
   id: string;
@@ -111,6 +112,10 @@ export default function Home() {
 
   const handleSubmit = () => {
     setIsSubmitted(true);
+    // Redirigir al formulario después de un breve delay
+    setTimeout(() => {
+      window.location.href = '/training/register';
+    }, 2000);
   };
 
   const handleMarkVideoComplete = (videoIndex: number) => {
@@ -135,52 +140,117 @@ export default function Home() {
   const allCompleted = completedCount === videos.length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={styles.trainingPage}>
       {/* Header */}
-      <Header />
+      <div className={styles.trainingHeader}>
+        <div className={styles.trainingHeaderContent}>
+          <h1 className={styles.trainingHeaderTitle}>sweepsTOUCH</h1>
+          <div className={styles.trainingHeaderProgress}>
+            {completedCount}/4 completados
+          </div>
+        </div>
+      </div>
 
       {/* Main Content */}
-      <main className="main-content">
+      <main className={styles.trainingMainContent}>
         {/* Demo Controls */}
-        <DemoControls
-          videos={videos}
-          onMarkVideoComplete={handleMarkVideoComplete}
-          onResetProgress={handleResetProgress}
-        />
+        <div className={styles.demoControlsCustom}>
+          <h3 className={styles.demoControlsTitle}>
+            🎯 CONTROLES DE DEMOSTRACIÓN
+          </h3>
+          <div className={styles.demoControlsButtons}>
+            <button
+              className={`${styles.demoButton} ${styles.demoButton1} ${videos[0].completed ? styles.completed : ''}`}
+              onClick={() => handleMarkVideoComplete(0)}
+            >
+              INTRODUCCIÓN A1
+            </button>
+            <button
+              className={`${styles.demoButton} ${styles.demoButton2} ${videos[1].completed ? styles.completed : ''}`}
+              onClick={() => handleMarkVideoComplete(1)}
+            >
+              PRODUCTOS Y2
+            </button>
+            <button
+              className={`${styles.demoButton} ${styles.demoButton3} ${videos[2].completed ? styles.completed : ''}`}
+              onClick={() => handleMarkVideoComplete(2)}
+            >
+              TÉCNICAS DE3
+            </button>
+            <button
+              className={`${styles.demoButton} ${styles.demoButton4} ${videos[3].completed ? styles.completed : ''}`}
+              onClick={() => handleMarkVideoComplete(3)}
+            >
+              ATENCIÓN AL4
+            </button>
+            <button
+              className={`${styles.demoButton} ${styles.demoButtonReset}`}
+              onClick={handleResetProgress}
+            >
+              RESET5
+            </button>
+          </div>
+          <p className={styles.demoTip}>
+            💡 Haz clic en los botones para simular la finalización de videos y probar el sistema de checks.
+          </p>
+        </div>
 
-        <div className="grid-layout">
+        <div className={styles.trainingGridLayout}>
           {/* Left Column - Video Player */}
           <div className="space-y-6">
-            <VideoPlayer
-              video={videos[currentVideoIndex]}
-              onVideoComplete={handleVideoComplete}
-              watchedTime={videos[currentVideoIndex].watchedTime}
-              setWatchedTime={setWatchedTime}
-            />
+            <div className={styles.trainingCard}>
+              <div className={styles.trainingCardContent}>
+                <VideoPlayer
+                  video={videos[currentVideoIndex]}
+                  onVideoComplete={handleVideoComplete}
+                  watchedTime={videos[currentVideoIndex].watchedTime}
+                  setWatchedTime={setWatchedTime}
+                />
+              </div>
+            </div>
 
-            <SubmitSection
-              videos={videos}
-              onSubmit={handleSubmit}
-              isSubmitted={isSubmitted}
-            />
+            <div className={styles.trainingCard}>
+              <div className={styles.trainingCardContent}>
+                <SubmitSection
+                  videos={videos}
+                  onSubmit={handleSubmit}
+                  isSubmitted={isSubmitted}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Right Column - Progress & Video List */}
           <div className="space-y-6">
-            <ProgressBar videos={videos} />
-            <VideoList
-              videos={videos}
-              currentVideoIndex={currentVideoIndex}
-              onVideoSelect={handleVideoSelect}
-            />
+            <div className={styles.trainingCard}>
+              <div className={styles.trainingCardHeader}>
+                <h2 className={styles.trainingCardTitle}>PROGRESO DE CAPACITACIÓN</h2>
+              </div>
+              <div className={styles.trainingCardContent}>
+                <ProgressBar videos={videos} />
+              </div>
+            </div>
+            
+            <div className={styles.trainingCard}>
+              <div className={styles.trainingCardHeader}>
+                <h2 className={styles.trainingCardTitle}>VIDEOS DE CAPACITACIÓN</h2>
+              </div>
+              <div className={styles.trainingCardContent}>
+                <VideoList
+                  videos={videos}
+                  currentVideoIndex={currentVideoIndex}
+                  onVideoSelect={handleVideoSelect}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <p className="footer-text">
+      <footer className={styles.trainingFooter}>
+        <div className={styles.trainingFooterContent}>
+          <p className={styles.trainingFooterText}>
             Progreso total: {completedCount} de {videos.length} completados
           </p>
         </div>

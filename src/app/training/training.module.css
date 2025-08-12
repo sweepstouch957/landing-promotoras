@@ -1,0 +1,558 @@
+/* Estilos específicos para la página de training con colores fucsia */
+
+.trainingPage {
+  min-height: 100vh;
+  background: #e4dbd8;
+}
+
+.trainingHeader {
+  background: rgba(248, 32, 131, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid #e91e63;
+  box-shadow: 0 4px 20px rgba(248, 32, 131, 0.3);
+}
+
+.trainingHeaderContent {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trainingHeaderTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.trainingHeaderProgress {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.trainingMainContent {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.demoControlsCustom {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border: 2px solid #ff6b9d;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.2);
+}
+
+.demoControlsTitle {
+  color: #c2185b;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.demoControlsButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.demoButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 25px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.demoButton1 {
+  background: linear-gradient(135deg, #f8bbd9 0%, #f48fb1 100%);
+  border-color: #e91e63;
+  color: #880e4f;
+}
+
+.demoButton1:hover {
+  background: linear-gradient(135deg, #f48fb1 0%, #e91e63 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+}
+
+.demoButton1.completed {
+  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.5);
+}
+
+.demoButton2 {
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+  border-color: #ad1457;
+  color: #4a148c;
+}
+
+.demoButton2:hover {
+  background: linear-gradient(135deg, #f8bbd9 0%, #ad1457 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(173, 20, 87, 0.4);
+}
+
+.demoButton2.completed {
+  background: linear-gradient(135deg, #ad1457 0%, #880e4f 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(173, 20, 87, 0.5);
+}
+
+.demoButton3 {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  border-color: #8e24aa;
+  color: #4a148c;
+}
+
+.demoButton3:hover {
+  background: linear-gradient(135deg, #e1bee7 0%, #8e24aa 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(142, 36, 170, 0.4);
+}
+
+.demoButton3.completed {
+  background: linear-gradient(135deg, #8e24aa 0%, #7b1fa2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(142, 36, 170, 0.5);
+}
+
+.demoButton4 {
+  background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 100%);
+  border-color: #ab47bc;
+  color: #4a148c;
+}
+
+.demoButton4:hover {
+  background: linear-gradient(135deg, #ce93d8 0%, #ab47bc 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(171, 71, 188, 0.4);
+}
+
+.demoButton4.completed {
+  background: linear-gradient(135deg, #ab47bc 0%, #8e24aa 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(171, 71, 188, 0.5);
+}
+
+.demoButtonReset {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border-color: #f06292;
+  color: #c2185b;
+}
+
+.demoButtonReset:hover {
+  background: linear-gradient(135deg, #ffcdd2 0%, #f06292 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(240, 98, 146, 0.4);
+}
+
+.demoTip {
+  color: #c2185b;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.trainingGridLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .trainingGridLayout {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.trainingCard {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(248, 32, 131, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(248, 32, 131, 0.15);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.trainingCardHeader {
+  padding: 1.5rem;
+  border-bottom: 2px solid rgba(248, 32, 131, 0.1);
+  background: linear-gradient(135deg, rgba(248, 32, 131, 0.05) 0%, rgba(233, 30, 99, 0.1) 100%);
+}
+
+.trainingCardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #c2185b;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.trainingCardContent {
+  padding: 1.5rem;
+}
+
+.trainingVideoContainer {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  border: 3px solid #e91e63;
+  box-shadow: 0 8px 25px rgba(233, 30, 99, 0.3);
+}
+
+.trainingVideoElement {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trainingVideoControls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(233, 30, 99, 0.9), transparent);
+  padding: 1rem;
+}
+
+.trainingVideoControlsRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.trainingVideoButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.trainingVideoButton:hover {
+  background: rgba(248, 32, 131, 0.8);
+  border-color: white;
+  transform: scale(1.1);
+}
+
+.trainingVideoTime {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.trainingProgressBar {
+  position: relative;
+  height: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.trainingProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #f8bbd9 0%, #e91e63 50%, #c2185b 100%);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(233, 30, 99, 0.5);
+}
+
+.trainingButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.trainingButtonPrimary {
+  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+}
+
+.trainingButtonPrimary:hover {
+  background: linear-gradient(135deg, #c2185b 0%, #ad1457 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+}
+
+.trainingButtonPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(233, 30, 99, 0.2);
+}
+
+.trainingButtonOutline {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #e91e63;
+  color: #c2185b;
+  backdrop-filter: blur(5px);
+}
+
+.trainingButtonOutline:hover {
+  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
+}
+
+.trainingButtonGreen {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.trainingButtonGreen:hover {
+  background: linear-gradient(135deg, #388e3c 0%, #2e7d32 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+}
+
+.trainingProgressSection {
+  margin-bottom: 1.5rem;
+}
+
+.trainingProgressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.trainingProgressTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #c2185b;
+}
+
+.trainingProgressCount {
+  font-size: 0.875rem;
+  color: #ad1457;
+  font-weight: 600;
+  background: rgba(248, 32, 131, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  border: 1px solid rgba(248, 32, 131, 0.2);
+}
+
+.trainingProgressBarContainer {
+  height: 1rem;
+  background: rgba(248, 32, 131, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 1px solid rgba(248, 32, 131, 0.2);
+  margin-bottom: 1rem;
+}
+
+.trainingProgressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #f8bbd9 0%, #e91e63 50%, #c2185b 100%);
+  border-radius: 9999px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+}
+
+.trainingVideoList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.trainingVideoItem {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(248, 32, 131, 0.2);
+  border-radius: 15px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.trainingVideoItem:hover {
+  background: rgba(248, 32, 131, 0.05);
+  border-color: #e91e63;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(248, 32, 131, 0.2);
+}
+
+.trainingVideoItem.active {
+  background: linear-gradient(135deg, rgba(248, 32, 131, 0.1) 0%, rgba(233, 30, 99, 0.15) 100%);
+  border-color: #e91e63;
+  box-shadow: 0 4px 15px rgba(248, 32, 131, 0.3);
+}
+
+.trainingVideoItem.completed {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(56, 142, 60, 0.15) 100%);
+  border-color: #4caf50;
+}
+
+.trainingVideoItemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.trainingVideoItemTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #c2185b;
+}
+
+.trainingVideoItemStatus {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.trainingVideoItemStatus.playing {
+  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+  color: white;
+}
+
+.trainingVideoItemStatus.completed {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+}
+
+.trainingVideoItemStatus.pending {
+  background: rgba(158, 158, 158, 0.2);
+  color: #666;
+  border: 1px solid rgba(158, 158, 158, 0.3);
+}
+
+.trainingVideoItemDescription {
+  color: #666;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.trainingVideoItemDuration {
+  color: #ad1457;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.trainingFooter {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: white;
+  padding: 2rem 0;
+  margin-top: 3rem;
+  border-top: 3px solid #e91e63;
+}
+
+.trainingFooterContent {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.trainingFooterText {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .trainingHeaderContent {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .demoControlsButtons {
+    justify-content: center;
+  }
+
+  .demoButton {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .trainingMainContent {
+    padding: 1rem;
+  }
+
+  .trainingCard {
+    border-radius: 15px;
+  }
+
+  .trainingVideoContainer {
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .trainingHeaderTitle {
+    font-size: 1.25rem;
+  }
+
+  .trainingHeaderProgress {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+  }
+
+  .demoControlsButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .demoButton {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
