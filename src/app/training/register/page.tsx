@@ -10,16 +10,13 @@ import {
   Typography,
   Avatar,
   Grid,
-  Alert,
   CircularProgress,
   Card,
-  CardContent,
   Divider,
   IconButton,
 } from '@mui/material';
 import {
   Person,
-  Email,
   LocationOn,
   PhotoCamera,
   Send,

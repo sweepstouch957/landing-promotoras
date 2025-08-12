@@ -5,8 +5,6 @@ import VideoPlayer from '@/components/VideoPlayer';
 import VideoList from '@/components/VideoList';
 import ProgressBar from '@/components/ProgressBar';
 import SubmitSection from '@/components/SubmitSection';
-import DemoControls from '@/components/DemoControls';
-import Header from '@/components/Header';
 import styles from './training.module.css';
 
 interface Video {
