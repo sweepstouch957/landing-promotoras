@@ -5,6 +5,8 @@ import VideoPlayer from '@/components/VideoPlayer';
 import VideoList from '@/components/VideoList';
 import ProgressBar from '@/components/ProgressBar';
 import SubmitSection from '@/components/SubmitSection';
+import CompletionModal from '@/components/CompletionModal';
+import PaymentStructure from '@/components/PaymentStructure';
 import styles from './training.module.css';
 
 interface Video {
@@ -19,40 +21,11 @@ interface Video {
 
 const initialVideos: Video[] = [
   {
-    id: 'intro',
-    title: 'Introducción a la Empresa',
-    description: 'Conoce la historia, misión y valores de nuestra empresa.',
+    id: 'training',
+    title: 'Capacitación Completa',
+    description: 'Video completo de capacitación para promotoras.',
     duration: 596, // 9:56
     url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    completed: false,
-    watchedTime: 0,
-  },
-  {
-    id: 'products',
-    title: 'Productos y Servicios',
-    description:
-      'Aprende sobre nuestros productos principales y cómo promocionarlos.',
-    duration: 653, // 10:53
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-    completed: false,
-    watchedTime: 0,
-  },
-  {
-    id: 'sales',
-    title: 'Técnicas de Ventas',
-    description: 'Estrategias efectivas para mejorar tus habilidades de venta.',
-    duration: 15,
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    completed: false,
-    watchedTime: 0,
-  },
-  {
-    id: 'customer',
-    title: 'Atención al Cliente',
-    description:
-      'Cómo brindar un excelente servicio al cliente en todo momento.',
-    duration: 15,
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     completed: false,
     watchedTime: 0,
   },
@@ -62,6 +35,7 @@ export default function Home() {
   const [videos, setVideos] = useState<Video[]>(initialVideos);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
 
   // Cargar progreso desde localStorage
   useEffect(() => {
@@ -94,6 +68,8 @@ export default function Home() {
         video.id === videoId ? { ...video, completed: true } : video
       )
     );
+    // Mostrar modal de felicitación cuando se complete el video
+    setShowCompletionModal(true);
   };
 
   const setWatchedTime = (videoId: string, time: number) => {
@@ -124,13 +100,19 @@ export default function Home() {
           : video
       )
     );
+    // Mostrar modal de felicitación cuando se marque como completado
+    setShowCompletionModal(true);
   };
 
-  const handleResetProgress = () => {
-    setVideos(initialVideos);
-    setCurrentVideoIndex(0);
-    setIsSubmitted(false);
-    localStorage.removeItem('elearning-progress');
+
+
+  const handleCloseModal = () => {
+    setShowCompletionModal(false);
+  };
+
+  const handleGoToRegister = () => {
+    setShowCompletionModal(false);
+    window.location.href = '/training/register';
   };
 
   const completedCount = videos.filter((video) => video.completed).length;
@@ -144,53 +126,22 @@ export default function Home() {
         <div className={styles.trainingHeaderContent}>
           <h1 className={styles.trainingHeaderTitle}>sweepsTOUCH</h1>
           <div className={styles.trainingHeaderProgress}>
-            {completedCount}/4 completados
+            {completedCount}/1 completados
           </div>
         </div>
       </div>
 
       {/* Main Content */}
       <main className={styles.trainingMainContent}>
-        {/* Demo Controls */}
-        <div className={styles.demoControlsCustom}>
-          <h3 className={styles.demoControlsTitle}>
-            🎯 CONTROLES DE DEMOSTRACIÓN
-          </h3>
-          <div className={styles.demoControlsButtons}>
-            <button
-              className={`${styles.demoButton} ${styles.demoButton1} ${videos[0].completed ? styles.completed : ''}`}
-              onClick={() => handleMarkVideoComplete(0)}
-            >
-              INTRODUCCIÓN A1
-            </button>
-            <button
-              className={`${styles.demoButton} ${styles.demoButton2} ${videos[1].completed ? styles.completed : ''}`}
-              onClick={() => handleMarkVideoComplete(1)}
-            >
-              PRODUCTOS Y2
-            </button>
-            <button
-              className={`${styles.demoButton} ${styles.demoButton3} ${videos[2].completed ? styles.completed : ''}`}
-              onClick={() => handleMarkVideoComplete(2)}
-            >
-              TÉCNICAS DE3
-            </button>
-            <button
-              className={`${styles.demoButton} ${styles.demoButton4} ${videos[3].completed ? styles.completed : ''}`}
-              onClick={() => handleMarkVideoComplete(3)}
-            >
-              ATENCIÓN AL4
-            </button>
-            <button
-              className={`${styles.demoButton} ${styles.demoButtonReset}`}
-              onClick={handleResetProgress}
-            >
-              RESET5
-            </button>
-          </div>
-          <p className={styles.demoTip}>
-            💡 Haz clic en los botones para simular la finalización de videos y probar el sistema de checks.
-          </p>
+        {/* Developer Controls - Small button for testing */}
+        <div className={styles.devControls}>
+          <button
+            className={styles.devButton}
+            onClick={() => handleMarkVideoComplete(0)}
+            title="Simular video completado (solo para desarrollo)"
+          >
+            DEV: Completar Video
+          </button>
         </div>
 
         <div className={styles.trainingGridLayout}>
@@ -245,6 +196,13 @@ export default function Home() {
         </div>
       </main>
 
+      {/* Payment Structure Section */}
+      <section className={styles.paymentSection}>
+        <div className={styles.paymentContainer}>
+          <PaymentStructure />
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className={styles.trainingFooter}>
         <div className={styles.trainingFooterContent}>
@@ -253,6 +211,13 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* Completion Modal */}
+      <CompletionModal
+        isOpen={showCompletionModal}
+        onClose={handleCloseModal}
+        onGoToRegister={handleGoToRegister}
+      />
     </div>
   );
 }

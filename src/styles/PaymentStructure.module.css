@@ -54,6 +54,17 @@
   border: 1px solid #e0e0e0;
 }
 
+/* Estilo específico para la ruta /training */
+.tableContainerTraining {
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(248, 32, 131, 0.15);
+  max-width: 650px;
+  margin: 0 auto;
+  border: 1px solid #e0e0e0;
+}
+
 .tableTitle {
   font-size: 1.3rem; /* crecido desde 1.1rem */
   font-weight: 500;

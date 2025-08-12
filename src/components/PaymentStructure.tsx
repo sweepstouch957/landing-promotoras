@@ -1,6 +1,7 @@
 'use client';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from '../styles/PaymentStructure.module.css';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,6 +23,10 @@ import {
 export default function PaymentStructure() {
   const { t } = useTranslation('common');
   const [modalOpen, setModalOpen] = useState(false);
+  const pathname = usePathname();
+  
+  // Determinar si estamos en la ruta /training
+  const isTrainingRoute = pathname === '/training';
 
   const paymentData = [
     { participaciones: 100, pagoTurno: '$50', pagoHora: '$12.5' },
@@ -49,7 +54,7 @@ export default function PaymentStructure() {
         dangerouslySetInnerHTML={{ __html: t('payment_subtitle') }}
       />
 
-      <div className={styles.tableContainer}>
+      <div className={isTrainingRoute ? styles.tableContainerTraining : styles.tableContainer}>
         <div className={styles.tableHeader}>
           <h3 className={styles.tableTitle} style={{ textAlign: 'center', width: '100%' }}>
   {t('payment_table_title')}
