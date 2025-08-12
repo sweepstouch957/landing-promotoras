@@ -71,7 +71,7 @@ export default function ProgressBar({ videos }: ProgressBarProps) {
           <p className="text-sm text-gray-600">
             {allCompleted 
               ? "¡Felicidades! Has completado toda la capacitación."
-              : "Completa todos los videos para poder enviar tu capacitación."
+              : "Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar."
             }
           </p>
         </div>

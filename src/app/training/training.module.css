@@ -185,9 +185,10 @@
 
 .trainingGridLayout {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
+  grid-template-columns: 2fr 1.3fr; /* Hace la columna derecha más ancha */
+  gap: 24px;
 }
+
 
 @media (min-width: 1024px) {
   .trainingGridLayout {
@@ -218,6 +219,51 @@
 .trainingCardContent {
   padding: 1.5rem;
 }
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.videoTrainingCard {
+  font-family: 'Gotham', sans-serif;
+  line-height: 1.4; /* Más aire entre líneas */
+  font-weight: 400; /* Menos grueso que bold */
+  letter-spacing: 0.3px; /* Un poco más de separación entre letras */
+}
+
+.videoTrainingCard h2 {
+  font-weight: 600; /* Mantener título visible pero no demasiado grueso */
+  margin-bottom: 8px;
+}
+
+.videoTrainingCard p {
+  font-size: 0.95rem; /* Un pelín más pequeño */
+  margin-bottom: 6px;
+}
+.videoTrainingCard {
+  font-family: 'Gotham', sans-serif;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+
+  /* Ajustes de ancho */
+  width: 100%; /* O un valor fijo si quieres control exacto */
+  max-width: 420px; /* Por ejemplo, más ancha que el valor actual */
+}
+
+.videoTrainingCard h2 {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.videoTrainingCard p {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
 
 .trainingVideoContainer {
   position: relative;

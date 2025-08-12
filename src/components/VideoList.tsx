@@ -31,7 +31,7 @@ export default function VideoList({ videos, currentVideoIndex, onVideoSelect }: 
   return (
     <div className="card">
       <div className="card-header">
-        <h2 className="card-title">Videos de Capacitación</h2>
+        <h2 className="card-title">Video de Capacitación</h2>
       </div>
       
       <div className="card-content">

@@ -22,8 +22,8 @@ interface Video {
 const initialVideos: Video[] = [
   {
     id: 'training',
-    title: 'Capacitación Completa',
-    description: 'Video completo de capacitación para promotoras.',
+    title: 'Conoce a Sweepstouch y su programa de impulsadoras',
+    description: 'Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar.',
     duration: 596, // 9:56
     url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     completed: false,
@@ -171,18 +171,11 @@ export default function Home() {
 
           {/* Right Column - Progress & Video List */}
           <div className="space-y-6">
-            <div className={styles.trainingCard}>
-              <div className={styles.trainingCardHeader}>
-                <h2 className={styles.trainingCardTitle}>PROGRESO DE CAPACITACIÓN</h2>
-              </div>
-              <div className={styles.trainingCardContent}>
-                <ProgressBar videos={videos} />
-              </div>
-            </div>
             
-            <div className={styles.trainingCard}>
+            
+            <div className={`${styles.trainingCard} ${styles.videoTrainingCard}`}>
               <div className={styles.trainingCardHeader}>
-                <h2 className={styles.trainingCardTitle}>VIDEOS DE CAPACITACIÓN</h2>
+                <h2 className={styles.trainingCardTitle}>VIDEO DE CAPACITACIÓN</h2>
               </div>
               <div className={styles.trainingCardContent}>
                 <VideoList
@@ -192,6 +185,7 @@ export default function Home() {
                 />
               </div>
             </div>
+            
           </div>
         </div>
       </main>
