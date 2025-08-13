@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Play, Pause, RotateCcw, CheckCircle, Maximize, Volume2, VolumeX } from 'lucide-react'

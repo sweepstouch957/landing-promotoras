@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
-import VideoList from '@/components/VideoList';
 import SubmitSection from '@/components/SubmitSection';
 import CompletionModal from '@/components/CompletionModal';
 import PaymentStructure from '@/components/PaymentStructure';
@@ -78,9 +77,7 @@ export default function Home() {
     );
   };
 
-  const handleVideoSelect = (index: number) => {
-    setCurrentVideoIndex(index);
-  };
+
 
   const handleSubmit = () => {
     setIsSubmitted(true);
@@ -89,16 +86,6 @@ export default function Home() {
     }, 2000);
   };
 
-  const handleMarkVideoComplete = (videoIndex: number) => {
-    setVideos((prev) =>
-      prev.map((video, index) =>
-        index === videoIndex
-          ? { ...video, completed: true, watchedTime: video.duration }
-          : video
-      )
-    );
-    setShowCompletionModal(true);
-  };
 
   const handleCloseModal = () => {
     setShowCompletionModal(false);

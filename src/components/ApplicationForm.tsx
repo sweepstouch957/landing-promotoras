@@ -32,6 +32,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: React.ReactElement<any, any>;
   },
   ref: React.Ref<unknown>
@@ -181,6 +182,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
             {/* @ts-expect-error */}
             <Grid item xs={12} sm={6}>
               <TextField
@@ -191,6 +193,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
             {/* @ts-expect-error */}
             <Grid item xs={12}>
               <TextField
@@ -205,6 +208,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
             {/* @ts-expect-error */}
             <Grid item xs={12} sm={6}>
               <TextField
@@ -215,6 +219,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
             {/* @ts-expect-error */}
             <Grid item xs={12} sm={6}>
               <TextField
@@ -236,6 +241,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
             {/* @ts-expect-error */}
             <Grid item xs={12}>
               <TextField
@@ -246,6 +252,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
             {/* @ts-expect-error */}
             <Grid item xs={12}>
               <TextField
@@ -258,6 +265,7 @@ const ApplicationForm: React.FC = () => {
                 helperText={errors.supermercado?.message}
               />
             </Grid>
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
             {/* @ts-expect-error */}
             <Grid item xs={12}>
               <FormControl fullWidth>
@@ -296,6 +304,7 @@ const ApplicationForm: React.FC = () => {
             </Grid>
 
             {/* Botón siempre visible pero deshabilitado */}
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
             {/* @ts-expect-error */}
             <Grid item xs={12}>
               <Button
