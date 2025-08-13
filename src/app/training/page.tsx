@@ -7,6 +7,7 @@ import SubmitSection from '@/components/SubmitSection';
 import CompletionModal from '@/components/CompletionModal';
 import PaymentStructure from '@/components/PaymentStructure';
 import styles from './training.module.css';
+import Image from "next/image";
 
 interface Video {
   id: string;
@@ -22,8 +23,9 @@ const initialVideos: Video[] = [
   {
     id: 'training',
     title: 'Conoce a Sweepstouch y su programa de impulsadoras',
-    description: 'Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar.',
-    duration: 142, // 2:16
+    description:
+      'Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar.',
+    duration: 142,
     url: 'https://videos-impulsadoras.s3.us-east-2.amazonaws.com/sweepstouch+une+a+supermercados+con+sus+clientes_3.mp4',
     completed: false,
     watchedTime: 0,
@@ -36,7 +38,6 @@ export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
 
-  // Cargar progreso desde localStorage
   useEffect(() => {
     const savedProgress = localStorage.getItem('elearning-progress');
     if (savedProgress) {
@@ -51,7 +52,6 @@ export default function Home() {
     }
   }, []);
 
-  // Guardar progreso en localStorage
   useEffect(() => {
     const progress = {
       videos,
@@ -67,7 +67,6 @@ export default function Home() {
         video.id === videoId ? { ...video, completed: true } : video
       )
     );
-    // Mostrar modal de felicitación cuando se complete el video
     setShowCompletionModal(true);
   };
 
@@ -85,7 +84,6 @@ export default function Home() {
 
   const handleSubmit = () => {
     setIsSubmitted(true);
-    // Redirigir al formulario después de un breve delay
     setTimeout(() => {
       window.location.href = '/training/register';
     }, 2000);
@@ -99,11 +97,8 @@ export default function Home() {
           : video
       )
     );
-    // Mostrar modal de felicitación cuando se marque como completado
     setShowCompletionModal(true);
   };
-
-
 
   const handleCloseModal = () => {
     setShowCompletionModal(false);
@@ -115,36 +110,33 @@ export default function Home() {
   };
 
   const completedCount = videos.filter((video) => video.completed).length;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const allCompleted = completedCount === videos.length;
 
   return (
     <div className={styles.trainingPage}>
       {/* Header */}
-      <div className={styles.trainingHeader}>
-        <div className={styles.trainingHeaderContent}>
-          <h1 className={styles.trainingHeaderTitle}>sweepsTOUCH</h1>
-          <div className={styles.trainingHeaderProgress}>
-            {completedCount}/1 completados
-          </div>
-        </div>
-      </div>
+     <div className={styles.trainingHeader}>
+  <div className={styles.trainingHeaderContent}>
+    <Image
+  src="/SWEEPSTOUCH.png"
+  alt="SweepsTOUCH logo"
+  width={350}  // aumenta el ancho
+  height={50} // ajusta proporcionalmente
+  className={styles.trainingHeaderTitle}
+/>
+
+    <div className={styles.trainingHeaderProgress}>
+      {completedCount}/1 completados
+    </div>
+  </div>
+</div>
 
       {/* Main Content */}
       <main className={styles.trainingMainContent}>
-        {/* Developer Controls - Small button for testing */}
-        <div className={styles.devControls}>
-          <button
-            className={styles.devButton}
-            onClick={() => handleMarkVideoComplete(0)}
-            title="Simular video completado (solo para desarrollo)"
-          >
-            DEV: Completar Video
-          </button>
-        </div>
+        {/* Developer Controls */}
+        
 
         <div className={styles.trainingGridLayout}>
-          {/* Left Column - Video Player */}
+          {/* Columna izquierda */}
           <div className="space-y-6">
             <div className={styles.trainingCard}>
               <div className={styles.trainingCardContent}>
@@ -155,6 +147,13 @@ export default function Home() {
                   setWatchedTime={setWatchedTime}
                 />
               </div>
+            </div>
+
+            {/* PaymentStructure solo visible en responsive */}
+            <div
+              className={`${styles.paymentContainer} ${styles.paymentResponsiveOnly}`}
+            >
+              <PaymentStructure />
             </div>
 
             <div className={styles.trainingCard}>
@@ -168,33 +167,14 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Column - Progress & Video List */}
-          <div className="space-y-6">
-            
-            
-            <div className={`${styles.trainingCard} ${styles.videoTrainingCard}`}>
-              <div className={styles.trainingCardHeader}>
-                <h2 className={styles.trainingCardTitle}>VIDEO DE CAPACITACIÓN</h2>
-              </div>
-              <div className={styles.trainingCardContent}>
-                <VideoList
-                  videos={videos}
-                  currentVideoIndex={currentVideoIndex}
-                  onVideoSelect={handleVideoSelect}
-                />
-              </div>
-            </div>
-            
+          {/* Columna derecha - PaymentStructure en desktop */}
+          <div
+            className={`${styles.paymentContainer} ${styles.paymentDesktopOnly}`}
+          >
+            <PaymentStructure />
           </div>
         </div>
       </main>
-
-      {/* Payment Structure Section */}
-      <section className={styles.paymentSection}>
-        <div className={styles.paymentContainer}>
-          <PaymentStructure />
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className={styles.trainingFooter}>

@@ -2,8 +2,7 @@
 
 .trainingPage {
   min-height: 100vh;
-  background: #e4dbd8
-;
+  background: #e4dbd8;
 }
 
 .trainingHeader {
@@ -183,16 +182,18 @@
   font-weight: 500;
 }
 
+/* CORRECCIÓN PRINCIPAL: Mejorar el grid layout para mejor distribución */
 .trainingGridLayout {
   display: grid;
-  grid-template-columns: 2fr 1.3fr; /* Hace la columna derecha más ancha */
-  gap: 24px;
+  grid-template-columns: 1.5fr 1fr; /* Cambio de 2fr 1.3fr a 1.5fr 1fr para mejor balance */
+  gap: 32px; /* Aumentar gap de 24px a 32px para más espacio */
+  align-items: start; /* Alinear elementos al inicio */
 }
-
 
 @media (min-width: 1024px) {
   .trainingGridLayout {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1.6fr 1fr; /* Ajuste para desktop */
+    gap: 40px; /* Más espacio en desktop */
   }
 }
 
@@ -227,43 +228,31 @@
   font-style: normal;
 }
 
+/* CORRECCIÓN: Mejorar el ancho y espaciado del componente de video training */
 .videoTrainingCard {
   font-family: 'Gotham', sans-serif;
-  line-height: 1.4; /* Más aire entre líneas */
-  font-weight: 400; /* Menos grueso que bold */
-  letter-spacing: 0.3px; /* Un poco más de separación entre letras */
-}
-
-.videoTrainingCard h2 {
-  font-weight: 600; /* Mantener título visible pero no demasiado grueso */
-  margin-bottom: 8px;
-}
-
-.videoTrainingCard p {
-  font-size: 0.95rem; /* Un pelín más pequeño */
-  margin-bottom: 6px;
-}
-.videoTrainingCard {
-  font-family: 'Gotham', sans-serif;
-  line-height: 1.4;
+  line-height: 1.5; /* Mejorar line-height de 1.4 a 1.5 */
   font-weight: 400;
   letter-spacing: 0.3px;
-
-  /* Ajustes de ancho */
-  width: 100%; /* O un valor fijo si quieres control exacto */
-  max-width: 420px; /* Por ejemplo, más ancha que el valor actual */
+  
+  /* CORRECCIÓN PRINCIPAL: Eliminar restricciones de ancho y mejorar espaciado */
+  width: 100%;
+  max-width: none; /* Eliminar max-width: 420px que causaba la compresión */
+  padding: 1.5rem; /* Agregar padding interno */
+  box-sizing: border-box; /* Asegurar que el padding se incluya en el ancho total */
 }
 
 .videoTrainingCard h2 {
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 12px; /* Aumentar de 8px a 12px */
+  font-size: 1.1rem; /* Aumentar ligeramente el tamaño del título */
 }
 
 .videoTrainingCard p {
-  font-size: 0.95rem;
-  margin-bottom: 6px;
+  font-size: 1rem; /* Aumentar de 0.95rem a 1rem */
+  margin-bottom: 8px; /* Aumentar de 6px a 8px */
+  line-height: 1.6; /* Mejorar legibilidad */
 }
-
 
 .trainingVideoContainer {
   position: relative;
@@ -548,7 +537,7 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* Responsive */
+/* Responsive - MEJORADO */
 @media (max-width: 768px) {
   .trainingHeaderContent {
     flex-direction: column;
@@ -576,6 +565,16 @@
   .trainingVideoContainer {
     border-radius: 10px;
   }
+
+  /* CORRECCIÓN: Mejorar grid en móvil */
+  .trainingGridLayout {
+    grid-template-columns: 1fr; /* Una sola columna en móvil */
+    gap: 24px;
+  }
+
+  .videoTrainingCard {
+    padding: 1rem; /* Reducir padding en móvil */
+  }
 }
 
 @media (max-width: 480px) {
@@ -597,8 +596,11 @@
     width: 100%;
     max-width: 200px;
   }
-}
 
+  .videoTrainingCard {
+    padding: 0.75rem; /* Aún menos padding en pantallas muy pequeñas */
+  }
+}
 
 /* Developer Controls */
 .devControls {
@@ -645,13 +647,11 @@
   }
 }
 
-
-/* Payment Structure Section */
+/* Payment Structure Section - MEJORADO */
 .paymentSection {
   background: #e4dbd8;
   padding: 3rem 0;
   margin-top: 2rem;
-  
 }
 
 .paymentContainer {
@@ -659,15 +659,16 @@
   margin: 0 auto;
   padding: 0 1.5rem;
   
-}
-
-.paymentContainer {
+  /* CORRECCIÓN: Mejorar el contenedor de payment */
   background-color: #fff;
-  padding: 20px;
+  padding: 2rem; /* Aumentar padding de 20px a 2rem */
   box-shadow: 0 10px 30px rgba(248, 32, 131, 0.15);
-  border-radius: 12px;
+  border-radius: 15px; /* Aumentar border-radius de 12px a 15px */
+  
+  /* CORRECCIÓN PRINCIPAL: Asegurar que ocupe todo el ancho disponible */
+  width: 100%;
+  box-sizing: border-box;
 }
-
 
 @media (max-width: 768px) {
   .paymentSection {
@@ -676,7 +677,33 @@
   }
   
   .paymentContainer {
-    padding: 0 1rem;
+    padding: 1.5rem; /* Ajustar padding en móvil */
+    margin: 0 1rem; /* Agregar margen lateral en móvil */
   }
 }
 
+/* Ocultar en desktop */
+.paymentResponsiveOnly {
+  display: none;
+}
+
+/* Mostrar en desktop */
+.paymentDesktopOnly {
+  display: block;
+}
+
+/* Espaciado extra en desktop */
+.paymentDesktopOnly {
+  margin-top: 0; /* Sin espacio extra arriba */
+}
+
+@media (max-width: 1024px) {
+  /* En responsive, ocultar el de desktop y mostrar el de debajo del video */
+  .paymentDesktopOnly {
+    display: none;
+  }
+  .paymentResponsiveOnly {
+    display: block;
+    margin: 1.5rem 0; /* espacio entre video y submit */
+  }
+}

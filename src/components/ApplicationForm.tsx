@@ -32,7 +32,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: React.ReactElement<any, any>;
   },
   ref: React.Ref<unknown>
@@ -84,7 +83,7 @@ const ApplicationForm: React.FC = () => {
   const [selectedIdiomas, setSelectedIdiomas] = useState<string[]>(['Español']);
   const [modalOpen, setModalOpen] = useState(false);
   const [nombre, setNombre] = useState('');
-  const [loading, setLoading] = useState(false); // Estado de carga
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -125,7 +124,7 @@ const ApplicationForm: React.FC = () => {
     };
 
     try {
-      setLoading(true); // Mostrar loading
+      setLoading(true);
       await fetch('https://sheetdb.io/api/v1/5rnrmuhqeq1h4', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -137,7 +136,7 @@ const ApplicationForm: React.FC = () => {
     } catch (error) {
       console.error('❌ Error al enviar a SheetDB:', error);
     } finally {
-      setLoading(false); // Ocultar loading
+      setLoading(false);
     }
   };
 
@@ -182,7 +181,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+            {/* @ts-expect-error */}
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('apellido', { required: true })}
@@ -192,7 +191,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+            {/* @ts-expect-error */}
             <Grid item xs={12}>
               <TextField
                 {...register('email', {
@@ -206,7 +205,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+            {/* @ts-expect-error */}
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('telefono')}
@@ -216,7 +215,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+            {/* @ts-expect-error */}
             <Grid item xs={12} sm={6}>
               <TextField
                 {...register('edad', {
@@ -237,7 +236,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+            {/* @ts-expect-error */}
             <Grid item xs={12}>
               <TextField
                 {...register('zipCode')}
@@ -247,7 +246,7 @@ const ApplicationForm: React.FC = () => {
                 sx={inputStyles}
               />
             </Grid>
-{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+            {/* @ts-expect-error */}
             <Grid item xs={12}>
               <TextField
                 {...register('supermercado', { required: t('form.storeRequired') })}
@@ -259,7 +258,7 @@ const ApplicationForm: React.FC = () => {
                 helperText={errors.supermercado?.message}
               />
             </Grid>
-{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+            {/* @ts-expect-error */}
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel sx={{ '&.Mui-focused': { color: '#ED1F80' } }}>
@@ -296,30 +295,34 @@ const ApplicationForm: React.FC = () => {
               </FormControl>
             </Grid>
 
-            {isFormReady && (
-              //@ts-expect-error: MUI Grid typing conflict workaround 
-              <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  fullWidth
-                  sx={{
-                    mt: 2,
-                    py: 1.5,
-                    backgroundColor: '#ED1F80',
-                    '&:hover': { backgroundColor: '#d1176b' },
-                  }}
-                >
-                  {t('form.submit')}
-                </Button>
-              </Grid>
-            )}
+            {/* Botón siempre visible pero deshabilitado */}
+            {/* @ts-expect-error */}
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                fullWidth
+                disabled={!isFormReady}
+                sx={{
+                  mt: 2,
+                  py: 1.5,
+                  backgroundColor: '#ED1F80',
+                  '&:hover': {
+                    backgroundColor: !isFormReady ? '#ED1F80' : '#d1176b',
+                  },
+                  opacity: !isFormReady ? 0.6 : 1,
+                  cursor: !isFormReady ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {t('form.submit')}
+              </Button>
+            </Grid>
           </Grid>
         </Box>
       </Paper>
 
-      {/* Modal de éxito */}
+      {/* Modal de éxito con redirección */}
       <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -350,16 +353,16 @@ const ApplicationForm: React.FC = () => {
           }}
         >
           <CheckCircleIcon sx={{ color: '#ED1F80' }} />
-          {t('modal.title', { nombre })}
+          ¡Registro completado, {nombre}!
         </DialogTitle>
         <DialogContent>
           <Typography sx={{ fontSize: '1rem', color: '#333', mt: 1 }}>
-            {t('modal.description')}
+            El siguiente paso es ver el video introductorio del programa de impulsadoras.
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={() => setModalOpen(false)}
+            onClick={() => (window.location.href = '/training')}
             variant="contained"
             sx={{
               backgroundColor: '#ED1F80',
@@ -369,7 +372,7 @@ const ApplicationForm: React.FC = () => {
               px: 3,
             }}
           >
-            {t('modal.close')}
+            ¡Ver Vídeo!
           </Button>
         </DialogActions>
       </Dialog>
