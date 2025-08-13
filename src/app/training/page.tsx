@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
 import VideoList from '@/components/VideoList';
-import ProgressBar from '@/components/ProgressBar';
 import SubmitSection from '@/components/SubmitSection';
 import CompletionModal from '@/components/CompletionModal';
 import PaymentStructure from '@/components/PaymentStructure';
@@ -25,7 +24,7 @@ const initialVideos: Video[] = [
     title: 'Conoce a Sweepstouch y su programa de impulsadoras',
     description: 'Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar.',
     duration: 596, // 9:56
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    url: 'https://videos-impulsadoras.s3.us-east-2.amazonaws.com/sweepstouch+une+a+supermercados+con+sus+clientes_3.mp4',
     completed: false,
     watchedTime: 0,
   },
