@@ -15,46 +15,23 @@ import {
   Divider,
   IconButton,
 } from '@mui/material';
-import {
-  Person,
-  LocationOn,
-  PhotoCamera,
-  Send,
-  CheckCircle,
-  ArrowBack,
-} from '@mui/icons-material';
+import { PhotoCamera, Send, CheckCircle, ArrowBack } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// Tema personalizado con colores fucsia
 const theme = createTheme({
   palette: {
-    primary: {
-      main: '#e91e63',
-      dark: '#c2185b',
-      light: '#f8bbd9',
-    },
-    secondary: {
-      main: '#ad1457',
-      dark: '#880e4f',
-      light: '#f48fb1',
-    },
+    primary: { main: '#e91e63', dark: '#c2185b', light: '#f8bbd9' },
+    secondary: { main: '#ad1457', dark: '#880e4f', light: '#f48fb1' },
   },
   components: {
     MuiTextField: {
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            '&:hover fieldset': {
-              borderColor: '#e91e63',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#e91e63',
-              borderWidth: '2px',
-            },
+            '&:hover fieldset': { borderColor: '#e91e63' },
+            '&.Mui-focused fieldset': { borderColor: '#e91e63', borderWidth: '2px' },
           },
-          '& .MuiInputLabel-root.Mui-focused': {
-            color: '#e91e63',
-          },
+          '& .MuiInputLabel-root.Mui-focused': { color: '#e91e63' },
         },
       },
     },
@@ -81,27 +58,24 @@ const theme = createTheme({
 });
 
 interface FormData {
-  nombre: string;
-  apellido: string;
-  zipcode: string;
+  password: string;
+  confirmPassword: string;
   foto: File | null;
 }
 
 interface FormErrors {
-  nombre?: string;
-  apellido?: string;
-  zipcode?: string;
+  password?: string;
+  confirmPassword?: string;
   foto?: string;
+  general?: string;
 }
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState<FormData>({
-    nombre: '',
-    apellido: '',
-    zipcode: '',
+    password: '',
+    confirmPassword: '',
     foto: null,
   });
-
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -110,32 +84,18 @@ export default function RegisterPage() {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Validar nombre
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = 'El nombre es requerido';
-    } else if (formData.nombre.trim().length < 2) {
-      newErrors.nombre = 'El nombre debe tener al menos 2 caracteres';
-    } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(formData.nombre)) {
-      newErrors.nombre = 'El nombre solo puede contener letras';
+    if (!formData.password) {
+      newErrors.password = 'La contraseña es requerida';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
     }
 
-    // Validar apellido
-    if (!formData.apellido.trim()) {
-      newErrors.apellido = 'El apellido es requerido';
-    } else if (formData.apellido.trim().length < 2) {
-      newErrors.apellido = 'El apellido debe tener al menos 2 caracteres';
-    } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(formData.apellido)) {
-      newErrors.apellido = 'El apellido solo puede contener letras';
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Confirma tu contraseña';
+    } else if (formData.confirmPassword !== formData.password) {
+      newErrors.confirmPassword = 'Las contraseñas no coinciden';
     }
 
-    // Validar código postal
-    if (!formData.zipcode.trim()) {
-      newErrors.zipcode = 'El código postal es requerido';
-    } else if (!/^\d{5}$/.test(formData.zipcode)) {
-      newErrors.zipcode = 'El código postal debe tener exactamente 5 dígitos';
-    }
-
-    // Validar foto
     if (!formData.foto) {
       newErrors.foto = 'La foto es requerida';
     } else {
@@ -151,151 +111,60 @@ export default function RegisterPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: keyof FormData) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: event.target.value,
-    }));
-
-    // Limpiar error del campo cuando el usuario empiece a escribir
-    if (errors[field]) {
-      setErrors(prev => ({
-        ...prev,
-        [field]: undefined,
-      }));
-    }
+  const handleInputChange = (field: keyof FormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, [field]: event.target.value }));
+    if (errors[field]) setErrors(prev => ({ ...prev, [field]: undefined }));
   };
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setFormData(prev => ({
-        ...prev,
-        foto: file,
-      }));
-
-      // Crear preview de la imagen
+      setFormData(prev => ({ ...prev, foto: file }));
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setPhotoPreview(e.target?.result as string);
-      };
+      reader.onload = e => setPhotoPreview(e.target?.result as string);
       reader.readAsDataURL(file);
-
-      // Limpiar error de foto
-      if (errors.foto) {
-        setErrors(prev => ({
-          ...prev,
-          foto: undefined,
-        }));
-      }
+      if (errors.foto) setErrors(prev => ({ ...prev, foto: undefined }));
     }
   };
 
- const handleSubmit = async (event: React.FormEvent) => {
-  event.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!validateForm()) return;
 
-  if (!validateForm()) {
-    return;
-  }
+    setIsSubmitting(true);
+    try {
+      const payload = new FormData();
+      payload.append('password', formData.password);
+      if (formData.foto) payload.append('foto', formData.foto);
 
-  setIsSubmitting(true);
+      const response = await fetch('https://api.ejemplo.com/registro', {
+        method: 'POST',
+        body: payload,
+      });
 
-  try {
-    const payload = new FormData();
-    payload.append('nombre', formData.nombre);
-    payload.append('apellido', formData.apellido);
-    payload.append('zipcode', formData.zipcode);
-    if (formData.foto) {
-      payload.append('foto', formData.foto);
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error(error);
+      setErrors(prev => ({ ...prev, general: 'Hubo un problema al enviar tu registro. Intenta de nuevo.' }));
+    } finally {
+      setIsSubmitting(false);
     }
-
-    // Aquí se hace el envío al backend de ejemplo
-    const response = await fetch('https://api.ejemplo.com/registro', {
-      method: 'POST',
-      body: payload,
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error en la respuesta del servidor: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log('Respuesta del backend:', data);
-
-    setIsSubmitted(true);
-  } catch (error) {
-    console.error('Error al enviar el formulario:', error);
-    setErrors(prev => ({
-      ...prev,
-      general: 'Hubo un problema al enviar tu registro. Intenta de nuevo.',
-    }));
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-
-  const handleGoBack = () => {
-    window.location.href = '/training';
   };
+
+  const handleGoBack = () => window.location.href = '/training';
 
   if (isSubmitted) {
     return (
       <ThemeProvider theme={theme}>
-        <Box
-          sx={{
-            minHeight: '100vh',
-            background: '#e4dbd8',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 2,
-          }}
-        >
+        <Box sx={{ minHeight: '100vh', background: '#e4dbd8', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 2 }}>
           <Container maxWidth="md">
-            <Card
-              sx={{
-                textAlign: 'center',
-                padding: 4,
-                background: 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <CheckCircle
-                sx={{
-                  fontSize: 80,
-                  color: 'primary.main',
-                  marginBottom: 2,
-                }}
-              />
-              <Typography
-                variant="h3"
-                component="h1"
-                gutterBottom
-                sx={{
-                  fontWeight: 700,
-                  color: 'primary.main',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                }}
-              >
+            <Card sx={{ textAlign: 'center', padding: 4, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)' }}>
+              <CheckCircle sx={{ fontSize: 80, color: 'primary.main', marginBottom: 2 }} />
+              <Typography variant="h3" gutterBottom sx={{ fontWeight: 700, color: 'primary.main', textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                 ¡Registro Completado!
               </Typography>
-              <Typography
-                variant="h6"
-                color="text.secondary"
-                paragraph
-                sx={{ marginBottom: 3 }}
-              >
-                Tu información ha sido enviada exitosamente. Nos pondremos en contacto contigo pronto.
-              </Typography>
-              <Button
-                variant="outlined"
-                onClick={handleGoBack}
-                startIcon={<ArrowBack />}
-                sx={{ marginTop: 2 }}
-              >
+              <Button variant="outlined" onClick={handleGoBack} startIcon={<ArrowBack />} sx={{ marginTop: 2 }}>
                 Volver al Training
               </Button>
             </Card>
@@ -307,106 +176,45 @@ export default function RegisterPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        sx={{
-          minHeight: '100vh',
-          background: '#e4dbd8',
-          padding: 2,
-        }}
-      >
-        <Container maxWidth="md">
+      <Box sx={{ minHeight: '100vh', background: '#e4dbd8', padding: 2 }}>
+        <Container maxWidth="sm">
           <Box sx={{ paddingY: 4 }}>
-            {/* Header */}
-           
-
-            {/* Formulario */}
-            <Paper
-              elevation={0}
-              sx={{
-                padding: 4,
-                background: 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <Typography
-                variant="h4"
-                component="h2"
-                gutterBottom
-                sx={{
-                  textAlign: 'center',
-                  fontWeight: 700,
-                  color: 'primary.main',
-                  marginBottom: 3,
-                }}
-              >
+            <Paper sx={{ padding: 4, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)' }}>
+              <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', fontWeight: 700, color: 'primary.main', marginBottom: 3 }}>
                 Completa tu Información
               </Typography>
-
               <Divider sx={{ marginBottom: 4, backgroundColor: 'primary.light' }} />
 
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
-                  {/* Nombre */}
                   {/* @ts-expect-error: MUI Grid typing conflict workaround */}
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12}>
                     <TextField
                       fullWidth
-                      label="Nombre"
-                      value={formData.nombre}
-                      onChange={handleInputChange('nombre')}
-                      error={!!errors.nombre}
-                      helperText={errors.nombre}
-                      InputProps={{
-                        startAdornment: (
-                          <Person sx={{ color: 'primary.main', marginRight: 1 }} />
-                        ),
-                      }}
+                      label="Contraseña"
+                      type="password"
+                      value={formData.password}
+                      onChange={handleInputChange('password')}
+                      error={!!errors.password}
+                      helperText={errors.password}
                       sx={{ marginBottom: 2 }}
                     />
                   </Grid>
-
-                  {/* Apellido */}
-                  {/* @ts-expect-error: MUI Grid typing conflict workaround */}
-                  <Grid item xs={12} md={6}>
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+                  <Grid item xs={12}>
                     <TextField
                       fullWidth
-                      label="Apellido"
-                      value={formData.apellido}
-                      onChange={handleInputChange('apellido')}
-                      error={!!errors.apellido}
-                      helperText={errors.apellido}
-                      InputProps={{
-                        startAdornment: (
-                          <Person sx={{ color: 'primary.main', marginRight: 1 }} />
-                        ),
-                      }}
+                      label="Confirmar Contraseña"
+                      type="password"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange('confirmPassword')}
+                      error={!!errors.confirmPassword}
+                      helperText={errors.confirmPassword}
                       sx={{ marginBottom: 2 }}
                     />
                   </Grid>
-
-                  {/* Código Postal */}
-                  {/* @ts-expect-error: MUI Grid typing conflict workaround */}
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      label="Código Postal"
-                      value={formData.zipcode}
-                      onChange={handleInputChange('zipcode')}
-                      error={!!errors.zipcode}
-                      helperText={errors.zipcode}
-                      inputProps={{ maxLength: 5 }}
-                      InputProps={{
-                        startAdornment: (
-                          <LocationOn sx={{ color: 'primary.main', marginRight: 1 }} />
-                        ),
-                      }}
-                      sx={{ marginBottom: 2 }}
-                    />
-                  </Grid>
-
-                  {/* Foto */}
-                  {/* @ts-expect-error: MUI Grid typing conflict workaround */}
-                  <Grid item xs={12} md={6}>
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
+                  <Grid item xs={12}>
                     <Box sx={{ textAlign: 'center' }}>
                       <input
                         accept="image/*"
@@ -416,53 +224,20 @@ export default function RegisterPage() {
                         onChange={handlePhotoChange}
                       />
                       <label htmlFor="photo-upload">
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: 2,
-                            padding: 3,
-                            border: `2px dashed ${errors.foto ? '#f44336' : '#e91e63'}`,
-                            borderRadius: 2,
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                            '&:hover': {
-                              backgroundColor: 'rgba(233, 30, 99, 0.05)',
-                              borderColor: '#c2185b',
-                            },
-                          }}
-                        >
+                        <Box sx={{
+                          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+                          padding: 3, border: `2px dashed ${errors.foto ? '#f44336' : '#e91e63'}`,
+                          borderRadius: 2, cursor: 'pointer', transition: 'all 0.3s ease',
+                          '&:hover': { backgroundColor: 'rgba(233,30,99,0.05)', borderColor: '#c2185b' }
+                        }}>
                           {photoPreview ? (
-                            <Avatar
-                              src={photoPreview}
-                              sx={{
-                                width: 80,
-                                height: 80,
-                                border: '3px solid',
-                                borderColor: 'primary.main',
-                              }}
-                            />
+                            <Avatar src={photoPreview} sx={{ width: 80, height: 80, border: '3px solid', borderColor: 'primary.main' }} />
                           ) : (
-                            <IconButton
-                              component="span"
-                              sx={{
-                                backgroundColor: 'primary.light',
-                                color: 'primary.main',
-                                '&:hover': {
-                                  backgroundColor: 'primary.main',
-                                  color: 'white',
-                                },
-                              }}
-                            >
+                            <IconButton component="span" sx={{ backgroundColor: 'primary.light', color: 'primary.main', '&:hover': { backgroundColor: 'primary.main', color: 'white' } }}>
                               <PhotoCamera />
                             </IconButton>
                           )}
-                          <Typography
-                            variant="body2"
-                            color={errors.foto ? 'error' : 'primary'}
-                            sx={{ fontWeight: 600 }}
-                          >
+                          <Typography variant="body2" color={errors.foto ? 'error' : 'primary'} sx={{ fontWeight: 600 }}>
                             {photoPreview ? 'Cambiar Foto' : 'Subir Foto'}
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
@@ -470,20 +245,10 @@ export default function RegisterPage() {
                           </Typography>
                         </Box>
                       </label>
-                      {errors.foto && (
-                        <Typography
-                          variant="caption"
-                          color="error"
-                          sx={{ display: 'block', marginTop: 1 }}
-                        >
-                          {errors.foto}
-                        </Typography>
-                      )}
+                      {errors.foto && <Typography variant="caption" color="error" sx={{ display: 'block', marginTop: 1 }}>{errors.foto}</Typography>}
                     </Box>
                   </Grid>
-
-                  {/* Botón de envío */}
-                  {/* @ts-expect-error: MUI Grid typing conflict workaround */}
+{/* @ts-expect-error: MUI Grid typing conflict workaround */}
                   <Grid item xs={12}>
                     <Box sx={{ textAlign: 'center', marginTop: 3 }}>
                       <Button
@@ -491,13 +256,7 @@ export default function RegisterPage() {
                         variant="contained"
                         size="large"
                         disabled={isSubmitting}
-                        startIcon={
-                          isSubmitting ? (
-                            <CircularProgress size={20} color="inherit" />
-                          ) : (
-                            <Send />
-                          )
-                        }
+                        startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <Send />}
                         sx={{
                           minWidth: 200,
                           background: 'linear-gradient(135deg, #e91e63 0%, #c2185b 100%)',
@@ -505,11 +264,9 @@ export default function RegisterPage() {
                           '&:hover': {
                             background: 'linear-gradient(135deg, #c2185b 0%, #ad1457 100%)',
                             transform: 'translateY(-2px)',
-                            boxShadow: '0 8px 25px rgba(233, 30, 99, 0.4)',
+                            boxShadow: '0 8px 25px rgba(233,30,99,0.4)',
                           },
-                          '&:disabled': {
-                            background: 'rgba(233, 30, 99, 0.6)',
-                          },
+                          '&:disabled': { background: 'rgba(233,30,99,0.6)' },
                         }}
                       >
                         {isSubmitting ? 'Enviando...' : 'Enviar Registro'}
@@ -520,12 +277,7 @@ export default function RegisterPage() {
               </form>
 
               <Box sx={{ marginTop: 3, textAlign: 'center' }}>
-                <Button
-                  variant="outlined"
-                  onClick={handleGoBack}
-                  startIcon={<ArrowBack />}
-                  sx={{ marginTop: 2 }}
-                >
+                <Button variant="outlined" onClick={handleGoBack} startIcon={<ArrowBack />} sx={{ marginTop: 2 }}>
                   Volver al Training
                 </Button>
               </Box>
@@ -536,4 +288,3 @@ export default function RegisterPage() {
     </ThemeProvider>
   );
 }
-
