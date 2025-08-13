@@ -23,7 +23,7 @@ const initialVideos: Video[] = [
     id: 'training',
     title: 'Conoce a Sweepstouch y su programa de impulsadoras',
     description: 'Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar.',
-    duration: 596, // 9:56
+    duration: 142, // 2:16
     url: 'https://videos-impulsadoras.s3.us-east-2.amazonaws.com/sweepstouch+une+a+supermercados+con+sus+clientes_3.mp4',
     completed: false,
     watchedTime: 0,
