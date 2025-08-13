@@ -13,17 +13,12 @@ interface Video {
 }
 
 interface SubmitSectionProps {
-  videos: Video[]
+  video: Video
   onSubmit: () => void
   isSubmitted: boolean
 }
 
-export default function SubmitSection({ videos, onSubmit, isSubmitted }: SubmitSectionProps) {
-  const completedCount = videos.filter(video => video.completed).length
-  const totalVideos = videos.length
-  const allCompleted = completedCount === totalVideos
-  const remainingVideos = totalVideos - completedCount
-
+export default function SubmitSection({ video, onSubmit, isSubmitted }: SubmitSectionProps) {
   if (isSubmitted) {
     const now = new Date()
     const submitDate = now.toLocaleDateString('es-ES')
@@ -45,7 +40,7 @@ export default function SubmitSection({ videos, onSubmit, isSubmitted }: SubmitS
         <div className="submit-summary success">
           <h3 className="submit-summary-title success">Resumen:</h3>
           <div className="submit-summary-list success">
-            • Videos completados: {completedCount} de {totalVideos}<br/>
+            • Video completado: {video.completed ? 'Sí' : 'No'}<br/>
             • Fecha de envío: {submitDate}<br/>
             • Hora de envío: {submitTime}
           </div>
@@ -58,7 +53,7 @@ export default function SubmitSection({ videos, onSubmit, isSubmitted }: SubmitS
     <div className="card submit-section">
       <h2 className="card-title mb-4">Finalizar Capacitación</h2>
       
-      {!allCompleted ? (
+      {!video.completed ? (
         <>
           <div className="submit-icon warning">
             <AlertCircle />
@@ -68,14 +63,13 @@ export default function SubmitSection({ videos, onSubmit, isSubmitted }: SubmitS
             Capacitación incompleta
           </h3>
           <p className="submit-description">
-            Debes completar todos los videos antes de poder enviar tu capacitación.
+            Debes completar el video antes de poder enviar tu capacitación.
           </p>
           
           <div className="submit-summary warning">
             <h4 className="submit-summary-title warning">Progreso actual:</h4>
             <div className="submit-summary-list warning">
-              <strong>Videos completados:</strong> {completedCount} de {totalVideos}<br/>
-              <strong>Videos restantes:</strong> {remainingVideos}
+              <strong>Video completado:</strong> {video.completed ? 'Sí' : 'No'}
             </div>
           </div>
           
@@ -95,7 +89,7 @@ export default function SubmitSection({ videos, onSubmit, isSubmitted }: SubmitS
           </div>
           
           <h3 className="submit-title success">
-            ¡Excelente! Has completado todos los videos de capacitación.
+            ¡Excelente! Has completado el video de capacitación.
           </h3>
           <p className="submit-description">
             Ahora puedes enviar tu capacitación para obtener la certificación.
@@ -113,4 +107,3 @@ export default function SubmitSection({ videos, onSubmit, isSubmitted }: SubmitS
     </div>
   )
 }
-

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
 import SubmitSection from '@/components/SubmitSection';
-import CompletionModal from '@/components/CompletionModal';
 import PaymentStructure from '@/components/PaymentStructure';
 import styles from './training.module.css';
 import Image from "next/image";
@@ -24,7 +23,7 @@ const initialVideos: Video[] = [
     title: 'Conoce a Sweepstouch y su programa de impulsadoras',
     description:
       'Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar.',
-    duration: 142,
+    duration: 129,
     url: 'https://videos-impulsadoras.s3.us-east-2.amazonaws.com/sweepstouch+une+a+supermercados+con+sus+clientes_3.mp4',
     completed: false,
     watchedTime: 0,
@@ -35,7 +34,7 @@ export default function Home() {
   const [videos, setVideos] = useState<Video[]>(initialVideos);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  
 
   useEffect(() => {
     const savedProgress = localStorage.getItem('elearning-progress');
@@ -66,7 +65,7 @@ export default function Home() {
         video.id === videoId ? { ...video, completed: true } : video
       )
     );
-    setShowCompletionModal(true);
+    
   };
 
   const setWatchedTime = (videoId: string, time: number) => {
@@ -87,14 +86,7 @@ export default function Home() {
   };
 
 
-  const handleCloseModal = () => {
-    setShowCompletionModal(false);
-  };
 
-  const handleGoToRegister = () => {
-    setShowCompletionModal(false);
-    window.location.href = '/training/register';
-  };
 
   const completedCount = videos.filter((video) => video.completed).length;
 
@@ -145,11 +137,13 @@ export default function Home() {
 
             <div className={styles.trainingCard}>
               <div className={styles.trainingCardContent}>
-                <SubmitSection
-                  videos={videos}
-                  onSubmit={handleSubmit}
-                  isSubmitted={isSubmitted}
-                />
+              {videos.length > 0 && (
+  <SubmitSection
+    video={videos[0]}
+    onSubmit={handleSubmit}
+    isSubmitted={isSubmitted}
+  />
+)}
               </div>
             </div>
           </div>
@@ -172,12 +166,7 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Completion Modal */}
-      <CompletionModal
-        isOpen={showCompletionModal}
-        onClose={handleCloseModal}
-        onGoToRegister={handleGoToRegister}
-      />
+      
     </div>
   );
 }
