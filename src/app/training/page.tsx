@@ -9,19 +9,21 @@ import Image from "next/image";
 import { 
   Box, 
   CircularProgress, 
- 
+  Container,
   Typography, 
   Button, 
-
+  Card,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Avatar,
   IconButton,
+  Alert,
 
 } from '@mui/material';
-import {  PhotoCamera, Send } from '@mui/icons-material';
+
+import { Lock, ArrowBack, PhotoCamera, Send } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -199,24 +201,63 @@ export default function Home() {
     );
   }
 
-  if (!isFormCompleted) {
+   if (!isFormCompleted) {
     return (
-      <div className={styles.trainingPage}>
-        <div className={styles.centerScreen}>
-          <div className={styles.trainingCard}>
-            <h2 className={styles.restrictedTitle}>Acceso Restringido</h2>
-            <p className={styles.restrictedMessage}>
-              Debes completar el formulario de registro primero.
-            </p>
-            <button
-              onClick={handleGoToForm}
-              className={styles.primaryButton}
-            >
-              Ir al Formulario
-            </button>
-          </div>
-        </div>
-      </div>
+      <ThemeProvider theme={theme}>
+        <Box sx={{ minHeight: '100vh', background: '#e4dbd8', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 2 }}>
+          <Container maxWidth="md">
+            <Card sx={{ 
+              textAlign: 'center', 
+              padding: 4, 
+              background: 'rgba(255,255,255,0.95)', 
+              backdropFilter: 'blur(10px)',
+              border: '2px solid #e91e63'
+            }}>
+              <Lock sx={{ fontSize: 80, color: 'primary.main', marginBottom: 2 }} />
+              <Typography variant="h3" gutterBottom sx={{ 
+                fontWeight: 700, 
+                color: 'primary.main', 
+                textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                marginBottom: 3
+              }}>
+                Acceso Restringido
+              </Typography>
+              
+              <Alert severity="warning" sx={{ 
+                marginBottom: 3, 
+                borderRadius: '15px',
+                '& .MuiAlert-icon': { color: '#e91e63' }
+              }}>
+                <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 1 }}>
+                  ¡Debes completar el formulario de registro primero!
+                </Typography>
+                <Typography variant="body1">
+                  Para acceder al entrenamiento, necesitas completar el formulario de registro.
+                </Typography>
+              </Alert>
+
+              <Button 
+                variant="contained" 
+                size="large"
+                onClick={handleGoToForm} 
+                startIcon={<ArrowBack />}
+                sx={{
+                  minWidth: 250,
+                  background: 'linear-gradient(135deg, #e91e63 0%, #c2185b 100%)',
+                  boxShadow: '0 4px 15px rgba(233, 30, 99, 0.3)',
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #c2185b 0%, #ad1457 100%)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(233,30,99,0.4)',
+                  }
+                }}
+              >
+                Ir al Formulario
+              </Button>
+            </Card>
+          </Container>
+        </Box>
+      </ThemeProvider>
     );
   }
 
