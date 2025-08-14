@@ -76,17 +76,12 @@ export default function Home() {
     );
   };
 
-
-
   const handleSubmit = () => {
     setIsSubmitted(true);
     setTimeout(() => {
       window.location.href = '/training/register';
     }, 2000);
   };
-
-
-
 
   const completedCount = videos.filter((video) => video.completed).length;
 
@@ -111,48 +106,36 @@ export default function Home() {
 
       {/* Main Content */}
       <main className={styles.trainingMainContent}>
-        {/* Developer Controls */}
-        
-
-        <div className={styles.trainingGridLayout}>
-          {/* Columna izquierda */}
-          <div className="space-y-6">
-            <div className={styles.trainingCard}>
-              <div className={styles.trainingCardContent}>
-                <VideoPlayer
-                  video={videos[currentVideoIndex]}
-                  onVideoComplete={handleVideoComplete}
-                  watchedTime={videos[currentVideoIndex].watchedTime}
-                  setWatchedTime={setWatchedTime}
-                />
-              </div>
+        {/* Layout modificado: una sola columna que se extiende por toda la página */}
+        <div className={styles.trainingFullWidthLayout}>
+          {/* Video Player */}
+          <div className={styles.trainingCard}>
+            <div className={styles.trainingCardContent}>
+              <VideoPlayer
+                video={videos[currentVideoIndex]}
+                onVideoComplete={handleVideoComplete}
+                watchedTime={videos[currentVideoIndex].watchedTime}
+                setWatchedTime={setWatchedTime}
+              />
             </div>
+          </div>
 
-            {/* PaymentStructure solo visible en responsive */}
-            <div
-              className={`${styles.paymentContainer} ${styles.paymentResponsiveOnly}`}
-            >
-              <PaymentStructure />
-            </div>
+          {/* PaymentStructure debajo del reproductor */}
+          <div className={styles.paymentContainer}>
+            <PaymentStructure />
+          </div>
 
-            <div className={styles.trainingCard}>
-              <div className={styles.trainingCardContent}>
-              {videos.length > 0 && (
+          {/* Submit Section */}
+          <div className={styles.trainingCard}>
+            <div className={styles.trainingCardContent}>
+            {videos.length > 0 && (
   <SubmitSection
     video={videos[0]}
     onSubmit={handleSubmit}
     isSubmitted={isSubmitted}
   />
 )}
-              </div>
             </div>
-          </div>
-
-          {/* Columna derecha - PaymentStructure en desktop */}
-          <div
-            className={`${styles.paymentContainer} ${styles.paymentDesktopOnly}`}
-          >
-            <PaymentStructure />
           </div>
         </div>
       </main>

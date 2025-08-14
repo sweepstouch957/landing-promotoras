@@ -182,18 +182,26 @@
   font-weight: 500;
 }
 
-/* CORRECCIÓN PRINCIPAL: Mejorar el grid layout para mejor distribución */
+/* NUEVO: Layout de ancho completo para /training */
+.trainingFullWidthLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+/* Mantener el grid original como respaldo */
 .trainingGridLayout {
   display: grid;
-  grid-template-columns: 1.5fr 1fr; /* Cambio de 2fr 1.3fr a 1.5fr 1fr para mejor balance */
-  gap: 32px; /* Aumentar gap de 24px a 32px para más espacio */
-  align-items: start; /* Alinear elementos al inicio */
+  grid-template-columns: 1.5fr 1fr;
+  gap: 32px;
+  align-items: start;
 }
 
 @media (min-width: 1024px) {
   .trainingGridLayout {
-    grid-template-columns: 1.6fr 1fr; /* Ajuste para desktop */
-    gap: 40px; /* Más espacio en desktop */
+    grid-template-columns: 1.6fr 1fr;
+    gap: 40px;
   }
 }
 
@@ -202,6 +210,7 @@
   box-shadow: 0 10px 30px rgba(248, 32, 131, 0.15);
   overflow: hidden;
   backdrop-filter: blur(10px);
+  border-radius: 15px;
 }
 
 .trainingCardHeader {
@@ -228,30 +237,27 @@
   font-style: normal;
 }
 
-/* CORRECCIÓN: Mejorar el ancho y espaciado del componente de video training */
 .videoTrainingCard {
   font-family: 'Gotham', sans-serif;
-  line-height: 1.5; /* Mejorar line-height de 1.4 a 1.5 */
+  line-height: 1.5;
   font-weight: 400;
   letter-spacing: 0.3px;
-  
-  /* CORRECCIÓN PRINCIPAL: Eliminar restricciones de ancho y mejorar espaciado */
   width: 100%;
-  max-width: none; /* Eliminar max-width: 420px que causaba la compresión */
-  padding: 1.5rem; /* Agregar padding interno */
-  box-sizing: border-box; /* Asegurar que el padding se incluya en el ancho total */
+  max-width: none;
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 
 .videoTrainingCard h2 {
   font-weight: 600;
-  margin-bottom: 12px; /* Aumentar de 8px a 12px */
-  font-size: 1.1rem; /* Aumentar ligeramente el tamaño del título */
+  margin-bottom: 12px;
+  font-size: 1.1rem;
 }
 
 .videoTrainingCard p {
-  font-size: 1rem; /* Aumentar de 0.95rem a 1rem */
-  margin-bottom: 8px; /* Aumentar de 6px a 8px */
-  line-height: 1.6; /* Mejorar legibilidad */
+  font-size: 1rem;
+  margin-bottom: 8px;
+  line-height: 1.6;
 }
 
 .trainingVideoContainer {
@@ -566,14 +572,12 @@
     border-radius: 10px;
   }
 
-  /* CORRECCIÓN: Mejorar grid en móvil */
-  .trainingGridLayout {
-    grid-template-columns: 1fr; /* Una sola columna en móvil */
+  .trainingFullWidthLayout {
     gap: 24px;
   }
 
   .videoTrainingCard {
-    padding: 1rem; /* Reducir padding en móvil */
+    padding: 1rem;
   }
 }
 
@@ -598,7 +602,11 @@
   }
 
   .videoTrainingCard {
-    padding: 0.75rem; /* Aún menos padding en pantallas muy pequeñas */
+    padding: 0.75rem;
+  }
+
+  .trainingFullWidthLayout {
+    gap: 20px;
   }
 }
 
@@ -647,7 +655,7 @@
   }
 }
 
-/* Payment Structure Section - MEJORADO */
+/* Payment Structure Section - MEJORADO para ancho completo */
 .paymentSection {
   background: #e4dbd8;
   padding: 3rem 0;
@@ -655,19 +663,15 @@
 }
 
 .paymentContainer {
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  
-  /* CORRECCIÓN: Mejorar el contenedor de payment */
-  background-color: #fff;
-  padding: 2rem; /* Aumentar padding de 20px a 2rem */
-  box-shadow: 0 10px 30px rgba(248, 32, 131, 0.15);
-  border-radius: 15px; /* Aumentar border-radius de 12px a 15px */
-  
-  /* CORRECCIÓN PRINCIPAL: Asegurar que ocupe todo el ancho disponible */
+  /* ELIMINADO: max-width y margin auto para permitir ancho completo */
   width: 100%;
+  padding: 0; /* Sin padding para que el botón rosa ocupe todo el ancho */
   box-sizing: border-box;
+  
+  /* Sin fondo blanco ni sombra para que solo se vea el botón rosa */
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 @media (max-width: 768px) {
@@ -677,33 +681,7 @@
   }
   
   .paymentContainer {
-    padding: 1.5rem; /* Ajustar padding en móvil */
-    margin: 0 1rem; /* Agregar margen lateral en móvil */
-  }
-}
-
-/* Ocultar en desktop */
-.paymentResponsiveOnly {
-  display: none;
-}
-
-/* Mostrar en desktop */
-.paymentDesktopOnly {
-  display: block;
-}
-
-/* Espaciado extra en desktop */
-.paymentDesktopOnly {
-  margin-top: 0; /* Sin espacio extra arriba */
-}
-
-@media (max-width: 1024px) {
-  /* En responsive, ocultar el de desktop y mostrar el de debajo del video */
-  .paymentDesktopOnly {
-    display: none;
-  }
-  .paymentResponsiveOnly {
-    display: block;
-    margin: 1.5rem 0; /* espacio entre video y submit */
+    padding: 0;
+    margin: 0;
   }
 }

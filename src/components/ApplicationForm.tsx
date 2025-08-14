@@ -124,18 +124,50 @@ const ApplicationForm: React.FC = () => {
       idiomas: selectedIdiomas.join(', '),
     };
 
+    // Estructura de datos para la nueva API
+    const apiData = {
+      nombre: data.nombre,
+      apellido: data.apellido,
+      email: data.email,
+      telefono: data.telefono ?? '',
+      edad: data.edad ? parseInt(data.edad) : 0,
+      zipCode: data.zipCode ?? '',
+      idiomas: selectedIdiomas,
+    };
+
     try {
       setLoading(true);
-      await fetch('https://sheetdb.io/api/v1/5rnrmuhqeq1h4', {
+      
+      // Envío a SheetDB (mantener lógica existente)
+      const sheetResponse = await fetch('https://sheetdb.io/api/v1/5rnrmuhqeq1h4', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: formDataForSheet }),
       });
+
+      // Envío a la nueva API de usuarios
+      const apiResponse = await fetch('https://backend-promotoras.onrender.com/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(apiData),
+      });
+
+      if (!sheetResponse.ok) {
+        console.error('❌ Error al enviar a SheetDB:', sheetResponse.statusText);
+      }
+
+      if (!apiResponse.ok) {
+        console.error('❌ Error al enviar a la API de usuarios:', apiResponse.statusText);
+      }
+
+      // Guardar datos del usuario en localStorage para uso posterior
+      localStorage.setItem('userData', JSON.stringify(apiData));
+      
       setModalOpen(true);
       reset();
       setSelectedIdiomas(['Español']);
     } catch (error) {
-      console.error('❌ Error al enviar a SheetDB:', error);
+      console.error('❌ Error al enviar datos:', error);
     } finally {
       setLoading(false);
     }

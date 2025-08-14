@@ -79,7 +79,7 @@ export default function SubmitSection({ video, onSubmit, isSubmitted }: SubmitSe
             style={{ opacity: 0.5, cursor: 'not-allowed' }}
           >
             <Send className="w-4 h-4" />
-            Enviar Capacitación
+            ¡Activar Cuenta!
           </button>
         </>
       ) : (
@@ -100,7 +100,7 @@ export default function SubmitSection({ video, onSubmit, isSubmitted }: SubmitSe
             className="btn btn-green"
           >
             <Send className="w-4 h-4" />
-            Enviar Capacitación
+            ¡Activar Cuenta!
           </button>
         </>
       )}
