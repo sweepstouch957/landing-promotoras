@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import VideoPlayer from '@/components/VideoPlayer';
-import SubmitSection from '@/components/SubmitSection';
-import PaymentStructure from '@/components/PaymentStructure';
-import styles from './training.module.css';
+import { useState, useEffect } from "react";
+import VideoPlayer from "@/components/VideoPlayer";
+import SubmitSection from "@/components/SubmitSection";
+import PaymentStructure from "@/components/PaymentStructure";
+import styles from "./training.module.css";
 import Image from "next/image";
 
 interface Video {
@@ -19,12 +19,12 @@ interface Video {
 
 const initialVideos: Video[] = [
   {
-    id: 'training',
-    title: 'Conoce a Sweepstouch y su programa de impulsadoras',
+    id: "training",
+    title: "Conoce a Sweepstouch y su programa de impulsadoras",
     description:
-      'Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar.',
+      "Gana dinero extra invitando a clientes a sorteos gratuitos en supermercados. Solo necesitas tu celular, buena actitud y ganas de impulsar.",
     duration: 129,
-    url: 'https://videos-impulsadoras.s3.us-east-2.amazonaws.com/sweepstouch+une+a+supermercados+con+sus+clientes_5.mp4',
+    url: "https://videos-impulsadoras.s3.us-east-2.amazonaws.com/sweepstouch+une+a+supermercados+con+sus+clientes_5.mp4",
     completed: false,
     watchedTime: 0,
   },
@@ -34,10 +34,9 @@ export default function Home() {
   const [videos, setVideos] = useState<Video[]>(initialVideos);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
 
   useEffect(() => {
-    const savedProgress = localStorage.getItem('elearning-progress');
+    const savedProgress = localStorage.getItem("elearning-progress");
     if (savedProgress) {
       try {
         const parsed = JSON.parse(savedProgress);
@@ -45,7 +44,7 @@ export default function Home() {
         setCurrentVideoIndex(parsed.currentVideoIndex || 0);
         setIsSubmitted(parsed.isSubmitted || false);
       } catch (error) {
-        console.error('Error loading progress:', error);
+        console.error("Error loading progress:", error);
       }
     }
   }, []);
@@ -56,7 +55,7 @@ export default function Home() {
       currentVideoIndex,
       isSubmitted,
     };
-    localStorage.setItem('elearning-progress', JSON.stringify(progress));
+    localStorage.setItem("elearning-progress", JSON.stringify(progress));
   }, [videos, currentVideoIndex, isSubmitted]);
 
   const handleVideoComplete = (videoId: string) => {
@@ -65,7 +64,6 @@ export default function Home() {
         video.id === videoId ? { ...video, completed: true } : video
       )
     );
-    
   };
 
   const setWatchedTime = (videoId: string, time: number) => {
@@ -79,7 +77,7 @@ export default function Home() {
   const handleSubmit = () => {
     setIsSubmitted(true);
     setTimeout(() => {
-      window.location.href = '/training/register';
+      window.location.href = "/training/register";
     }, 2000);
   };
 
@@ -88,21 +86,24 @@ export default function Home() {
   return (
     <div className={styles.trainingPage}>
       {/* Header */}
-     <div className={styles.trainingHeader}>
-  <div className={styles.trainingHeaderContent}>
-    <Image
-  src="/SWEEPSTOUCH.png"
-  alt="SweepsTOUCH logo"
-  width={350}  // aumenta el ancho
-  height={50} // ajusta proporcionalmente
-  className={styles.trainingHeaderTitle}
-/>
+      <div className={styles.trainingHeader}>
+        <div className={styles.trainingHeaderContent}>
+          <Image
+            src="/SWEEPSTOUCH.png"
+            alt="SweepsTOUCH logo"
+            width={350} // aumenta el ancho
+            height={50} // ajusta proporcionalmente
+            className={styles.trainingHeaderTitle}
+            style={{
+              objectFit: "contain",
+            }}
+          />
 
-    <div className={styles.trainingHeaderProgress}>
-      {completedCount}/1 completados
-    </div>
-  </div>
-</div>
+          <div className={styles.trainingHeaderProgress}>
+            {completedCount}/1 completados
+          </div>
+        </div>
+      </div>
 
       {/* Main Content */}
       <main className={styles.trainingMainContent}>
@@ -128,28 +129,17 @@ export default function Home() {
           {/* Submit Section */}
           <div className={styles.trainingCard}>
             <div className={styles.trainingCardContent}>
-            {videos.length > 0 && (
-  <SubmitSection
-    video={videos[0]}
-    onSubmit={handleSubmit}
-    isSubmitted={isSubmitted}
-  />
-)}
+              {videos.length > 0 && (
+                <SubmitSection
+                  video={videos[0]}
+                  onSubmit={handleSubmit}
+                  isSubmitted={isSubmitted}
+                />
+              )}
             </div>
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className={styles.trainingFooter}>
-        <div className={styles.trainingFooterContent}>
-          <p className={styles.trainingFooterText}>
-            Progreso total: {completedCount} de {videos.length} completados
-          </p>
-        </div>
-      </footer>
-
-      
     </div>
   );
 }
