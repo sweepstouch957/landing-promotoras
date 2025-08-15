@@ -1,30 +1,29 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
+import VideoPlayer from "@/components/VideoPlayer";
+import SubmitSection from "@/components/SubmitSection";
+import PaymentStructure from "@/components/PaymentStructure";
+import styles from "./training.module.css";
 import Image from "next/image";
 import {
   Box,
   CircularProgress,
+  Container,
   Typography,
   Button,
+  Card,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Avatar,
   IconButton,
+  Alert,
 } from "@mui/material";
-import { PhotoCamera, Send } from "@mui/icons-material";
+
+import { Lock, ArrowBack, PhotoCamera, Send } from "@mui/icons-material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-import VideoPlayer from "@/components/VideoPlayer";
-import SubmitSection from "@/components/SubmitSection";
-import PaymentStructure from "@/components/PaymentStructure";
-import styles from "./training.module.css";
-import { api } from "@/api/axios";
-
-// >>>>>>>>>>>>>> API (tu wrapper de axios) <<<<<<<<<<<<<<
 
 const theme = createTheme({
   palette: {
@@ -42,16 +41,6 @@ interface Video {
   url: string;
   completed: boolean;
   watchedTime: number;
-}
-
-interface LocalUser {
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  email?: string;
-  zipcode?: string;
-  role?: string;
-  photoUrl?: string; // avatarUrl
 }
 
 // Videos iniciales
@@ -74,29 +63,204 @@ export default function Home() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Gate de acceso por formulario
+  // Estados extra del archivo grande
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Modal y foto
+  // Modal de foto
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  // Creación de ActivationRequest
-  const [creatingRequest, setCreatingRequest] = useState(false);
+  // Estados para modales personalizados
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalAction, setModalAction] = useState<(() => void) | null>(null);
+
+  // Estado para controlar si el usuario ya completó todo
+  const [userCompletedAll, setUserCompletedAll] = useState(false);
+
+  // Funciones helper para modales
+  const showModal = (
+    type: "info" | "error" | "success",
+    title: string,
+    message: string,
+    action?: () => void
+  ) => {
+    setModalTitle(title);
+    setModalMessage(message);
+    setModalAction(() => action || null);
+
+    if (type === "info") setShowInfoModal(true);
+    else if (type === "error") setShowErrorModal(true);
+    else if (type === "success") setShowSuccessModal(true);
+  };
+
+  const closeModal = () => {
+    setShowInfoModal(false);
+    setShowErrorModal(false);
+    setShowSuccessModal(false);
+    if (modalAction) {
+      modalAction();
+      setModalAction(null);
+    }
+  };
 
   // Verificar si el formulario fue completado
   useEffect(() => {
-    try {
-      const userData = localStorage.getItem("userData");
-      if (userData) setIsFormCompleted(true);
-    } catch (error) {
-      console.error("Error checking form completion:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    const checkFormCompletion = async () => {
+      try {
+        // Verificar si hay email en la URL (enlace desde correo masivo)
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailFromUrl = urlParams.get("email");
+
+        if (emailFromUrl) {
+          // Validar que el email existe en la base de datos
+          try {
+            const response = await fetch(
+              `https://backend-promotoras.onrender.com/api/users/email/${encodeURIComponent(
+                emailFromUrl
+              )}`
+            );
+
+            if (response.ok) {
+              const userData = await response.json();
+              // Guardar datos del usuario en localStorage
+              localStorage.setItem("userData", JSON.stringify(userData.data));
+              setIsFormCompleted(true);
+
+              showModal(
+                "info",
+                "¡Bienvenido de vuelta!",
+                `¡Hola ${userData.data.nombre}! Bienvenido de vuelta. Continúa con tu entrenamiento.`
+              );
+
+              // Verificar progreso del usuario
+              if (userData.data.videoWatched && userData.data.photoUrl) {
+                // Usuario ya completó todo, pero permitir ver video
+                setUserCompletedAll(true);
+                setIsFormCompleted(true);
+                setIsSubmitted(true);
+                showModal(
+                  "info",
+                  "¡Proceso Ya Completado!",
+                  `¡Hola ${userData.data.nombre}! Ya has completado todo el proceso de registro. Puedes ver el video nuevamente, pero no necesitas subir otra foto.`
+                );
+                return;
+              }
+
+              if (userData.data.videoWatched && !userData.data.photoUrl) {
+                setIsSubmitted(true);
+                setTimeout(() => setPhotoModalOpen(true), 1000);
+              }
+            } else {
+              showModal(
+                "error",
+                "Usuario No Encontrado",
+                "No encontramos tu correo en nuestro sistema. Por favor, completa primero el formulario de registro.",
+                () => {
+                  window.location.href = "/formulario";
+                }
+              );
+              return;
+            }
+          } catch (error) {
+            console.error("Error validating email from URL:", error);
+            showModal(
+              "error",
+              "Error de Validación",
+              "Error al validar tu información. Por favor, intenta más tarde."
+            );
+            return;
+          }
+        } else {
+          // Flujo normal - verificar localStorage
+          // Verificar si debe saltar validación de email
+          const skipEmailValidation = localStorage.getItem(
+            "skipEmailValidation"
+          );
+
+          // Verificar mensaje del usuario
+          const userMessage = localStorage.getItem("userMessage");
+          if (userMessage) {
+            const message = JSON.parse(userMessage);
+            showModal("info", "Información", message.message);
+            localStorage.removeItem("userMessage");
+          }
+
+          const userData = localStorage.getItem("userData");
+          if (userData) {
+            const user = JSON.parse(userData);
+            setIsFormCompleted(true);
+
+            // Si debe saltar validación, limpiar flag y continuar
+            if (skipEmailValidation) {
+              localStorage.removeItem("skipEmailValidation");
+
+              // Verificar progreso básico sin validar en API
+              if (user.videoWatched && user.photoUrl) {
+                // Usuario ya completó todo, pero permitir ver video
+                setUserCompletedAll(true);
+                setIsFormCompleted(true);
+                setIsSubmitted(true);
+                showModal(
+                  "info",
+                  "¡Proceso Ya Completado!",
+                  `¡Hola ${user.nombre}! Ya has completado todo el proceso de registro. Puedes ver el video nuevamente, pero no necesitas subir otra foto.`
+                );
+                return;
+              }
+
+              if (user.videoWatched && !user.photoUrl) {
+                setIsSubmitted(true);
+                setTimeout(() => setPhotoModalOpen(true), 1000);
+              }
+            } else {
+              // Verificar estado del usuario en la API (flujo normal)
+              try {
+                const response = await fetch(
+                  `https://backend-promotoras.onrender.com/api/users/email/${encodeURIComponent(
+                    user.email
+                  )}`
+                );
+                if (response.ok) {
+                  const apiUser = await response.json();
+
+                  // Si el usuario ya completó todo el proceso, permitir ver video pero no subir foto
+                  if (apiUser.data.videoWatched && apiUser.data.photoUrl) {
+                    setUserCompletedAll(true);
+                    setIsSubmitted(true);
+                    showModal(
+                      "info",
+                      "¡Proceso Ya Completado!",
+                      `¡Hola ${user.nombre}! Ya has completado todo el proceso de registro. Puedes ver el video nuevamente, pero no necesitas subir otra foto.`
+                    );
+                    return;
+                  }
+
+                  // Si ya vio el video pero no subió la foto, mostrar modal inmediatamente
+                  if (apiUser.data.videoWatched && !apiUser.data.photoUrl) {
+                    setIsSubmitted(true);
+                    setTimeout(() => setPhotoModalOpen(true), 1000);
+                  }
+                }
+              } catch (error) {
+                console.error("Error verificando estado del usuario:", error);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error checking form completion:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    checkFormCompletion();
   }, []);
 
   // Cargar progreso guardado
@@ -125,12 +289,49 @@ export default function Home() {
   }, [videos, currentVideoIndex, isSubmitted]);
 
   // Handlers de video
-  const handleVideoComplete = (videoId: string) => {
+  const handleVideoComplete = async (videoId: string) => {
     setVideos((prev) =>
       prev.map((video) =>
         video.id === videoId ? { ...video, completed: true } : video
       )
     );
+
+    // Actualizar estado en la API
+    try {
+      const userData = localStorage.getItem("userData");
+      const userToken = localStorage.getItem("userToken");
+
+      if (userData) {
+        const user = JSON.parse(userData);
+
+        // Si tenemos token, usar endpoint de token, sino usar email
+        if (userToken) {
+          await fetch(
+            `https://backend-promotoras.onrender.com/api/users/token/${encodeURIComponent(
+              userToken
+            )}/video`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ videoWatched: true }),
+            }
+          );
+        } else {
+          await fetch(
+            `https://backend-promotoras.onrender.com/api/users/email/${encodeURIComponent(
+              user.email
+            )}/video`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ videoWatched: true }),
+            }
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error actualizando estado del video:", error);
+    }
   };
 
   const setWatchedTime = (videoId: string, time: number) => {
@@ -158,58 +359,6 @@ export default function Home() {
     }
   };
 
-  // Llama a tu backend para crear la ActivationRequest
-  const createActivationRequest = async (avatarUrl: string) => {
-    setCreatingRequest(true);
-    try {
-      const userRaw = localStorage.getItem("userData");
-      if (!userRaw) throw new Error("No se encontró userData en localStorage");
-
-      const user: LocalUser = JSON.parse(userRaw);
-
-      // Payload requerido por tu controller
-      const payload = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
-        email: user.email,
-        zipcode: user.zipcode,
-        role: user.role || "promotor",
-        avatarUrl, // usamos la url recién subida
-      };
-
-      // Validación mínima en front
-      if (!payload.email || !payload.firstName || !payload.lastName) {
-        throw new Error("Faltan datos obligatorios: nombre, apellido o email.");
-      }
-
-      const { data } = await api.post("/activation-requests", payload);
-      // data => { success, message, data: { requestId, userId } }
-
-      // Persistimos por si quieres usarlo luego
-      localStorage.setItem(
-        "activationRequest",
-        JSON.stringify({
-          requestId: data?.data?.requestId,
-          userId: data?.data?.userId,
-        })
-      );
-
-      alert("¡Solicitud enviada! Te avisaremos cuando sea aprobada.");
-      setPhotoModalOpen(false);
-    } catch (error: any) {
-      console.error("Error creando ActivationRequest:", error);
-      const msg =
-        error?.response?.data?.error ||
-        error?.message ||
-        "No se pudo crear la solicitud";
-      alert(msg);
-    } finally {
-      setCreatingRequest(false);
-    }
-  };
-
-  // Sube foto a tu servicio y luego crea la ActivationRequest
   const handlePhotoUpload = async () => {
     if (!photoFile) return;
 
@@ -219,31 +368,73 @@ export default function Home() {
       formData.append("image", photoFile);
       formData.append("folder", "promotor-request");
 
-      // 1) Subir imagen (tu endpoint de upload)
       const response = await fetch("https://api2.sweepstouch.com/api/upload", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) throw new Error("Error al subir la foto");
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Foto subida exitosamente:", result);
 
-      const result = await response.json();
-      const avatarUrl = result?.url;
-      if (!avatarUrl) throw new Error("No se recibió URL de la foto");
+        const userData = localStorage.getItem("userData");
+        const userToken = localStorage.getItem("userToken");
 
-      // 2) Guardar en localStorage
-      const userRaw = localStorage.getItem("userData");
-      if (userRaw) {
-        const user = JSON.parse(userRaw);
-        user.photoUrl = avatarUrl;
-        localStorage.setItem("userData", JSON.stringify(user));
+        if (userData) {
+          const user = JSON.parse(userData);
+          user.photoUrl = result.url;
+          localStorage.setItem("userData", JSON.stringify(user));
+
+          // Actualizar foto en la API
+          try {
+            // Si tenemos token, usar endpoint de token, sino usar email
+            if (userToken) {
+              await fetch(
+                `https://backend-promotoras.onrender.com/api/users/token/${encodeURIComponent(
+                  userToken
+                )}/photo`,
+                {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ photoUrl: result.url }),
+                }
+              );
+            } else {
+              await fetch(
+                `https://backend-promotoras.onrender.com/api/users/email/${encodeURIComponent(
+                  user.email
+                )}/photo`,
+                {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ photoUrl: result.url }),
+                }
+              );
+            }
+          } catch (error) {
+            console.error("Error actualizando foto en la API:", error);
+          }
+        }
+
+        setPhotoModalOpen(false);
+        showModal(
+          "success",
+          "¡Foto Subida Exitosamente!",
+          "¡Foto subida exitosamente! Tu registro está completo. Te redirigiremos a la página principal.",
+          () => {
+            window.location.href = "/";
+          }
+        );
+      } else {
+        throw new Error("Error al subir la foto");
       }
-
-      // 3) Crear ActivationRequest en tu backend
-      await createActivationRequest(avatarUrl);
     } catch (error) {
-      console.error("Error al subir la foto/crear request:", error);
-      alert("Error al completar el registro. Intenta nuevamente.");
+      console.error("Error al subir la foto:", error);
+      showModal(
+        "error",
+        "Error al Subir Foto",
+        "Error al subir la foto. Por favor, intenta de nuevo."
+      );
     } finally {
       setUploadingPhoto(false);
     }
@@ -264,19 +455,87 @@ export default function Home() {
 
   if (!isFormCompleted) {
     return (
-      <div className={styles.trainingPage}>
-        <div className={styles.centerScreen}>
-          <div className={styles.trainingCard}>
-            <h2 className={styles.restrictedTitle}>Acceso Restringido</h2>
-            <p className={styles.restrictedMessage}>
-              Debes completar el formulario de registro primero.
-            </p>
-            <button onClick={handleGoToForm} className={styles.primaryButton}>
-              Ir al Formulario
-            </button>
-          </div>
-        </div>
-      </div>
+      <ThemeProvider theme={theme}>
+        <Box
+          sx={{
+            minHeight: "100vh",
+            background: "#e4dbd8",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 2,
+          }}
+        >
+          <Container maxWidth="md">
+            <Card
+              sx={{
+                textAlign: "center",
+                padding: 4,
+                background: "rgba(255,255,255,0.95)",
+                backdropFilter: "blur(10px)",
+                border: "2px solid #e91e63",
+              }}
+            >
+              <Lock
+                sx={{ fontSize: 80, color: "primary.main", marginBottom: 2 }}
+              />
+              <Typography
+                variant="h3"
+                gutterBottom
+                sx={{
+                  fontWeight: 700,
+                  color: "primary.main",
+                  textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                  marginBottom: 3,
+                }}
+              >
+                Acceso Restringido
+              </Typography>
+
+              <Alert
+                severity="warning"
+                sx={{
+                  marginBottom: 3,
+                  borderRadius: "15px",
+                  "& .MuiAlert-icon": { color: "#e91e63" },
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: 600, marginBottom: 1 }}
+                >
+                  ¡Debes completar el formulario de registro primero!
+                </Typography>
+                <Typography variant="body1">
+                  Para acceder al entrenamiento, necesitas completar el
+                  formulario de registro.
+                </Typography>
+              </Alert>
+
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleGoToForm}
+                startIcon={<ArrowBack />}
+                sx={{
+                  minWidth: 250,
+                  background:
+                    "linear-gradient(135deg, #e91e63 0%, #c2185b 100%)",
+                  boxShadow: "0 4px 15px rgba(233, 30, 99, 0.3)",
+                  "&:hover": {
+                    background:
+                      "linear-gradient(135deg, #c2185b 0%, #ad1457 100%)",
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 8px 25px rgba(233,30,99,0.4)",
+                  },
+                }}
+              >
+                Ir al Formulario
+              </Button>
+            </Card>
+          </Container>
+        </Box>
+      </ThemeProvider>
     );
   }
 
@@ -331,12 +590,64 @@ export default function Home() {
                   isSubmitted={isSubmitted}
                 />
               )}
+
+              {/* Botón Activar Cuenta - SIEMPRE VISIBLE después de completar video, pero deshabilitado si ya completó todo */}
+              {(isSubmitted || videos[0]?.completed) && (
+                <Box sx={{ textAlign: "center", marginTop: 2 }}>
+                  {userCompletedAll ? (
+                    <Box>
+                      <Button
+                        variant="contained"
+                        disabled
+                        sx={{
+                          backgroundColor: "#ccc",
+                          color: "#666",
+                          minWidth: 200,
+                          padding: "12px 24px",
+                          fontSize: "1.1rem",
+                          fontWeight: "bold",
+                          cursor: "not-allowed",
+                        }}
+                      >
+                        Proceso Completado
+                      </Button>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          marginTop: 1,
+                          color: "#4caf50",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        ✅ Ya has completado todo el registro. No necesitas
+                        subir otra foto.
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={() => setPhotoModalOpen(true)}
+                      startIcon={<PhotoCamera />}
+                      sx={{
+                        backgroundColor: "#4caf50",
+                        "&:hover": { backgroundColor: "#388e3c" },
+                        minWidth: 200,
+                        padding: "12px 24px",
+                        fontSize: "1.1rem",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Activar Cuenta
+                    </Button>
+                  )}
+                </Box>
+              )}
             </div>
           </div>
         </div>
       </main>
 
-      {/* Modal de subida de foto + creación de ActivationRequest */}
+      {/* Modal de subida de foto */}
       <ThemeProvider theme={theme}>
         <Dialog
           open={photoModalOpen}
@@ -435,7 +746,10 @@ export default function Home() {
                   )}
                   <Typography
                     variant="body1"
-                    sx={{ fontWeight: 600, color: "#e91e63" }}
+                    sx={{
+                      fontWeight: 600,
+                      color: "#e91e63",
+                    }}
                   >
                     {photoPreview ? "Cambiar Foto" : "Subir Foto"}
                   </Typography>
@@ -459,16 +773,15 @@ export default function Home() {
                   backgroundColor: "rgba(233, 30, 99, 0.05)",
                 },
               }}
-              disabled={uploadingPhoto || creatingRequest}
             >
               Cancelar
             </Button>
             <Button
               onClick={handlePhotoUpload}
               variant="contained"
-              disabled={!photoFile || uploadingPhoto || creatingRequest}
+              disabled={!photoFile || uploadingPhoto}
               startIcon={
-                uploadingPhoto || creatingRequest ? (
+                uploadingPhoto ? (
                   <CircularProgress size={20} color="inherit" />
                 ) : (
                   <Send />
@@ -478,15 +791,139 @@ export default function Home() {
                 backgroundColor: "#e91e63",
                 color: "white",
                 minWidth: 150,
-                "&:hover": { backgroundColor: "#c2185b" },
-                "&:disabled": { backgroundColor: "rgba(233, 30, 99, 0.6)" },
+                "&:hover": {
+                  backgroundColor: "#c2185b",
+                },
+                "&:disabled": {
+                  backgroundColor: "rgba(233, 30, 99, 0.6)",
+                },
               }}
             >
-              {uploadingPhoto
-                ? "Subiendo..."
-                : creatingRequest
-                ? "Enviando..."
-                : "Subir & Enviar"}
+              {uploadingPhoto ? "Subiendo..." : "Subir Foto"}
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Modales personalizados */}
+        <Dialog
+          open={showInfoModal}
+          onClose={closeModal}
+          maxWidth="sm"
+          fullWidth
+          PaperProps={{
+            sx: {
+              borderRadius: 3,
+              p: 2,
+              backgroundColor: "rgba(255, 240, 247, 0.95)",
+              border: "2px solid #e91e63",
+              backdropFilter: "blur(10px)",
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{ color: "#e91e63", fontWeight: "bold", textAlign: "center" }}
+          >
+            {modalTitle}
+          </DialogTitle>
+          <DialogContent>
+            <Typography
+              sx={{ textAlign: "center", fontSize: "1rem", color: "#333" }}
+            >
+              {modalMessage}
+            </Typography>
+          </DialogContent>
+          <DialogActions sx={{ justifyContent: "center" }}>
+            <Button
+              onClick={closeModal}
+              variant="contained"
+              sx={{
+                backgroundColor: "#e91e63",
+                "&:hover": { backgroundColor: "#c2185b" },
+              }}
+            >
+              Entendido
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={showErrorModal}
+          onClose={closeModal}
+          maxWidth="sm"
+          fullWidth
+          PaperProps={{
+            sx: {
+              borderRadius: 3,
+              p: 2,
+              backgroundColor: "rgba(255, 235, 238, 0.95)",
+              border: "2px solid #f44336",
+              backdropFilter: "blur(10px)",
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{ color: "#f44336", fontWeight: "bold", textAlign: "center" }}
+          >
+            {modalTitle}
+          </DialogTitle>
+          <DialogContent>
+            <Typography
+              sx={{ textAlign: "center", fontSize: "1rem", color: "#333" }}
+            >
+              {modalMessage}
+            </Typography>
+          </DialogContent>
+          <DialogActions sx={{ justifyContent: "center" }}>
+            <Button
+              onClick={closeModal}
+              variant="contained"
+              sx={{
+                backgroundColor: "#f44336",
+                "&:hover": { backgroundColor: "#d32f2f" },
+              }}
+            >
+              Entendido
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={showSuccessModal}
+          onClose={closeModal}
+          maxWidth="sm"
+          fullWidth
+          PaperProps={{
+            sx: {
+              borderRadius: 3,
+              p: 2,
+              backgroundColor: "rgba(232, 245, 233, 0.95)",
+              border: "2px solid #4caf50",
+              backdropFilter: "blur(10px)",
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{ color: "#4caf50", fontWeight: "bold", textAlign: "center" }}
+          >
+            {modalTitle}
+          </DialogTitle>
+          <DialogContent>
+            <Typography
+              sx={{ textAlign: "center", fontSize: "1rem", color: "#333" }}
+            >
+              {modalMessage}
+            </Typography>
+          </DialogContent>
+          <DialogActions sx={{ justifyContent: "center" }}>
+            <Button
+              onClick={closeModal}
+              variant="contained"
+              sx={{
+                backgroundColor: "#4caf50",
+                "&:hover": { backgroundColor: "#388e3c" },
+              }}
+            >
+              Continuar
             </Button>
           </DialogActions>
         </Dialog>
