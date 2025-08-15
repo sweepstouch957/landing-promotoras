@@ -1,33 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
-import VideoPlayer from "@/components/VideoPlayer";
-import SubmitSection from "@/components/SubmitSection";
-import PaymentStructure from "@/components/PaymentStructure";
-import styles from "./training.module.css";
 import Image from "next/image";
-import { 
-  Box, 
-  CircularProgress, 
- 
-  Typography, 
-  Button, 
-
+import {
+  Box,
+  CircularProgress,
+  Typography,
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Avatar,
   IconButton,
+} from "@mui/material";
+import { PhotoCamera, Send } from "@mui/icons-material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-} from '@mui/material';
-import {  PhotoCamera, Send } from '@mui/icons-material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import VideoPlayer from "@/components/VideoPlayer";
+import SubmitSection from "@/components/SubmitSection";
+import PaymentStructure from "@/components/PaymentStructure";
+import styles from "./training.module.css";
+import { api } from "@/api/axios";
+
+// >>>>>>>>>>>>>> API (tu wrapper de axios) <<<<<<<<<<<<<<
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#e91e63', dark: '#c2185b', light: '#f8bbd9' },
-    secondary: { main: '#ad1457', dark: '#880e4f', light: '#f48fb1' },
+    primary: { main: "#e91e63", dark: "#c2185b", light: "#f8bbd9" },
+    secondary: { main: "#ad1457", dark: "#880e4f", light: "#f48fb1" },
   },
 });
 
@@ -40,6 +42,16 @@ interface Video {
   url: string;
   completed: boolean;
   watchedTime: number;
+}
+
+interface LocalUser {
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  email?: string;
+  zipcode?: string;
+  role?: string;
+  photoUrl?: string; // avatarUrl
 }
 
 // Videos iniciales
@@ -62,31 +74,29 @@ export default function Home() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Estados extra del archivo grande
+  // Gate de acceso por formulario
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Modal de foto
+  // Modal y foto
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
+  // Creación de ActivationRequest
+  const [creatingRequest, setCreatingRequest] = useState(false);
+
   // Verificar si el formulario fue completado
   useEffect(() => {
-    const checkFormCompletion = () => {
-      try {
-        const userData = localStorage.getItem("userData");
-        if (userData) {
-          setIsFormCompleted(true);
-        }
-      } catch (error) {
-        console.error("Error checking form completion:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    checkFormCompletion();
+    try {
+      const userData = localStorage.getItem("userData");
+      if (userData) setIsFormCompleted(true);
+    } catch (error) {
+      console.error("Error checking form completion:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   // Cargar progreso guardado
@@ -148,6 +158,58 @@ export default function Home() {
     }
   };
 
+  // Llama a tu backend para crear la ActivationRequest
+  const createActivationRequest = async (avatarUrl: string) => {
+    setCreatingRequest(true);
+    try {
+      const userRaw = localStorage.getItem("userData");
+      if (!userRaw) throw new Error("No se encontró userData en localStorage");
+
+      const user: LocalUser = JSON.parse(userRaw);
+
+      // Payload requerido por tu controller
+      const payload = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber,
+        email: user.email,
+        zipcode: user.zipcode,
+        role: user.role || "promotor",
+        avatarUrl, // usamos la url recién subida
+      };
+
+      // Validación mínima en front
+      if (!payload.email || !payload.firstName || !payload.lastName) {
+        throw new Error("Faltan datos obligatorios: nombre, apellido o email.");
+      }
+
+      const { data } = await api.post("/activation-requests", payload);
+      // data => { success, message, data: { requestId, userId } }
+
+      // Persistimos por si quieres usarlo luego
+      localStorage.setItem(
+        "activationRequest",
+        JSON.stringify({
+          requestId: data?.data?.requestId,
+          userId: data?.data?.userId,
+        })
+      );
+
+      alert("¡Solicitud enviada! Te avisaremos cuando sea aprobada.");
+      setPhotoModalOpen(false);
+    } catch (error: any) {
+      console.error("Error creando ActivationRequest:", error);
+      const msg =
+        error?.response?.data?.error ||
+        error?.message ||
+        "No se pudo crear la solicitud";
+      alert(msg);
+    } finally {
+      setCreatingRequest(false);
+    }
+  };
+
+  // Sube foto a tu servicio y luego crea la ActivationRequest
   const handlePhotoUpload = async () => {
     if (!photoFile) return;
 
@@ -157,30 +219,31 @@ export default function Home() {
       formData.append("image", photoFile);
       formData.append("folder", "promotor-request");
 
+      // 1) Subir imagen (tu endpoint de upload)
       const response = await fetch("https://api2.sweepstouch.com/api/upload", {
         method: "POST",
         body: formData,
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Foto subida exitosamente:", result);
+      if (!response.ok) throw new Error("Error al subir la foto");
 
-        const userData = localStorage.getItem("userData");
-        if (userData) {
-          const user = JSON.parse(userData);
-          user.photoUrl = result.url;
-          localStorage.setItem("userData", JSON.stringify(user));
-        }
+      const result = await response.json();
+      const avatarUrl = result?.url;
+      if (!avatarUrl) throw new Error("No se recibió URL de la foto");
 
-        setPhotoModalOpen(false);
-        alert("¡Foto subida exitosamente! Tu registro está completo.");
-      } else {
-        throw new Error("Error al subir la foto");
+      // 2) Guardar en localStorage
+      const userRaw = localStorage.getItem("userData");
+      if (userRaw) {
+        const user = JSON.parse(userRaw);
+        user.photoUrl = avatarUrl;
+        localStorage.setItem("userData", JSON.stringify(user));
       }
+
+      // 3) Crear ActivationRequest en tu backend
+      await createActivationRequest(avatarUrl);
     } catch (error) {
-      console.error("Error al subir la foto:", error);
-      alert("Error al subir la foto. Por favor, intenta de nuevo.");
+      console.error("Error al subir la foto/crear request:", error);
+      alert("Error al completar el registro. Intenta nuevamente.");
     } finally {
       setUploadingPhoto(false);
     }
@@ -208,10 +271,7 @@ export default function Home() {
             <p className={styles.restrictedMessage}>
               Debes completar el formulario de registro primero.
             </p>
-            <button
-              onClick={handleGoToForm}
-              className={styles.primaryButton}
-            >
+            <button onClick={handleGoToForm} className={styles.primaryButton}>
               Ir al Formulario
             </button>
           </div>
@@ -276,7 +336,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Modal de subida de foto */}
+      {/* Modal de subida de foto + creación de ActivationRequest */}
       <ThemeProvider theme={theme}>
         <Dialog
           open={photoModalOpen}
@@ -287,90 +347,97 @@ export default function Home() {
             sx: {
               borderRadius: 3,
               p: 2,
-              backgroundColor: 'rgba(255, 240, 247, 0.95)',
-              border: '2px solid #e91e63',
-              backdropFilter: 'blur(10px)',
+              backgroundColor: "rgba(255, 240, 247, 0.95)",
+              border: "2px solid #e91e63",
+              backdropFilter: "blur(10px)",
             },
           }}
         >
           <DialogTitle
             sx={{
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               gap: 1,
-              color: '#e91e63',
-              fontWeight: 'bold',
-              fontSize: '1.5rem',
-              textAlign: 'center',
+              color: "#e91e63",
+              fontWeight: "bold",
+              fontSize: "1.5rem",
+              textAlign: "center",
             }}
           >
-            <PhotoCamera sx={{ color: '#e91e63' }} />
+            <PhotoCamera sx={{ color: "#e91e63" }} />
             Completa tu Registro
           </DialogTitle>
-          
+
           <DialogContent>
-            <Typography sx={{ fontSize: '1rem', color: '#333', mb: 3, textAlign: 'center' }}>
-              Para finalizar tu registro como promotora, necesitamos una foto tuya.
+            <Typography
+              sx={{
+                fontSize: "1rem",
+                color: "#333",
+                mb: 3,
+                textAlign: "center",
+              }}
+            >
+              Para finalizar tu registro como promotora, necesitamos una foto
+              tuya.
             </Typography>
 
-            <Box sx={{ textAlign: 'center' }}>
+            <Box sx={{ textAlign: "center" }}>
               <input
                 accept="image/*"
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
                 id="photo-upload-training"
                 type="file"
                 onChange={handlePhotoChange}
               />
               <label htmlFor="photo-upload-training">
-                <Box sx={{
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  alignItems: 'center', 
-                  gap: 2,
-                  padding: 3, 
-                  border: '2px dashed #e91e63',
-                  borderRadius: 2, 
-                  cursor: 'pointer', 
-                  transition: 'all 0.3s ease',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(233,30,99,0.05)', 
-                    borderColor: '#c2185b' 
-                  }
-                }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 2,
+                    padding: 3,
+                    border: "2px dashed #e91e63",
+                    borderRadius: 2,
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      backgroundColor: "rgba(233,30,99,0.05)",
+                      borderColor: "#c2185b",
+                    },
+                  }}
+                >
                   {photoPreview ? (
-                    <Avatar 
-                      src={photoPreview} 
-                      sx={{ 
-                        width: 120, 
-                        height: 120, 
-                        border: '3px solid #e91e63' 
-                      }} 
+                    <Avatar
+                      src={photoPreview}
+                      sx={{
+                        width: 120,
+                        height: 120,
+                        border: "3px solid #e91e63",
+                      }}
                     />
                   ) : (
-                    <IconButton 
-                      component="span" 
-                      sx={{ 
-                        backgroundColor: '#f8bbd9', 
-                        color: '#e91e63', 
+                    <IconButton
+                      component="span"
+                      sx={{
+                        backgroundColor: "#f8bbd9",
+                        color: "#e91e63",
                         width: 80,
                         height: 80,
-                        '&:hover': { 
-                          backgroundColor: '#e91e63', 
-                          color: 'white' 
-                        } 
+                        "&:hover": {
+                          backgroundColor: "#e91e63",
+                          color: "white",
+                        },
                       }}
                     >
                       <PhotoCamera sx={{ fontSize: 40 }} />
                     </IconButton>
                   )}
-                  <Typography 
-                    variant="body1" 
-                    sx={{ 
-                      fontWeight: 600,
-                      color: '#e91e63'
-                    }}
+                  <Typography
+                    variant="body1"
+                    sx={{ fontWeight: 600, color: "#e91e63" }}
                   >
-                    {photoPreview ? 'Cambiar Foto' : 'Subir Foto'}
+                    {photoPreview ? "Cambiar Foto" : "Subir Foto"}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
                     JPG, JPEG o PNG (máx. 5MB)
@@ -379,40 +446,47 @@ export default function Home() {
               </label>
             </Box>
           </DialogContent>
-          
-          <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
+
+          <DialogActions sx={{ justifyContent: "center", gap: 2, pb: 2 }}>
             <Button
               onClick={() => setPhotoModalOpen(false)}
               variant="outlined"
               sx={{
-                borderColor: '#e91e63',
-                color: '#e91e63',
-                '&:hover': {
-                  borderColor: '#c2185b',
-                  backgroundColor: 'rgba(233, 30, 99, 0.05)',
-                }
+                borderColor: "#e91e63",
+                color: "#e91e63",
+                "&:hover": {
+                  borderColor: "#c2185b",
+                  backgroundColor: "rgba(233, 30, 99, 0.05)",
+                },
               }}
+              disabled={uploadingPhoto || creatingRequest}
             >
               Cancelar
             </Button>
             <Button
               onClick={handlePhotoUpload}
               variant="contained"
-              disabled={!photoFile || uploadingPhoto}
-              startIcon={uploadingPhoto ? <CircularProgress size={20} color="inherit" /> : <Send />}
+              disabled={!photoFile || uploadingPhoto || creatingRequest}
+              startIcon={
+                uploadingPhoto || creatingRequest ? (
+                  <CircularProgress size={20} color="inherit" />
+                ) : (
+                  <Send />
+                )
+              }
               sx={{
-                backgroundColor: '#e91e63',
-                color: 'white',
+                backgroundColor: "#e91e63",
+                color: "white",
                 minWidth: 150,
-                '&:hover': { 
-                  backgroundColor: '#c2185b' 
-                },
-                '&:disabled': { 
-                  backgroundColor: 'rgba(233, 30, 99, 0.6)' 
-                },
+                "&:hover": { backgroundColor: "#c2185b" },
+                "&:disabled": { backgroundColor: "rgba(233, 30, 99, 0.6)" },
               }}
             >
-              {uploadingPhoto ? 'Subiendo...' : 'Subir Foto'}
+              {uploadingPhoto
+                ? "Subiendo..."
+                : creatingRequest
+                ? "Enviando..."
+                : "Subir & Enviar"}
             </Button>
           </DialogActions>
         </Dialog>
