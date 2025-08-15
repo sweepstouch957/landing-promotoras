@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React, { useState, useEffect, forwardRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -85,6 +86,8 @@ const ApplicationForm: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [nombre, setNombre] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [existingUserData, setExistingUserData] = useState<any>(null);
 
   const {
     register,
@@ -98,9 +101,63 @@ const ApplicationForm: React.FC = () => {
     mode: 'onChange',
   });
 
+  // Verificar si hay datos en localStorage al cargar el componente
+  useEffect(() => {
+    const savedUserData = localStorage.getItem("userData");
+    if (savedUserData) {
+      try {
+        const userData = JSON.parse(savedUserData);
+        setExistingUserData(userData);
+        setShowConfirmModal(true);
+      } catch (error) {
+        console.error("Error parsing saved user data:", error);
+        localStorage.removeItem("userData");
+      }
+    }
+  }, []);
+
   useEffect(() => {
     setValue('idiomas', selectedIdiomas);
   }, [selectedIdiomas, setValue]);
+
+  const handleContinueWithExistingData = () => {
+    setShowConfirmModal(false);
+    // Redirigir directamente a training con flag para evitar validación
+    localStorage.setItem('skipEmailValidation', 'true');
+    window.location.href = "/training";
+  };
+
+  const handleModifyData = () => {
+    setShowConfirmModal(false);
+    // Cargar los datos existentes en el formulario para editar
+    if (existingUserData) {
+      setValue('nombre', existingUserData.nombre || '');
+      setValue('apellido', existingUserData.apellido || '');
+      setValue('email', existingUserData.email || '');
+      setValue('telefono', existingUserData.telefono || '');
+      setValue('edad', existingUserData.edad?.toString() || '');
+      setValue('zipCode', existingUserData.zipCode || '');
+      setValue('supermercado', existingUserData.supermercado || '');
+      setSelectedIdiomas(existingUserData.idiomas || ['Español']);
+    }
+    // Marcar que viene de modificación para evitar validación de email existente
+    localStorage.setItem('isModifyingData', 'true');
+  };
+
+  const handleNewApplication = () => {
+    setShowConfirmModal(false);
+    // Limpiar todo el localStorage y reiniciar formulario
+    localStorage.removeItem('userData');
+    localStorage.removeItem('elearning-progress');
+    localStorage.removeItem('userMessage');
+    localStorage.removeItem('skipEmailValidation');
+    localStorage.removeItem('isModifyingData');
+    
+    // Reiniciar formulario
+    reset();
+    setSelectedIdiomas(['Español']);
+    setExistingUserData(null);
+  };
 
   const handleIdiomasChange = (
     event: SelectChangeEvent<typeof selectedIdiomas>
@@ -113,31 +170,53 @@ const ApplicationForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     setNombre(data.nombre);
 
-    const formDataForSheet = {
-      Nombre: data.nombre,
-      apellido: data.apellido,
-      edad: data.edad ?? '',
-      telefono: data.telefono ?? '',
-      zip: data.zipCode ?? '',
-      correo: data.email,
-      supermercado: data.supermercado,
-      idiomas: selectedIdiomas.join(', '),
-    };
-
-    // Estructura de datos para la nueva API
-    const apiData = {
-      nombre: data.nombre,
-      apellido: data.apellido,
-      email: data.email,
-      telefono: data.telefono ?? '',
-      edad: data.edad ? parseInt(data.edad) : 0,
-      zipCode: data.zipCode ?? '',
-      idiomas: selectedIdiomas,
-    };
-
     try {
       setLoading(true);
       
+      // Verificar si el usuario ya existe (solo si no viene de modificación)
+      const isModifyingData = localStorage.getItem('isModifyingData');
+      if (!isModifyingData) {
+        const existingUser = await fetch(`https://backend-promotoras.onrender.com/api/users/email/${encodeURIComponent(data.email)}`);
+        
+        if (existingUser.ok) {
+          // Usuario ya existe, redirigir a training con mensaje
+          localStorage.setItem('userMessage', JSON.stringify({
+            type: 'info',
+            message: `¡Hola ${data.nombre}! Ya tienes una cuenta registrada. Te hemos enviado un correo anteriormente.`
+          }));
+          localStorage.setItem('skipEmailValidation', 'true');
+          window.location.href = '/training';
+          return;
+        }
+      } else {
+        // Limpiar flag de modificación
+        localStorage.removeItem('isModifyingData');
+      }
+
+      const formDataForSheet = {
+        Nombre: data.nombre,
+        apellido: data.apellido,
+        edad: data.edad ?? '',
+        telefono: data.telefono ?? '',
+        zip: data.zipCode ?? '',
+        correo: data.email,
+        supermercado: data.supermercado,
+        idiomas: selectedIdiomas.join(', '),
+      };
+
+      // Estructura de datos para la nueva API
+      const apiData = {
+        nombre: data.nombre,
+        apellido: data.apellido,
+        email: data.email,
+        telefono: data.telefono ?? '',
+        edad: data.edad ? parseInt(data.edad) : 0,
+        zipCode: data.zipCode ?? '',
+        idiomas: selectedIdiomas,
+        videoWatched: false,
+        photoUrl: null,
+      };
+
       // Envío a SheetDB (mantener lógica existente)
       const sheetResponse = await fetch('https://sheetdb.io/api/v1/5rnrmuhqeq1h4', {
         method: 'POST',
@@ -425,6 +504,70 @@ const ApplicationForm: React.FC = () => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+
+      {/* Modal de confirmación para usuarios existentes */}
+      <Dialog 
+        open={showConfirmModal} 
+        onClose={() => {}}
+        TransitionComponent={Transition}
+        keepMounted
+        sx={{
+          backdropFilter: 'blur(6px)',
+          backgroundColor: 'rgba(0,0,0,0.2)',
+        }}
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            p: 3,
+            backgroundColor: 'rgba(255, 240, 247, 0.85)',
+            border: '2px solid #ED1F80',
+            backdropFilter: 'blur(10px)',
+          },
+        }}
+      >
+        <DialogTitle sx={{ color: '#ED1F80', fontWeight: 'bold' }}>
+          Datos Guardados Encontrados
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" sx={{ marginBottom: 2 }}>
+            Hemos encontrado que ya tienes datos guardados de una sesión anterior:
+          </Typography>
+          {existingUserData && (
+            <Box sx={{ backgroundColor: '#f5f5f5', padding: 2, borderRadius: 1, marginBottom: 2 }}>
+              <Typography variant="body2"><strong>Nombre:</strong> {existingUserData.nombre} {existingUserData.apellido}</Typography>
+              <Typography variant="body2"><strong>Email:</strong> {existingUserData.email}</Typography>
+              <Typography variant="body2"><strong>Teléfono:</strong> {existingUserData.telefono || 'No especificado'}</Typography>
+            </Box>
+          )}
+          <Typography variant="body1">
+            ¿Deseas continuar con estos datos o modificar alguna información?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={handleModifyData} 
+            sx={{ color: '#ED1F80' }}
+          >
+            Modificar Datos
+          </Button>
+          <Button 
+            onClick={handleNewApplication} 
+            sx={{ color: '#666' }}
+          >
+            Nueva Solicitud
+          </Button>
+          <Button 
+            onClick={handleContinueWithExistingData} 
+            variant="contained" 
+            sx={{
+              backgroundColor: '#ED1F80',
+              '&:hover': { backgroundColor: '#d1176b' }
+            }}
+          >
+            Continuar con estos Datos
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

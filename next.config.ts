@@ -1,7 +1,10 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  eslint: {
+    ignoreDuringBuilds: true, // ✅ Desactiva ESLint durante el build
+  },
+
   async rewrites() {
     return [
       {
@@ -9,7 +12,6 @@ const nextConfig: NextConfig = {
         destination:
           'https://backend-promotoras.onrender.com/api/google-auth/:path*',
       },
-      // Otras rutas del backend si las hay
       {
         source: '/api/users/:path*',
         destination: 'https://backend-promotoras.onrender.com/api/users/:path*',

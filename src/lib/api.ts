@@ -72,6 +72,89 @@ export const api = {
     });
     return response.json();
   },
+
+  // Validar usuario por email
+  getUserByEmail: async (email: string) => {
+    const response = await fetch(`${API_BASE_URL}/users/email/${encodeURIComponent(email)}`);
+    if (response.status === 404) {
+      return null; // Usuario no encontrado
+    }
+    return response.json();
+  },
+
+  // Actualizar foto del usuario
+  updateUserPhoto: async (email: string, photoUrl: string) => {
+    const response = await fetch(`${API_BASE_URL}/users/email/${encodeURIComponent(email)}/photo`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ photoUrl }),
+    });
+    return response.json();
+  },
+
+  // Actualizar estado de video visto
+  updateUserVideoStatus: async (email: string, videoWatched: boolean) => {
+    const response = await fetch(`${API_BASE_URL}/users/email/${encodeURIComponent(email)}/video`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ videoWatched }),
+    });
+    return response.json();
+  },
+
+  // Obtener usuario por token único
+  getUserByToken: async (token: string) => {
+    const response = await fetch(`${API_BASE_URL}/users/token/${encodeURIComponent(token)}`);
+    if (response.status === 404) {
+      return null; // Usuario no encontrado
+    }
+    return response.json();
+  },
+
+  // Generar token único para usuario
+  generateUserToken: async (email: string) => {
+    const response = await fetch(`${API_BASE_URL}/users/email/${encodeURIComponent(email)}/generate-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.json();
+  },
+
+  // Obtener todos los usuarios con tokens para envío masivo
+  getUsersWithTokens: async () => {
+    const response = await fetch(`${API_BASE_URL}/users/with-tokens`);
+    return response.json();
+  },
+
+  // Actualizar foto del usuario por token
+  updateUserPhotoByToken: async (token: string, photoUrl: string) => {
+    const response = await fetch(`${API_BASE_URL}/users/token/${encodeURIComponent(token)}/photo`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ photoUrl }),
+    });
+    return response.json();
+  },
+
+  // Actualizar estado de video visto por token
+  updateUserVideoStatusByToken: async (token: string, videoWatched: boolean) => {
+    const response = await fetch(`${API_BASE_URL}/users/token/${encodeURIComponent(token)}/video`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ videoWatched }),
+    });
+    return response.json();
+  },
 };
 
 export default api;
