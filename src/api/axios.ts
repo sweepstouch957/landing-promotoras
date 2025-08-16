@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const api = axios.create({
+const apiSweepstouch = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SWEEPSTOUCH,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
-export { api };
+export { apiSweepstouch };
