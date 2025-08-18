@@ -189,7 +189,7 @@ export default function Home() {
           showModal(
             'success',
             'Solicitud enviada',
-            '¡Tu solicitud de activación fue creada y está en revisión! Te avisaremos pronto.'
+            '¡Tu solicitud de activación fue creada y está en revisión! Te enviaremos un correo cuando sea aprobada.'
           );
           return;
         }
