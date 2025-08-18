@@ -3,6 +3,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import imageCompression from "browser-image-compression";
+
 import VideoPlayer from "@/components/VideoPlayer";
 import SubmitSection from "@/components/SubmitSection";
 import PaymentStructure from "@/components/PaymentStructure";
@@ -95,6 +97,9 @@ export default function Home() {
   const [modalMessage, setModalMessage] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [modalAction, setModalAction] = useState<(() => void) | null>(null);
+  const [photoFileCompressed, setPhotoFileCompressed] = useState<File | null>(
+    null
+  );
 
   // Estado para controlar si el usuario ya completó todo
   const [userCompletedAll, setUserCompletedAll] = useState(false);
@@ -147,7 +152,6 @@ export default function Home() {
 
   const requestActivationIfPossible = useCallback(
     async (reason: "auto" | "manual" = "auto") => {
-      
       try {
         if (activationLoading) return;
         if (typeof window === "undefined") return;
@@ -234,7 +238,6 @@ export default function Home() {
 
   // ---------- Verificar si el formulario fue completado ----------
   useEffect(() => {
-
     const checkFormCompletion = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -469,23 +472,88 @@ export default function Home() {
   };
 
   // ---------- Subida de foto ----------
-  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
-    if (file) {
-      setPhotoFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => setPhotoPreview(e.target?.result as string);
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    // Solo imágenes
+    if (!file.type.startsWith("image/")) {
+      showModal(
+        "error",
+        "Archivo no válido",
+        "Por favor, selecciona una imagen (JPG/PNG)."
+      );
+      return;
+    }
+
+    try {
+      // 1ª pasada: compresión estándar
+      let options: any = {
+        maxSizeMB: 1, // objetivo: ≤ 1MB
+        maxWidthOrHeight: 900, // reduce dimensiones si viene gigante
+        useWebWorker: true,
+        initialQuality: 0.8, // calidad inicial
+        fileType: file.type.includes("png") ? "image/png" : "image/jpeg",
+      };
+
+      let compressed = await imageCompression(file, options);
+
+      // Si sigue >1MB, 2ª pasada más agresiva
+      if (compressed.size > 1024 * 1024) {
+        options = {
+          ...options,
+          maxWidthOrHeight: 720,
+          initialQuality: 0.7,
+        };
+        compressed = await imageCompression(compressed, options);
+      }
+
+      // Si aun así pasa de 1MB, 3ª pasada mínima razonable
+      if (compressed.size > 1024 * 1024) {
+        options = {
+          ...options,
+          maxWidthOrHeight: 640,
+          initialQuality: 0.6,
+        };
+        compressed = await imageCompression(compressed, options);
+      }
+
+      // Verificación final
+      if (compressed.size > 1024 * 1024) {
+        const sizeMB = (compressed.size / (1024 * 1024)).toFixed(2);
+        showModal(
+          "error",
+          "Imagen muy pesada",
+          `La imagen sigue pesando ${sizeMB} MB incluso tras comprimir. Prueba con otra foto o baja la resolución.`
+        );
+        return;
+      }
+
+      // Preview desde el archivo comprimido
+      const dataUrl = await imageCompression.getDataUrlFromFile(compressed);
+      setPhotoPreview(dataUrl);
+      setPhotoFile(file); // original (por si lo quieres)
+      setPhotoFileCompressed(compressed); // el que realmente usaremos para subir
+    } catch (err) {
+      console.error("Error al comprimir:", err);
+      showModal(
+        "error",
+        "Error al comprimir",
+        "No pudimos procesar la imagen. Intenta de nuevo."
+      );
     }
   };
 
   const handlePhotoUpload = async () => {
-    if (!photoFile) return;
+    const toUpload = photoFileCompressed ?? photoFile;
+    if (!toUpload) return;
 
     setUploadingPhoto(true);
     try {
       const formData = new FormData();
-      formData.append("image", photoFile);
+      formData.append("image", toUpload);
       formData.append("folder", "promotor-request");
 
       const response = await fetch("https://api2.sweepstouch.com/api/upload", {
@@ -504,7 +572,6 @@ export default function Home() {
         user.photoUrl = result.url;
         localStorage.setItem("userData", JSON.stringify(user));
 
-        // Actualizar foto en la API
         try {
           if (userToken) {
             await fetch(
@@ -533,8 +600,8 @@ export default function Home() {
           console.error("Error actualizando foto en la API:", error);
         }
       }
-      await requestActivationIfPossible("manual");
 
+      await requestActivationIfPossible("manual");
       setPhotoModalOpen(false);
     } catch (error) {
       console.error("Error al subir la foto:", error);
