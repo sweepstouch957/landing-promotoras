@@ -13,19 +13,11 @@ const Bonuses = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle
-        cx="12"
-        cy="8"
-        r="4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        fill="none"
-      />
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
       <path
         d="M8 12L6 22L12 19L18 22L16 12"
         stroke="currentColor"
         strokeWidth="1.5"
-        fill="none"
       />
     </svg>
   );
@@ -34,20 +26,13 @@ const Bonuses = () => {
     <section className={styles.container}>
       <h2 className={styles.title}>{t('bonuses_title')}</h2>
       <p className={styles.subtitle}>{t('bonuses_subtitle')}</p>
-      <div className={styles.cards}>
+      <div className={styles.cardWrapper}>
         <div className={styles.card}>
           <div className={styles.iconContainer}>
-            <MedalIcon className={`${styles.icon} ${styles.iconLight}`} />
+            <MedalIcon className={styles.iconPink} />
           </div>
-          <h3 className={styles.cardTitle}>{t('bonuses_weekly_title')}</h3>
-          <p className={styles.cardDescription}>{t('bonuses_weekly_desc')}</p>
-        </div>
-        <div className={styles.card}>
-          <div className={styles.iconContainer}>
-            <MedalIcon className={`${styles.icon} ${styles.iconPink}`} />
-          </div>
-          <h3 className={styles.cardTitle}>{t('bonuses_monthly_title')}</h3>
-          <p className={styles.cardDescription}>{t('bonuses_monthly_desc')}</p>
+          <h3 className={styles.cardTitle}>{t('bonuses_extra_title')}</h3>
+          <p className={styles.cardDescription}>{t('bonuses_extra_desc')}</p>
         </div>
       </div>
     </section>

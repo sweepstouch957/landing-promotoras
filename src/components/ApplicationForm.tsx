@@ -103,15 +103,15 @@ const ApplicationForm: React.FC = () => {
 
   // Verificar si hay datos en localStorage al cargar el componente
   useEffect(() => {
-    const savedUserData = localStorage.getItem("userData");
+    const savedUserData = localStorage.getItem('userData');
     if (savedUserData) {
       try {
         const userData = JSON.parse(savedUserData);
         setExistingUserData(userData);
         setShowConfirmModal(true);
       } catch (error) {
-        console.error("Error parsing saved user data:", error);
-        localStorage.removeItem("userData");
+        console.error('Error parsing saved user data:', error);
+        localStorage.removeItem('userData');
       }
     }
   }, []);
@@ -124,7 +124,7 @@ const ApplicationForm: React.FC = () => {
     setShowConfirmModal(false);
     // Redirigir directamente a training con flag para evitar validación
     localStorage.setItem('skipEmailValidation', 'true');
-    window.location.href = "/training";
+    window.location.href = '/training';
   };
 
   const handleModifyData = () => {
@@ -152,7 +152,7 @@ const ApplicationForm: React.FC = () => {
     localStorage.removeItem('userMessage');
     localStorage.removeItem('skipEmailValidation');
     localStorage.removeItem('isModifyingData');
-    
+
     // Reiniciar formulario
     reset();
     setSelectedIdiomas(['Español']);
@@ -172,21 +172,61 @@ const ApplicationForm: React.FC = () => {
 
     try {
       setLoading(true);
-      
+
       // Verificar si el usuario ya existe (solo si no viene de modificación)
       const isModifyingData = localStorage.getItem('isModifyingData');
       if (!isModifyingData) {
-        const existingUser = await fetch(`https://backend-promotoras.onrender.com/api/users/email/${encodeURIComponent(data.email)}`);
-        
+        const existingUser = await fetch(
+          `https://backend-promotoras.onrender.com/api/users/email/${encodeURIComponent(
+            data.email
+          )}`
+        );
+
         if (existingUser.ok) {
-          // Usuario ya existe, redirigir a training con mensaje
-          localStorage.setItem('userMessage', JSON.stringify({
-            type: 'info',
-            message: `¡Hola ${data.nombre}! Ya tienes una cuenta registrada. Te hemos enviado un correo anteriormente.`
-          }));
-          localStorage.setItem('skipEmailValidation', 'true');
-          window.location.href = '/training';
-          return;
+          const userData = await existingUser.json();
+
+          if (userData?.data) {
+            const { email, photoUrl, nombre } = userData.data;
+
+            // Caso 1: Usuario con email + photoUrl (ya completo registro)
+
+            if (email && photoUrl && photoUrl.trim() !== '') {
+              localStorage.setItem(
+                'userMessage',
+                JSON.stringify({
+                  type: 'info',
+                  message: `¡Hola ${
+                    nombre || data.nombre
+                  }! Ya tienes una cuenta registrada. Puedes ver el video introductorio.`,
+                })
+              );
+              localStorage.setItem('skipEmailValidation', 'true');
+              localStorage.setItem('userData', JSON.stringify(userData.data));
+
+              // 🚫 Nuevo: bloquear subida de foto
+              localStorage.setItem('blockPhotoUpload', 'true');
+
+              window.location.href = '/training';
+              return;
+            }
+
+            // Caso 2: Usuario con email pero photoUrl vacío
+            if (email && (!photoUrl || photoUrl.trim() === '')) {
+              localStorage.setItem(
+                'userMessage',
+                JSON.stringify({
+                  type: 'info',
+                  message: `¡Hola ${
+                    nombre || data.nombre
+                  }! Ya enviaste tus datos con anterioridad. Solo necesitas avanzar para ver el video, subir tu foto y completar el registro.`,
+                })
+              );
+              localStorage.setItem('skipEmailValidation', 'true');
+              localStorage.setItem('userData', JSON.stringify(userData.data));
+              window.location.href = '/training';
+              return;
+            }
+          }
         }
       } else {
         // Limpiar flag de modificación
@@ -218,30 +258,42 @@ const ApplicationForm: React.FC = () => {
       };
 
       // Envío a SheetDB (mantener lógica existente)
-      const sheetResponse = await fetch('https://sheetdb.io/api/v1/5rnrmuhqeq1h4', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: formDataForSheet }),
-      });
+      const sheetResponse = await fetch(
+        'https://sheetdb.io/api/v1/5rnrmuhqeq1h4',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data: formDataForSheet }),
+        }
+      );
 
       // Envío a la nueva API de usuarios
-      const apiResponse = await fetch('https://backend-promotoras.onrender.com/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(apiData),
-      });
+      const apiResponse = await fetch(
+        'https://backend-promotoras.onrender.com/api/users',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(apiData),
+        }
+      );
 
       if (!sheetResponse.ok) {
-        console.error('❌ Error al enviar a SheetDB:', sheetResponse.statusText);
+        console.error(
+          '❌ Error al enviar a SheetDB:',
+          sheetResponse.statusText
+        );
       }
 
       if (!apiResponse.ok) {
-        console.error('❌ Error al enviar a la API de usuarios:', apiResponse.statusText);
+        console.error(
+          '❌ Error al enviar a la API de usuarios:',
+          apiResponse.statusText
+        );
       }
 
       // Guardar datos del usuario en localStorage para uso posterior
       localStorage.setItem('userData', JSON.stringify(apiData));
-      
+
       setModalOpen(true);
       reset();
       setSelectedIdiomas(['Español']);
@@ -367,7 +419,9 @@ const ApplicationForm: React.FC = () => {
             {/* @ts-expect-error */}
             <Grid item xs={12}>
               <TextField
-                {...register('supermercado', { required: t('form.storeRequired') })}
+                {...register('supermercado', {
+                  required: t('form.storeRequired'),
+                })}
                 label={`${t('form.store')} *`}
                 fullWidth
                 variant="outlined"
@@ -477,7 +531,8 @@ const ApplicationForm: React.FC = () => {
         </DialogTitle>
         <DialogContent>
           <Typography sx={{ fontSize: '1rem', color: '#333', mt: 1 }}>
-            El siguiente paso es ver el video introductorio del programa de impulsadoras.
+            El siguiente paso es ver el video introductorio del programa de
+            impulsadoras.
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -506,8 +561,8 @@ const ApplicationForm: React.FC = () => {
       </Backdrop>
 
       {/* Modal de confirmación para usuarios existentes */}
-      <Dialog 
-        open={showConfirmModal} 
+      <Dialog
+        open={showConfirmModal}
         onClose={() => {}}
         TransitionComponent={Transition}
         keepMounted
@@ -530,13 +585,29 @@ const ApplicationForm: React.FC = () => {
         </DialogTitle>
         <DialogContent>
           <Typography variant="body1" sx={{ marginBottom: 2 }}>
-            Hemos encontrado que ya tienes datos guardados de una sesión anterior:
+            Hemos encontrado que ya tienes datos guardados de una sesión
+            anterior:
           </Typography>
           {existingUserData && (
-            <Box sx={{ backgroundColor: '#f5f5f5', padding: 2, borderRadius: 1, marginBottom: 2 }}>
-              <Typography variant="body2"><strong>Nombre:</strong> {existingUserData.nombre} {existingUserData.apellido}</Typography>
-              <Typography variant="body2"><strong>Email:</strong> {existingUserData.email}</Typography>
-              <Typography variant="body2"><strong>Teléfono:</strong> {existingUserData.telefono || 'No especificado'}</Typography>
+            <Box
+              sx={{
+                backgroundColor: '#f5f5f5',
+                padding: 2,
+                borderRadius: 1,
+                marginBottom: 2,
+              }}
+            >
+              <Typography variant="body2">
+                <strong>Nombre:</strong> {existingUserData.nombre}{' '}
+                {existingUserData.apellido}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Email:</strong> {existingUserData.email}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Teléfono:</strong>{' '}
+                {existingUserData.telefono || 'No especificado'}
+              </Typography>
             </Box>
           )}
           <Typography variant="body1">
@@ -544,24 +615,18 @@ const ApplicationForm: React.FC = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button 
-            onClick={handleModifyData} 
-            sx={{ color: '#ED1F80' }}
-          >
+          <Button onClick={handleModifyData} sx={{ color: '#ED1F80' }}>
             Modificar Datos
           </Button>
-          <Button 
-            onClick={handleNewApplication} 
-            sx={{ color: '#666' }}
-          >
+          <Button onClick={handleNewApplication} sx={{ color: '#666' }}>
             Nueva Solicitud
           </Button>
-          <Button 
-            onClick={handleContinueWithExistingData} 
-            variant="contained" 
+          <Button
+            onClick={handleContinueWithExistingData}
+            variant="contained"
             sx={{
               backgroundColor: '#ED1F80',
-              '&:hover': { backgroundColor: '#d1176b' }
+              '&:hover': { backgroundColor: '#d1176b' },
             }}
           >
             Continuar con estos Datos

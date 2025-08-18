@@ -192,3 +192,57 @@
     font-size: 0.9rem;
   }
 }
+.container {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e6007e;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.cardWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  background: white;
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.iconPink {
+  width: 40px;
+  height: 40px;
+  color: #e6007e;
+}
+
+.cardTitle {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  font-size: 0.95rem;
+  color: #555;
+}
