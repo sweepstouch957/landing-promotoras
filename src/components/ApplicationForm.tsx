@@ -41,6 +41,19 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+// [ADD] --- Helpers para limpiar/mascarar ---
+const onlyDigits = (v: string) => v.replace(/\D/g, '');
+
+const formatUSPhone = (v: string) => {
+  const d = onlyDigits(v).slice(0, 10);
+  const len = d.length;
+  if (len === 0) return '';
+  if (len < 4) return `(${d}`;
+  if (len < 7) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+};
+
+
 type FormData = {
   nombre: string;
   apellido: string;
@@ -195,9 +208,8 @@ const ApplicationForm: React.FC = () => {
                 'userMessage',
                 JSON.stringify({
                   type: 'info',
-                  message: `¡Hola ${
-                    nombre || data.nombre
-                  }! Ya tienes una cuenta registrada. Puedes ver el video introductorio.`,
+                  message: `¡Hola ${nombre || data.nombre
+                    }! Ya tienes una cuenta registrada. Puedes ver el video introductorio.`,
                 })
               );
               localStorage.setItem('skipEmailValidation', 'true');
@@ -216,9 +228,8 @@ const ApplicationForm: React.FC = () => {
                 'userMessage',
                 JSON.stringify({
                   type: 'info',
-                  message: `¡Hola ${
-                    nombre || data.nombre
-                  }! Ya enviaste tus datos con anterioridad. Solo necesitas avanzar para ver el video, subir tu foto y completar el registro.`,
+                  message: `¡Hola ${nombre || data.nombre
+                    }! Ya enviaste tus datos con anterioridad. Solo necesitas avanzar para ver el video, subir tu foto y completar el registro.`,
                 })
               );
               localStorage.setItem('skipEmailValidation', 'true');
@@ -244,12 +255,14 @@ const ApplicationForm: React.FC = () => {
         idiomas: selectedIdiomas.join(', '),
       };
 
+      const telefonoRaw = onlyDigits(data.telefono || '');
+
       // Estructura de datos para la nueva API
       const apiData = {
         nombre: data.nombre,
         apellido: data.apellido,
         email: data.email,
-        telefono: data.telefono ?? '',
+        telefono: telefonoRaw,
         edad: data.edad ? parseInt(data.edad) : 0,
         zipCode: data.zipCode ?? '',
         idiomas: selectedIdiomas,
@@ -312,6 +325,25 @@ const ApplicationForm: React.FC = () => {
     allFields.edad &&
     selectedIdiomas.length > 0 &&
     isValid;
+
+
+  // [ADD] --- Handlers controlados por RHF ---
+  const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const masked = formatUSPhone(e.target.value);
+    setValue('telefono', masked, { shouldValidate: true, shouldDirty: true });
+  };
+
+
+  const handleNumericInput = (
+    field: keyof FormData,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, // [MOD]
+    maxLen?: number
+  ) => {
+    let digits = onlyDigits(e.target.value);
+    if (typeof maxLen === 'number') digits = digits.slice(0, maxLen);
+    setValue(field, digits as any, { shouldValidate: true, shouldDirty: true });
+  };
+
 
   return (
     <>
@@ -380,6 +412,14 @@ const ApplicationForm: React.FC = () => {
                 fullWidth
                 variant="outlined"
                 sx={inputStyles}
+                value={watch('telefono') || ''}
+                onChange={handlePhoneInput}
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 14,
+                  'aria-label': 'US phone number',
+                }}
               />
             </Grid>
             {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
@@ -402,6 +442,13 @@ const ApplicationForm: React.FC = () => {
                 error={!!errors.edad}
                 helperText={errors.edad?.message}
                 sx={inputStyles}
+                value={watch('edad') || ''}
+                onChange={(e) => handleNumericInput('edad', e, 3)}
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 3,
+                }}
               />
             </Grid>
             {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
@@ -413,6 +460,13 @@ const ApplicationForm: React.FC = () => {
                 fullWidth
                 variant="outlined"
                 sx={inputStyles}
+                value={watch('zipCode') || ''}
+                onChange={(e) => handleNumericInput('zipCode', e, 5)}
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 5,
+                }}
               />
             </Grid>
             {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
@@ -563,7 +617,7 @@ const ApplicationForm: React.FC = () => {
       {/* Modal de confirmación para usuarios existentes */}
       <Dialog
         open={showConfirmModal}
-        onClose={() => {}}
+        onClose={() => { }}
         TransitionComponent={Transition}
         keepMounted
         sx={{
