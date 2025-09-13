@@ -26,7 +26,7 @@ export default function PaymentStructure() {
   const [modalOpen, setModalOpen] = useState(false);
   const [tableModalOpen, setTableModalOpen] = useState(false);
   const pathname = usePathname();
-  
+
   // Determinar si estamos en la ruta /training
   const isTrainingRoute = pathname === '/training';
 
@@ -52,15 +52,31 @@ export default function PaymentStructure() {
   if (isTrainingRoute) {
     return (
       <>
-        <div className={styles.trainingPaymentButton} onClick={() => setTableModalOpen(true)}>
+        <div
+          className={styles.trainingPaymentButton}
+          onClick={() => setTableModalOpen(true)}
+        >
           <div className={styles.trainingButtonIcon}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" fill="currentColor"/>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"
+                fill="currentColor"
+              />
             </svg>
           </div>
           <div className={styles.trainingButtonContent}>
-            <div className={styles.trainingButtonTitle}>ESTRUCTURA DE PAGOS</div>
-            <div className={styles.trainingButtonSubtitle}>VER TABLA DE GANANCIAS</div>
+            <div className={styles.trainingButtonTitle}>
+              ESTRUCTURA DE PAGOS
+            </div>
+            <div className={styles.trainingButtonSubtitle}>
+              VER TABLA DE GANANCIAS
+            </div>
           </div>
           <div className={styles.trainingButtonEye}>
             <VisibilityIcon />
@@ -68,7 +84,12 @@ export default function PaymentStructure() {
         </div>
 
         {/* Modal de tabla para /training */}
-        <Dialog open={tableModalOpen} onClose={() => setTableModalOpen(false)} maxWidth="sm" fullWidth>
+        <Dialog
+          open={tableModalOpen}
+          onClose={() => setTableModalOpen(false)}
+          maxWidth="sm"
+          fullWidth
+        >
           <DialogTitle
             sx={{
               display: 'flex',
@@ -76,11 +97,20 @@ export default function PaymentStructure() {
               alignItems: 'center',
               pr: 2,
               background: '#f5f5f5',
-              borderBottom: '1px solid #e0e0e0'
+              borderBottom: '1px solid #e0e0e0',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%' }}>
-              <span style={{ flex: 1, textAlign: 'center' }}>{t('payment_table_title')}</span>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                width: '100%',
+              }}
+            >
+              <span style={{ flex: 1, textAlign: 'center' }}>
+                {t('payment_table_title')}
+              </span>
               <IconButton
                 aria-label="Info"
                 onClick={() => setModalOpen(true)}
@@ -117,7 +147,9 @@ export default function PaymentStructure() {
                   {paymentData.map((row, index) => (
                     <tr
                       key={index}
-                      className={`${styles.dataRow} ${row.highlighted ? styles.highlighted : ''}`}
+                      className={`${styles.dataRow} ${
+                        row.highlighted ? styles.highlighted : ''
+                      }`}
                     >
                       <td className={styles.dataCell}>{row.participaciones}</td>
                       <td className={styles.dataCell}>{row.pagoTurno}</td>
@@ -131,13 +163,18 @@ export default function PaymentStructure() {
         </Dialog>
 
         {/* Modal de información (modal sobre modal) */}
-        <Dialog open={modalOpen} onClose={() => setModalOpen(false)} maxWidth="sm" fullWidth>
+        <Dialog
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          maxWidth="sm"
+          fullWidth
+        >
           <DialogTitle
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              pr: 2
+              pr: 2,
             }}
           >
             {t('modal_payment_title')}
@@ -154,14 +191,18 @@ export default function PaymentStructure() {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell><strong>{t('modal_type')}</strong></TableCell>
-                    <TableCell><strong>{t('modal_payment')}</strong></TableCell>
+                    <TableCell>
+                      <strong>{t('modal_type')}</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>{t('modal_payment')}</strong>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
                     <TableCell>{t('modal_new')}</TableCell>
-                    <TableCell>$0.50</TableCell>
+                    <TableCell>$0.25</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>{t('modal_existing')}</TableCell>
@@ -171,7 +212,9 @@ export default function PaymentStructure() {
                     <TableCell>
                       {t('modal_share_zip')}
                       <br />
-                      <small style={{ color: '#777' }}>{t('modal_zip_match')}</small>
+                      <small style={{ color: '#777' }}>
+                        {t('modal_zip_match')}
+                      </small>
                     </TableCell>
                     <TableCell>$0.10</TableCell>
                   </TableRow>
@@ -179,9 +222,11 @@ export default function PaymentStructure() {
                     <TableCell>
                       {t('modal_share_nozip')}
                       <br />
-                      <small style={{ color: '#777' }}>{t('modal_zip_nomatch')}</small>
+                      <small style={{ color: '#777' }}>
+                        {t('modal_zip_nomatch')}
+                      </small>
                     </TableCell>
-                    <TableCell>$0.50</TableCell>
+                    <TableCell>$0.25</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -206,7 +251,10 @@ export default function PaymentStructure() {
 
       <div className={styles.tableContainer}>
         <div className={styles.tableHeader}>
-          <h3 className={styles.tableTitle} style={{ textAlign: 'center', width: '100%' }}>
+          <h3
+            className={styles.tableTitle}
+            style={{ textAlign: 'center', width: '100%' }}
+          >
             {t('payment_table_title')}
           </h3>
 
@@ -238,7 +286,9 @@ export default function PaymentStructure() {
               {paymentData.map((row, index) => (
                 <tr
                   key={index}
-                  className={`${styles.dataRow} ${row.highlighted ? styles.highlighted : ''}`}
+                  className={`${styles.dataRow} ${
+                    row.highlighted ? styles.highlighted : ''
+                  }`}
                 >
                   <td className={styles.dataCell}>{row.participaciones}</td>
                   <td className={styles.dataCell}>{row.pagoTurno}</td>
@@ -251,13 +301,18 @@ export default function PaymentStructure() {
       </div>
 
       {/* Modal de información */}
-      <Dialog open={modalOpen} onClose={() => setModalOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            pr: 2
+            pr: 2,
           }}
         >
           {t('modal_payment_title')}
@@ -274,14 +329,18 @@ export default function PaymentStructure() {
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell><strong>{t('modal_type')}</strong></TableCell>
-                  <TableCell><strong>{t('modal_payment')}</strong></TableCell>
+                  <TableCell>
+                    <strong>{t('modal_type')}</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>{t('modal_payment')}</strong>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
                   <TableCell>{t('modal_new')}</TableCell>
-                  <TableCell>$0.50</TableCell>
+                  <TableCell>$0.25</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>{t('modal_existing')}</TableCell>
@@ -291,7 +350,9 @@ export default function PaymentStructure() {
                   <TableCell>
                     {t('modal_share_zip')}
                     <br />
-                    <small style={{ color: '#777' }}>{t('modal_zip_match')}</small>
+                    <small style={{ color: '#777' }}>
+                      {t('modal_zip_match')}
+                    </small>
                   </TableCell>
                   <TableCell>$0.10</TableCell>
                 </TableRow>
@@ -299,9 +360,11 @@ export default function PaymentStructure() {
                   <TableCell>
                     {t('modal_share_nozip')}
                     <br />
-                    <small style={{ color: '#777' }}>{t('modal_zip_nomatch')}</small>
+                    <small style={{ color: '#777' }}>
+                      {t('modal_zip_nomatch')}
+                    </small>
                   </TableCell>
-                  <TableCell>$0.50</TableCell>
+                  <TableCell>$0.25</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
