@@ -1,0 +1,20 @@
+{
+  "cashiers": {
+    "title": "Application Form",
+    "subtitle": "Fill out your details to schedule an appointment. Fields marked with * are required.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "store": "Store",
+    "storePlaceholder": "Type to search...",
+    "submit": "SUBMIT",
+    "success": "Cashier registered successfully",
+    "errorGeneric": "We couldn't save your data. Please try again."
+  },
+  "errors": {
+    "required": "This field is required",
+    "emailInvalid": "Invalid email",
+    "selectStore": "Please select a store"
+  }
+}

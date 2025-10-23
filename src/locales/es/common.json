@@ -1,0 +1,20 @@
+{
+  "cashiers": {
+    "title": "Formulario de Aplicación",
+    "subtitle": "Completa tus datos para agendar una cita. Los campos marcados con * son obligatorios.",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "store": "Tienda",
+    "storePlaceholder": "Escribe para buscar...",
+    "submit": "ENVIAR DATOS",
+    "success": "Cajera registrada correctamente",
+    "errorGeneric": "No fue posible guardar. Intenta de nuevo."
+  },
+  "errors": {
+    "required": "Este campo es obligatorio",
+    "emailInvalid": "Correo no válido",
+    "selectStore": "Selecciona una tienda"
+  }
+}

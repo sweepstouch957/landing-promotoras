@@ -105,7 +105,6 @@
   "form_supermercado": "Supermarket",
   "form_acepta": "I have read and accept the program terms.",
   "form_enviar": "Submit my application",
-
   "form_error_nombre": "First name is required",
   "form_error_apellido": "Last name is required",
   "form_error_telefono": "Phone number is required",
@@ -118,7 +117,6 @@
   "form_error_correo_invalido": "Invalid email",
   "form_error_telefono_invalido": "Invalid phone number",
   "form_error_edad_minima": "Must be 18 or older",
-
   "form": {
     "title": "Application Form",
     "subtitle": "Fill in your information to schedule an appointment. Fields marked with * are required.",
@@ -140,16 +138,33 @@
     "description": "We have received your information. You will soon receive an email with informational videos about your potential job position.",
     "close": "Close"
   },
+  "cashiers": {
+    "title": "New Cashier",
+    "subtitle": "Complete all your information",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "store": "Store",
+    "storePlaceholder": "Type to search...",
+    "submit": "SUBMIT",
+    "success": "Cashier registered successfully",
+    "errorGeneric": "We couldn't save your data. Please try again."
+  },
+  "errors": {
+    "required": "This field is required",
+    "emailInvalid": "Invalid email",
+    "selectStore": "Please select a store"
+  },
   "modal_payment_title": "Participation Payment",
-"modal_type": "Participation Type",
-"modal_payment": "Payment per Participation",
-"modal_new": "New Participation",
-"modal_existing": "Existing Participation",
-"modal_share_zip": "Share with ZipCode",
-"modal_zip_match": "Matches the supermarket",
-"modal_share_nozip": "Share without ZipCode",
-"modal_zip_nomatch": "Does not match the supermarket",
-"modal_note_title": "Note",
-"modal_note_text": "Your total payment will be proportional to the type and number of participations made, calculated based on the rate indicated for each action."
-
+  "modal_type": "Participation Type",
+  "modal_payment": "Payment per Participation",
+  "modal_new": "New Participation",
+  "modal_existing": "Existing Participation",
+  "modal_share_zip": "Share with ZipCode",
+  "modal_zip_match": "Matches the supermarket",
+  "modal_share_nozip": "Share without ZipCode",
+  "modal_zip_nomatch": "Does not match the supermarket",
+  "modal_note_title": "Note",
+  "modal_note_text": "Your total payment will be proportional to the type and number of participations made, calculated based on the rate indicated for each action."
 }

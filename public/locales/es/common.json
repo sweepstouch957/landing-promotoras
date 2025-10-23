@@ -105,7 +105,6 @@
   "form_supermercado": "Supermercado donde compra",
   "form_acepta": "He leído y acepto los términos del programa.",
   "form_enviar": "Enviar mi solicitud",
-
   "form_error_nombre": "El nombre es obligatorio",
   "form_error_apellido": "El apellido es obligatorio",
   "form_error_telefono": "El teléfono es obligatorio",
@@ -118,7 +117,6 @@
   "form_error_correo_invalido": "Correo inválido",
   "form_error_telefono_invalido": "Teléfono inválido",
   "form_error_edad_minima": "Debe ser mayor de edad",
-
   "form": {
     "title": "Formulario de Aplicación",
     "subtitle": "Completa tus datos para agendar una cita. Los campos marcados con * son obligatorios.",
@@ -142,17 +140,33 @@
     "description": "Hemos recibido tu información. Pronto recibirás un correo con videos informativos sobre tu posible puesto de trabajo.",
     "close": "Cerrar"
   },
-
+  "cashiers": {
+    "title": "Nueva Cajera",
+    "subtitle": "Completa todos tus datos",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "store": "Tienda",
+    "storePlaceholder": "Escribe para buscar...",
+    "submit": "ENVIAR DATOS",
+    "success": "Cajera registrada correctamente",
+    "errorGeneric": "No fue posible guardar. Intenta de nuevo."
+  },
+  "errors": {
+    "required": "Este campo es obligatorio",
+    "emailInvalid": "Correo no válido",
+    "selectStore": "Selecciona una tienda"
+  },
   "modal_payment_title": "Pago por Participación",
-"modal_type": "Tipo de Participación",
-"modal_payment": "Pago por Participación",
-"modal_new": "Participación Nueva",
-"modal_existing": "Participación Existente",
-"modal_share_zip": "Share con ZipCode",
-"modal_zip_match": "Coincide con el supermercado",
-"modal_share_nozip": "Share sin ZipCode",
-"modal_zip_nomatch": "No coincide con el supermercado",
-"modal_note_title": "Nota",
-"modal_note_text": "Su pago total será proporcional al tipo y número de participaciones que realice, calculado según la tarifa indicada para cada acción."
-
+  "modal_type": "Tipo de Participación",
+  "modal_payment": "Pago por Participación",
+  "modal_new": "Participación Nueva",
+  "modal_existing": "Participación Existente",
+  "modal_share_zip": "Share con ZipCode",
+  "modal_zip_match": "Coincide con el supermercado",
+  "modal_share_nozip": "Share sin ZipCode",
+  "modal_zip_nomatch": "No coincide con el supermercado",
+  "modal_note_title": "Nota",
+  "modal_note_text": "Su pago total será proporcional al tipo y número de participaciones que realice, calculado según la tarifa indicada para cada acción."
 }
