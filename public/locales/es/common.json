@@ -151,7 +151,10 @@
     "storePlaceholder": "Escribe para buscar...",
     "submit": "ENVIAR DATOS",
     "success": "Cajera registrada correctamente",
-    "errorGeneric": "No fue posible guardar. Intenta de nuevo."
+    "errorGeneric": "No fue posible guardar. Intenta de nuevo.",
+    "zip": "Código postal",
+    "optional": "opcional",
+    "zipHint": "Opcional: filtra tiendas por código postal"
   },
   "errors": {
     "required": "Este campo es obligatorio",

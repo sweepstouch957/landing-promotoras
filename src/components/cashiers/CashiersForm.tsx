@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Box, TextField, Button, Typography, Paper, Grid, CircularProgress, Autocomplete, Snackbar, Alert } from '@mui/material';
@@ -15,6 +16,20 @@ const CashiersForm: React.FC = () => {
   });
   const { data: stores = [], isLoading: loading } = useStore();
   const [snack, setSnack] = React.useState<{ open: boolean; msg: string; severity: 'success' | 'error' }>({ open: false, msg: '', severity: 'success' });
+
+  const [zipFilter, setZipFilter] = React.useState('');
+
+  const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 5);
+    setZipFilter(digits);
+  };
+
+  const filteredStores = useMemo(() => {
+    if (!zipFilter) return stores;
+    return (stores as any[]).filter((s) =>
+      String(s?.zipCode ?? '').startsWith(zipFilter)
+    );
+  }, [stores, zipFilter]);
 
   const onSubmit = async (f: FormData) => {
     try {
@@ -51,17 +66,68 @@ const CashiersForm: React.FC = () => {
           <Grid item xs={12}>
             <TextField fullWidth type="tel" label={t('cashiers.phone') + ' *'} {...register('telefono', { required: t('errors.required') as string })} error={!!errors.telefono} helperText={errors.telefono?.message} />
           </Grid>
+
           {/* @ts-expect-error */}
           <Grid item xs={12}>
-            <Controller name="storeId" control={control} rules={{ required: t('errors.selectStore') as string }} render={({ field, fieldState }) => (
-              <Autocomplete fullWidth disablePortal loading={loading} options={stores as any[]}
-                getOptionLabel={(o: any) => String(o?.name ?? o?.nombre ?? o?.store_name ?? '')}
-                isOptionEqualToValue={(o: any, v: any) => String(o?.id ?? o?._id ?? o?.store_id) === String(v?.id ?? v?._id ?? v?.store_id)}
-                onChange={(_, value) => field.onChange(String(value?.id ?? value?._id ?? value?.store_id ?? ''))}
-                renderInput={(params) => (<TextField {...params} fullWidth label={t('cashiers.store') + ' *'} placeholder={t('cashiers.storePlaceholder')} error={!!fieldState.error} helperText={fieldState.error?.message}
-                  InputProps={{ ...params.InputProps, endAdornment: (<>{loading ? <CircularProgress size={18} /> : null}{params.InputProps.endAdornment}</>) }} />)}
-              />
-            )} />
+            <TextField
+              fullWidth
+              label={`${t('cashiers.zip')} (${t('optional')})`}
+              value={zipFilter}
+              onChange={handleZipChange}
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 5 }}
+              helperText={
+                zipFilter
+                  ? `${t('cashiers.filteringBy')}: ${zipFilter}`
+                  : t('cashiers.zipHint')
+              }
+            />
+          </Grid>
+
+
+          {/* @ts-expect-error */}
+          <Grid item xs={12}>
+            <Controller
+              name="storeId"
+              control={control}
+              rules={{ required: 'Selecciona una tienda' }}
+              render={({ field, fieldState }) => (
+                <Autocomplete
+                  fullWidth
+                  disablePortal
+                  loading={loading}
+                  // 👇 usamos las tiendas filtradas
+                  options={filteredStores as any[]}
+                  getOptionLabel={(o: any) =>
+                    String(o?.name ?? o?.nombre ?? o?.store_name ?? '')
+                  }
+                  isOptionEqualToValue={(o: any, v: any) =>
+                    String(o?.id ?? o?._id ?? o?.store_id) === String(v?.id ?? v?._id ?? v?.store_id)
+                  }
+                  onChange={(_, value) =>
+                    field.onChange(String(value?.id ?? value?._id ?? value?.store_id ?? ''))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      label="Tienda *"
+                      placeholder="Escribe para buscar..."
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {loading ? <CircularProgress size={18} /> : null}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              )}
+            />
           </Grid>
           {/* @ts-expect-error */}
           <Grid item xs={12}>

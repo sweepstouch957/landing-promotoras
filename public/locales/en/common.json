@@ -149,7 +149,10 @@
     "storePlaceholder": "Type to search...",
     "submit": "SUBMIT",
     "success": "Cashier registered successfully",
-    "errorGeneric": "We couldn't save your data. Please try again."
+    "errorGeneric": "We couldn't save your data. Please try again.",
+    "zip": "ZIP code",
+    "optional": "optional",
+    "zipHint": "Optional: filter stores by ZIP"
   },
   "errors": {
     "required": "This field is required",
