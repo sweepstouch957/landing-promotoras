@@ -19,6 +19,22 @@ type FormData = {
 
 const onlyDigits = (s: string) => s.replace(/\D/g, '');
 
+const DUPLICATE_MSG = 'Correo o teléfono ya registrado';
+
+function isDuplicateError(err: any) {
+  const status = err?.response?.status as number | undefined;
+  const raw =
+    (err?.response?.data?.message ??
+      err?.message ??
+      '') as string;
+
+  const m = raw.toLowerCase();
+
+  // 409 es muy común para duplicados; también checamos palabras clave
+  return status === 409 ||
+    /duplic|already|exist|unique|correo|email|tel[eé]fono|phone/.test(m);
+}
+
 const CashiersForm: React.FC = () => {
   const { t } = useTranslation('common', { keyPrefix: 'cashiers' });
 
@@ -99,20 +115,21 @@ const CashiersForm: React.FC = () => {
               accessCode,
             }),
           });
-          // Si quieres mostrar un snackbar suave de envío:
-          // setSnack({ open: true, msg: t('emailSent') as string, severity: 'success' });
+
         } catch (e) {
           console.warn('No se pudo enviar el email (Gmail SMTP route)', e);
-          // setSnack({ open: true, msg: t('emailFailed') as string, severity: 'warning' });
         }
       }
-
-      // 4) Limpiar formulario (incluye tienda). Si prefieres limpiar solo tienda:
-      // resetField('storeId');  // y dejar el resto como esté
       reset();
       setZipFilter(''); // también limpiamos el filtro ZIP
     } catch (err: any) {
-      const msg = (err?.response?.data?.message || err?.message || (t('errorGeneric') as string)) as string;
+      const msg = isDuplicateError(err)
+        ? DUPLICATE_MSG
+        : (err?.response?.data?.message ||
+          err?.message ||
+          (t?.('errorGeneric') as string) ||
+          'No fue posible guardar. Intenta de nuevo.');
+
       setSnack({ open: true, msg, severity: 'error' });
     }
   };
