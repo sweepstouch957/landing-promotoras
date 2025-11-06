@@ -35,6 +35,12 @@ function isDuplicateError(err: any) {
     /duplic|already|exist|unique|correo|email|tel[eé]fono|phone/.test(m);
 }
 
+const isActiveStore = (s: any) => {
+  const raw = s?.status ?? s?.estado ?? s?.isActive ?? s?.active;
+  if (typeof raw === 'string') return raw.toLowerCase() === 'active';
+  return Boolean(raw);
+};
+
 const CashiersForm: React.FC = () => {
   const { t } = useTranslation('common', { keyPrefix: 'cashiers' });
 
@@ -60,12 +66,18 @@ const CashiersForm: React.FC = () => {
     setZipFilter(digits);
   };
 
+  // Solo tiendas activas
+  const activeStores = React.useMemo(() => {
+    return (stores as any[]).filter(isActiveStore);
+  }, [stores]);
+
+  // Si hay zipFilter, aplicar sobre las activas
   const filteredStores = React.useMemo(() => {
-    if (!zipFilter) return stores as any[];
-    return (stores as any[]).filter((s) =>
+    if (!zipFilter) return activeStores;
+    return activeStores.filter((s) =>
       String(s?.zipCode ?? '').startsWith(zipFilter)
     );
-  }, [stores, zipFilter]);
+  }, [activeStores, zipFilter]);
 
   // Teléfono: solo números y máximo 11
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
