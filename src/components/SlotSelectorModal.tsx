@@ -327,14 +327,14 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
         sx: {
           minHeight: '600px',
           '& .MuiDialogTitle-root': {
-            color: '#ED1F80',
+            color: '#ff0f6e',
           },
         },
       }}
     >
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h5" component="div" sx={{ color: '#ED1F80' }}>
+          <Typography variant="h5" component="div" sx={{ color: '#ff0f6e' }}>
             Seleccionar Horario
           </Typography>
           <IconButton onClick={onClose} size="small">
@@ -362,10 +362,10 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
             size="small"
             disabled={!canGoPrevious}
             sx={{
-              borderColor: '#ED1F80',
-              color: '#ED1F80',
+              borderColor: '#ff0f6e',
+              color: '#ff0f6e',
               '&:hover': {
-                borderColor: '#d1176b',
+                borderColor: '#c10061',
                 backgroundColor: 'rgba(237, 31, 128, 0.04)',
               },
               '&:disabled': {
@@ -377,7 +377,7 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
             Semana Anterior
           </Button>
 
-          <Typography variant="h6" sx={{ color: '#ED1F80' }}>
+          <Typography variant="h6" sx={{ color: '#ff0f6e' }}>
             {format(weekStart, 'dd MMM', { locale: es })} -{' '}
             {format(weekEnd, 'dd MMM yyyy', { locale: es })}
           </Typography>
@@ -389,10 +389,10 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
             size="small"
             disabled={!canGoNext}
             sx={{
-              borderColor: '#ED1F80',
-              color: '#ED1F80',
+              borderColor: '#ff0f6e',
+              color: '#ff0f6e',
               '&:hover': {
-                borderColor: '#d1176b',
+                borderColor: '#c10061',
                 backgroundColor: 'rgba(237, 31, 128, 0.04)',
               },
               '&:disabled': {
@@ -408,7 +408,7 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
         {/* Estado de carga */}
         {loading && (
           <Box display="flex" justifyContent="center" my={4}>
-            <CircularProgress sx={{ color: '#ED1F80' }} />
+            <CircularProgress sx={{ color: '#ff0f6e' }} />
           </Box>
         )}
 
@@ -434,7 +434,7 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
                     <CardContent sx={{ p: 2 }}>
                       <Typography
                         variant="h6"
-                        sx={{ color: '#ED1F80' }}
+                        sx={{ color: '#ff0f6e' }}
                         align="center"
                         gutterBottom
                       >
@@ -477,12 +477,12 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
                                     justifyContent: 'space-between',
                                     textTransform: 'none',
                                     borderColor: isAvailable
-                                      ? '#ED1F80'
+                                      ? '#ff0f6e'
                                       : 'grey.300',
-                                    color: isAvailable ? '#ED1F80' : 'grey.500',
+                                    color: isAvailable ? '#ff0f6e' : 'grey.500',
                                     '&:hover': isAvailable
                                       ? {
-                                          borderColor: '#d1176b',
+                                          borderColor: '#c10061',
                                           backgroundColor:
                                             'rgba(237, 31, 128, 0.04)',
                                         }
@@ -515,7 +515,7 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
 
         {/* Información importante */}
         <Box mt={3}>
-          <Typography variant="h6" sx={{ color: '#ED1F80' }} gutterBottom>
+          <Typography variant="h6" sx={{ color: '#ff0f6e' }} gutterBottom>
             Información importante:
           </Typography>
           <Typography variant="body2" component="div">
@@ -535,7 +535,7 @@ const SlotSelectorModal: React.FC<SlotSelectorModalProps> = ({
           onClick={onClose}
           disabled={isSubmitting}
           sx={{
-            color: '#ED1F80',
+            color: '#ff0f6e',
             '&:hover': {
               backgroundColor: 'rgba(237, 31, 128, 0.04)',
             },

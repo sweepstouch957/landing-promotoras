@@ -294,7 +294,7 @@ export default function CalendarScheduler({
           <Typography
             variant="h5"
             fontWeight="bold"
-            color="#ED1F80"
+            color="#ff0f6e"
             align="center"
           >
             Selecciona fecha y hora para tu cita
@@ -337,10 +337,10 @@ export default function CalendarScheduler({
               '& .rbc-toolbar-label': {
                 fontWeight: 'bold',
                 fontSize: '1.1rem',
-                color: '#ED1F80',
+                color: '#ff0f6e',
               },
               '& .rbc-btn-group button': {
-                backgroundColor: '#ED1F80',
+                backgroundColor: '#ff0f6e',
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -390,7 +390,7 @@ export default function CalendarScheduler({
               timeslots={2} // 2 slots por hora (30 min cada uno)
               eventPropGetter={() => ({
                 style: {
-                  backgroundColor: '#ED1F80',
+                  backgroundColor: '#ff0f6e',
                   color: 'white',
                   borderRadius: '6px',
                   border: 'none',
@@ -417,8 +417,8 @@ export default function CalendarScheduler({
           <Button
             onClick={onClose}
             sx={{
-              color: '#ED1F80',
-              borderColor: '#ED1F80',
+              color: '#ff0f6e',
+              borderColor: '#ff0f6e',
               borderRadius: '25px',
               px: 3,
             }}
@@ -443,7 +443,7 @@ export default function CalendarScheduler({
           <Typography
             variant="h6"
             fontWeight="bold"
-            color="#ED1F80"
+            color="#ff0f6e"
             align="center"
           >
             Selecciona la hora
@@ -469,11 +469,11 @@ export default function CalendarScheduler({
             fullWidth
             sx={{
               '& label.Mui-focused': {
-                color: '#ED1F80',
+                color: '#ff0f6e',
               },
               '& .MuiOutlinedInput-root': {
                 '&.Mui-focused fieldset': {
-                  borderColor: '#ED1F80',
+                  borderColor: '#ff0f6e',
                 },
               },
             }}
@@ -490,8 +490,8 @@ export default function CalendarScheduler({
           <Button
             onClick={handleTimeDialogClose}
             sx={{
-              color: '#ED1F80',
-              borderColor: '#ED1F80',
+              color: '#ff0f6e',
+              borderColor: '#ff0f6e',
               borderRadius: '25px',
               px: 3,
             }}
@@ -503,7 +503,7 @@ export default function CalendarScheduler({
             onClick={handleTimeConfirm}
             disabled={!selectedTime}
             sx={{
-              backgroundColor: '#ED1F80',
+              backgroundColor: '#ff0f6e',
               color: 'white',
               fontWeight: 'bold',
               borderRadius: '25px',
@@ -567,7 +567,7 @@ export default function CalendarScheduler({
               diferente.
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-              <Schedule sx={{ color: '#ED1F80' }} />
+              <Schedule sx={{ color: '#ff0f6e' }} />
               <Typography variant="body2" color="text.secondary">
                 Horarios disponibles: Lunes a Viernes
               </Typography>
@@ -579,7 +579,7 @@ export default function CalendarScheduler({
           <Button
             onClick={handleBlockedDayDialogClose}
             sx={{
-              backgroundColor: '#ED1F80',
+              backgroundColor: '#ff0f6e',
               color: 'white',
               fontWeight: 'bold',
               borderRadius: '25px',

@@ -483,7 +483,7 @@ const AttendanceManagerImproved: React.FC = () => {
         alignItems="center"
         mb={3}
       >
-        <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+        <Typography variant="h4" sx={{ color: '#ff0f6e' }}>
           Gestión de Asistencias
         </Typography>
         <Box display="flex" gap={2}>
@@ -574,7 +574,7 @@ const AttendanceManagerImproved: React.FC = () => {
 
         {loading ? (
           <Box display="flex" justifyContent="center" py={4}>
-            <CircularProgress sx={{ color: '#ED1F80' }} />
+            <CircularProgress sx={{ color: '#ff0f6e' }} />
           </Box>
         ) : (
           <>
@@ -619,8 +619,8 @@ const AttendanceManagerImproved: React.FC = () => {
                     <Card key={timeSlot} sx={{ mb: 3 }}>
                       <CardContent>
                         <Box display="flex" alignItems="center" gap={2} mb={2}>
-                          <AccessTimeIcon sx={{ color: '#ED1F80' }} />
-                          <Typography variant="h6" sx={{ color: '#ED1F80' }}>
+                          <AccessTimeIcon sx={{ color: '#ff0f6e' }} />
+                          <Typography variant="h6" sx={{ color: '#ff0f6e' }}>
                             Horario: {timeSlot}
                           </Typography>
                           <Chip
@@ -649,7 +649,7 @@ const AttendanceManagerImproved: React.FC = () => {
                                   gap={2}
                                   width="100%"
                                 >
-                                  <ScheduleIcon sx={{ color: '#ED1F80' }} />
+                                  <ScheduleIcon sx={{ color: '#ff0f6e' }} />
                                   <Box flex={1}>
                                     <Typography variant="subtitle1">
                                       {appointment.horaInicio} -{' '}
@@ -951,8 +951,8 @@ const AttendanceManagerImproved: React.FC = () => {
         <Card>
           <CardContent>
             <Box display="flex" alignItems="center" gap={2} mb={3}>
-              <CheckCircleIcon sx={{ color: '#ED1F80' }} />
-              <Typography variant="h6" sx={{ color: '#ED1F80' }}>
+              <CheckCircleIcon sx={{ color: '#ff0f6e' }} />
+              <Typography variant="h6" sx={{ color: '#ff0f6e' }}>
                 Usuarios Aprobados
               </Typography>
               <Chip
@@ -1140,7 +1140,7 @@ const AttendanceManagerImproved: React.FC = () => {
             onClick={markBulkAttendance}
             variant="contained"
             disabled={saving}
-            sx={{ backgroundColor: '#ED1F80' }}
+            sx={{ backgroundColor: '#ff0f6e' }}
           >
             {saving ? <CircularProgress size={20} /> : 'Guardar Asistencias'}
           </Button>

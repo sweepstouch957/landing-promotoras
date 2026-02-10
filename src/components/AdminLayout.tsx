@@ -29,7 +29,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title = 'Panel de A
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
 
-  const primaryColor = '#f82083';
+  const primaryColor = '#ff0f6e';
   const drawerWidth = 280;
 
   // Ajustar sidebar según el tamaño de pantalla
@@ -124,7 +124,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title = 'Panel de A
               left: 16,
               backgroundColor: primaryColor,
               '&:hover': {
-                backgroundColor: '#e01070'
+                backgroundColor: '#c10061'
               }
             }}
           >

@@ -3,10 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600&display=swap');
 
 :root {
-  --primary-color: #f82083;
+  /* Sweepstouch primary */
+  --primary-color: #ff0f6e;
   --secondary-color: #ece3df;
   --text-color-dark: #333;
   --text-color-light: #fff;
   --text-color-medium: #3a3a3a;
-  --button-hover-color: #e01070;
+  --button-hover-color: #c10061;
 }

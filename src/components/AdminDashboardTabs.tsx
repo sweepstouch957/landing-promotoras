@@ -64,7 +64,7 @@ export default function AdminDashboardTabs() {
       <Typography
         variant="h4"
         fontWeight="bold"
-        color="#ED1F80"
+        color="#ff0f6e"
         align="center"
         sx={{ py: 3 }}
       >
@@ -101,11 +101,11 @@ export default function AdminDashboardTabs() {
                 fontSize: '0.9rem', // Tamaño reducido
                 minWidth: 120,
                 '&.Mui-selected': {
-                  color: '#ED1F80',
+                  color: '#ff0f6e',
                 },
               },
               '& .MuiTabs-indicator': {
-                backgroundColor: '#ED1F80',
+                backgroundColor: '#ff0f6e',
                 height: 3,
               },
             }}

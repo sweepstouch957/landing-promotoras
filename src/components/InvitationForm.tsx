@@ -252,7 +252,7 @@ const InvitationForm: React.FC = () => {
           component="h1"
           gutterBottom
           align="center"
-          sx={{ color: '#ED1F80' }}
+          sx={{ color: '#ff0f6e' }}
         >
           Formulario de Invitación
         </Typography>
@@ -323,7 +323,7 @@ const InvitationForm: React.FC = () => {
                           size="small"
                           sx={{
                             backgroundColor: 'rgba(237, 31, 128, 0.1)',
-                            color: '#ED1F80',
+                            color: '#ff0f6e',
                           }}
                         />
                       ))}
@@ -352,9 +352,9 @@ const InvitationForm: React.FC = () => {
                 sx={{
                   mt: 2,
                   py: 1.5,
-                  backgroundColor: '#ED1F80',
+                  backgroundColor: '#ff0f6e',
                   '&:hover': {
-                    backgroundColor: '#d1176b',
+                    backgroundColor: '#c10061',
                   },
                 }}
               >

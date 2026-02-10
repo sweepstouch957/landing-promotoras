@@ -250,7 +250,7 @@ const AdminUserManagement: React.FC = () => {
         alignItems="center"
         mb={3}
       >
-        <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+        <Typography variant="h4" sx={{ color: '#ff0f6e' }}>
           Gestión de Usuarios
         </Typography>
         <Button
@@ -273,7 +273,7 @@ const AdminUserManagement: React.FC = () => {
           <Grid item xs={12} sm={6} md={2}>
             <Card>
               <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+                <Typography variant="h4" sx={{ color: '#ff0f6e' }}>
                   {stats.total}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -399,7 +399,7 @@ const AdminUserManagement: React.FC = () => {
         <CardContent>
           {loading ? (
             <Box display="flex" justifyContent="center" py={4}>
-              <CircularProgress sx={{ color: '#ED1F80' }} />
+              <CircularProgress sx={{ color: '#ff0f6e' }} />
             </Box>
           ) : (
             <>
@@ -420,7 +420,7 @@ const AdminUserManagement: React.FC = () => {
                       <TableRow key={user._id}>
                         <TableCell>
                           <Box display="flex" alignItems="center" gap={1}>
-                            <PersonIcon sx={{ color: '#ED1F80' }} />
+                            <PersonIcon sx={{ color: '#ff0f6e' }} />
                             <Box>
                               <Typography variant="subtitle2">
                                 {user.nombre} {user.apellido}
@@ -568,7 +568,7 @@ const AdminUserManagement: React.FC = () => {
                     color="primary"
                     sx={{
                       '& .MuiPaginationItem-root.Mui-selected': {
-                        backgroundColor: '#ED1F80',
+                        backgroundColor: '#ff0f6e',
                         color: 'white',
                       },
                     }}
@@ -679,7 +679,7 @@ const AdminUserManagement: React.FC = () => {
           <Button
             onClick={() => updateUser(selectedUser!)}
             variant="contained"
-            sx={{ backgroundColor: '#ED1F80' }}
+            sx={{ backgroundColor: '#ff0f6e' }}
           >
             Guardar
           </Button>

@@ -195,7 +195,7 @@ const ApprovedCandidates: React.FC = () => {
                   <Box display="flex" alignItems="center" gap={2} mb={2}>
                     <Avatar
                       sx={{
-                        bgcolor: '#ED1F80',
+                        bgcolor: '#ff0f6e',
                         width: 60,
                         height: 60,
                         fontSize: 24,
@@ -305,7 +305,7 @@ const ApprovedCandidates: React.FC = () => {
                         onClick={() => handleOpenMeet(user.enlaceMeet)}
                         fullWidth
                         sx={{
-                          backgroundColor: '#ED1F80',
+                          backgroundColor: '#ff0f6e',
                           fontWeight: 'bold',
                           '&:hover': {
                             backgroundColor: '#c91a6b',

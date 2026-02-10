@@ -197,7 +197,7 @@ export default function GoogleAuthSetup() {
       <Typography
         variant="h5"
         fontWeight="bold"
-        color="#ED1F80"
+        color="#ff0f6e"
         align="center"
         mb={3}
       >
@@ -208,7 +208,7 @@ export default function GoogleAuthSetup() {
         <CardContent>
           {!credentials ? (
             <Box sx={{ textAlign: 'center' }}>
-              <Google sx={{ fontSize: 48, color: '#ED1F80', mb: 2 }} />
+              <Google sx={{ fontSize: 48, color: '#ff0f6e', mb: 2 }} />
               <Typography variant="h6" mb={2}>
                 Conectar con Google Calendar
               </Typography>
@@ -233,7 +233,7 @@ export default function GoogleAuthSetup() {
                 disabled={isLoading}
                 startIcon={<Google />}
                 sx={{
-                  backgroundColor: '#ED1F80',
+                  backgroundColor: '#ff0f6e',
                   color: 'white',
                   fontWeight: 'bold',
                   borderRadius: '25px',
@@ -253,8 +253,8 @@ export default function GoogleAuthSetup() {
                 onClick={() => setShowInstructions(true)}
                 startIcon={<Settings />}
                 sx={{
-                  color: '#ED1F80',
-                  borderColor: '#ED1F80',
+                  color: '#ff0f6e',
+                  borderColor: '#ff0f6e',
                   borderRadius: '25px',
                   px: 4,
                   py: 1.5,
@@ -310,7 +310,7 @@ export default function GoogleAuthSetup() {
                   onClick={handleGoogleAuth}
                   startIcon={<Google />}
                   sx={{
-                    backgroundColor: '#ED1F80',
+                    backgroundColor: '#ff0f6e',
                     color: 'white',
                     fontWeight: 'bold',
                     borderRadius: '25px',
@@ -327,8 +327,8 @@ export default function GoogleAuthSetup() {
                   variant="outlined"
                   onClick={handleResendCredentials}
                   sx={{
-                    color: '#ED1F80',
-                    borderColor: '#ED1F80',
+                    color: '#ff0f6e',
+                    borderColor: '#ff0f6e',
                     borderRadius: '25px',
                     px: 3,
                     '&:hover': {
@@ -344,8 +344,8 @@ export default function GoogleAuthSetup() {
                   variant="outlined"
                   onClick={handleDisconnect}
                   sx={{
-                    color: '#ED1F80',
-                    borderColor: '#ED1F80',
+                    color: '#ff0f6e',
+                    borderColor: '#ff0f6e',
                     borderRadius: '25px',
                     px: 3,
                     '&:hover': {
@@ -370,7 +370,7 @@ export default function GoogleAuthSetup() {
         fullWidth
       >
         <DialogTitle>
-          <Typography variant="h6" fontWeight="bold" color="#ED1F80">
+          <Typography variant="h6" fontWeight="bold" color="#ff0f6e">
             Instrucciones de configuración
           </Typography>
         </DialogTitle>
@@ -426,7 +426,7 @@ export default function GoogleAuthSetup() {
           <Button
             onClick={() => setShowInstructions(false)}
             sx={{
-              backgroundColor: '#ED1F80',
+              backgroundColor: '#ff0f6e',
               color: 'white',
               fontWeight: 'bold',
               borderRadius: '25px',

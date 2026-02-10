@@ -13,7 +13,7 @@ export default function AdminPage() {
   return (
     <AdminLayout>
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" gutterBottom sx={{ color: '#ED1F80' }}>
+        <Typography variant="h4" gutterBottom sx={{ color: '#ff0f6e' }}>
           Panel de Administración
         </Typography>
 

@@ -438,8 +438,8 @@ const AppointmentCalendar: React.FC = () => {
             mb={2}
           >
             <Box display="flex" alignItems="center" gap={1}>
-              <TodayIcon sx={{ color: '#ED1F80' }} />
-              <Typography variant="h6" sx={{ color: '#ED1F80' }}>
+              <TodayIcon sx={{ color: '#ff0f6e' }} />
+              <Typography variant="h6" sx={{ color: '#ff0f6e' }}>
                 Calendario de Citas
               </Typography>
             </Box>
@@ -478,7 +478,7 @@ const AppointmentCalendar: React.FC = () => {
 
           {loading ? (
             <Box display="flex" justifyContent="center" py={4}>
-              <CircularProgress sx={{ color: '#ED1F80' }} />
+              <CircularProgress sx={{ color: '#ff0f6e' }} />
             </Box>
           ) : (
             <Grid container spacing={1}>
@@ -536,7 +536,7 @@ const AppointmentCalendar: React.FC = () => {
                       <Typography
                         variant="caption"
                         sx={{
-                          backgroundColor: '#ED1F80',
+                          backgroundColor: '#ff0f6e',
                           color: 'white',
                           borderRadius: '50%',
                           width: '24px',
@@ -567,7 +567,7 @@ const AppointmentCalendar: React.FC = () => {
       >
         <DialogTitle>
           <Box display="flex" alignItems="center" gap={1}>
-            <PersonIcon sx={{ color: '#ED1F80' }} />
+            <PersonIcon sx={{ color: '#ff0f6e' }} />
             Citas del{' '}
             {selectedDate &&
               (() => {
@@ -663,7 +663,7 @@ const AppointmentCalendar: React.FC = () => {
                                 handleGenerateMeetLink(appointment._id)
                               }
                               sx={{
-                                backgroundColor: '#ED1F80',
+                                backgroundColor: '#ff0f6e',
                                 color: 'white',
                                 '&:hover': {
                                   backgroundColor: '#c91a6b',

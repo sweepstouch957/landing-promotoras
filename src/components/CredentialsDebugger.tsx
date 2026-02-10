@@ -107,7 +107,7 @@ export default function CredentialsDebugger() {
       <Typography
         variant="h5"
         fontWeight="bold"
-        color="#ED1F80"
+        color="#ff0f6e"
         align="center"
         mb={3}
       >
@@ -137,7 +137,7 @@ export default function CredentialsDebugger() {
             variant="contained"
             onClick={sendCredentialsToBackend}
             disabled={isLoading}
-            sx={{ backgroundColor: '#ED1F80' }}
+            sx={{ backgroundColor: '#ff0f6e' }}
           >
             Enviar al Backend
           </Button>

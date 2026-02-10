@@ -48,7 +48,7 @@ NUEVOS REQUISITOS:
 .hero-badge svg {
   width: 14px;
   height: 14px;
-  fill: #e91e63;
+  fill: #ff0f6e;
 }
 
 .hero-title-wrapper {
@@ -74,7 +74,7 @@ NUEVOS REQUISITOS:
   top: 50%;
   transform: translateY(-50%);
   height: 4px;
-  background-color: #e91e63;
+  background-color: #ff0f6e;
   border-radius: 3px;
   z-index: 1;
   /* Línea que se extiende desde el borde izquierdo de la página */
@@ -101,7 +101,7 @@ NUEVOS REQUISITOS:
   z-index: 2;
   font-size: 2.1rem;
   font-weight: 700;
-  color: #e91e63;
+  color: #ff0f6e;
   margin: 0;
   margin-left: auto;
   padding-left: 45px;
@@ -153,11 +153,11 @@ NUEVOS REQUISITOS:
 .feature-item svg {
   width: 16px;
   height: 16px;
-  fill: #e91e63;
+  fill: #ff0f6e;
 }
 
 .primary-button {
-  background: linear-gradient(135deg, #e91e63 0%, #d81b60 100%);
+  background: linear-gradient(135deg, #ff0f6e 0%, #d81b60 100%);
   color: white;
   border: none;
   padding: 12px 24px;

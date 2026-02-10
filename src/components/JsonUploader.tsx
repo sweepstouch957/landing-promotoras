@@ -45,7 +45,7 @@ const JsonUploader: React.FC = () => {
         title: 'Error',
         text: 'Por favor selecciona un archivo JSON válido',
         icon: 'error',
-        confirmButtonColor: '#ED1F80',
+        confirmButtonColor: '#ff0f6e',
       });
       return;
     }
@@ -93,7 +93,7 @@ const JsonUploader: React.FC = () => {
           title: 'Archivo cargado exitosamente',
           text: `Se encontraron ${extractedEmails.length} emails únicos`,
           icon: 'success',
-          confirmButtonColor: '#ED1F80',
+          confirmButtonColor: '#ff0f6e',
         });
       } catch (error) {
         console.error('Error parsing JSON:', error);
@@ -104,7 +104,7 @@ const JsonUploader: React.FC = () => {
               ? error.message
               : 'Error al procesar el archivo JSON',
           icon: 'error',
-          confirmButtonColor: '#ED1F80',
+          confirmButtonColor: '#ff0f6e',
         });
       }
     };
@@ -118,7 +118,7 @@ const JsonUploader: React.FC = () => {
         title: 'Error',
         text: 'No hay emails para enviar',
         icon: 'error',
-        confirmButtonColor: '#ED1F80',
+        confirmButtonColor: '#ff0f6e',
       });
       return;
     }
@@ -128,7 +128,7 @@ const JsonUploader: React.FC = () => {
       text: `Se enviará un enlace de agendamiento a ${emails.length} usuarios. ¿Continuar?`,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#ED1F80',
+      confirmButtonColor: '#ff0f6e',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí, enviar',
       cancelButtonText: 'Cancelar',
@@ -163,7 +163,7 @@ const JsonUploader: React.FC = () => {
               html: `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
 
-    <div style="background-color: #ED1F80; padding: 20px 0; text-align: center;">
+    <div style="background-color: #ff0f6e; padding: 20px 0; text-align: center;">
       <img src="https://jobs.sweepstouch.com/logo-sweepstouch.png" alt="sweepsTOUCH logo" style="max-height: 40px;" />
       Sweepstouch
     </div>
@@ -184,7 +184,7 @@ const JsonUploader: React.FC = () => {
 
       <div style="text-align: center; margin: 30px 0;">
         <a href="${schedulingLink}?email=${encodeURIComponent(email)}" 
-          style="background-color: #ED1F80; color: white; padding: 15px 30px; text-decoration: none; border-radius: 30px; font-size: 16px;">
+          style="background-color: #ff0f6e; color: white; padding: 15px 30px; text-decoration: none; border-radius: 30px; font-size: 16px;">
           Schedule a Video Call
         </a>
       </div>
@@ -195,7 +195,7 @@ const JsonUploader: React.FC = () => {
       <p style="margin-top: 40px;"><strong>See you soon!</strong></p>
     </div>
 
-    <div style="background-color: #ED1F80; padding: 20px; text-align: center;">
+    <div style="background-color: #ff0f6e; padding: 20px; text-align: center;">
       <p style="color: white; margin: 0 0 10px 0;">CONNECT WITH US!</p>
       <p style="margin: 0;">
         <a href="#" style="margin: 0 10px; color: white; text-decoration: none; font-size: 20px;">Instagram</a>
@@ -231,7 +231,7 @@ const JsonUploader: React.FC = () => {
         title: 'Envío completado',
         text: `Emails enviados exitosamente: ${successCount}\nErrores: ${errorCount}`,
         icon: successCount > 0 ? 'success' : 'error',
-        confirmButtonColor: '#ED1F80',
+        confirmButtonColor: '#ff0f6e',
       });
     } catch (error) {
       console.error('Error enviando emails:', error);
@@ -239,7 +239,7 @@ const JsonUploader: React.FC = () => {
         title: 'Error',
         text: 'Error al enviar los emails',
         icon: 'error',
-        confirmButtonColor: '#ED1F80',
+        confirmButtonColor: '#ff0f6e',
       });
     } finally {
       setIsLoading(false);
@@ -252,7 +252,7 @@ const JsonUploader: React.FC = () => {
         variant="h4"
         component="h1"
         gutterBottom
-        sx={{ color: '#ED1F80', textAlign: 'center' }}
+        sx={{ color: '#ff0f6e', textAlign: 'center' }}
       >
         Importar Usuarios desde JSON
       </Typography>
@@ -280,7 +280,7 @@ const JsonUploader: React.FC = () => {
               component="span"
               startIcon={<CloudUpload />}
               sx={{
-                backgroundColor: '#ED1F80',
+                backgroundColor: '#ff0f6e',
                 '&:hover': { backgroundColor: '#c91a6b' },
                 mb: 2,
               }}
@@ -343,7 +343,7 @@ const JsonUploader: React.FC = () => {
                 onClick={sendEmailsToUsers}
                 disabled={isLoading}
                 sx={{
-                  backgroundColor: '#ED1F80',
+                  backgroundColor: '#ff0f6e',
                   '&:hover': { backgroundColor: '#c91a6b' },
                   minWidth: 200,
                 }}

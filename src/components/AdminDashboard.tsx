@@ -85,7 +85,7 @@ export default function AdminDashboard() {
         <Typography
           variant="h5"
           fontWeight="700"
-          color="#ED1F80"
+          color="#ff0f6e"
           textAlign="center"
           gutterBottom
         >
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
                 <Checkbox
                   checked={selectedDays.includes(day.value)}
                   onChange={() => handleDayChange(day.value)}
-                  sx={{ color: '#ED1F80' }}
+                  sx={{ color: '#ff0f6e' }}
                 />
               }
               label={day.label}
@@ -164,7 +164,7 @@ export default function AdminDashboard() {
             variant="contained"
             onClick={handleSave}
             sx={{
-              backgroundColor: '#ED1F80',
+              backgroundColor: '#ff0f6e',
               fontWeight: 'bold',
               borderRadius: 3,
               py: 1.2,
@@ -186,8 +186,8 @@ export default function AdminDashboard() {
               setEndHour('17:00');
             }}
             sx={{
-              borderColor: '#ED1F80',
-              color: '#ED1F80',
+              borderColor: '#ff0f6e',
+              color: '#ff0f6e',
               fontWeight: 'bold',
               borderRadius: 3,
               py: 1.2,
@@ -217,8 +217,8 @@ export default function AdminDashboard() {
               }
             }}
             sx={{
-              borderColor: '#ED1F80',
-              color: '#ED1F80',
+              borderColor: '#ff0f6e',
+              color: '#ff0f6e',
               fontWeight: 'bold',
               borderRadius: 3,
               py: 1.2,

@@ -326,14 +326,14 @@ const ScheduleConfigManager: React.FC = () => {
         alignItems="center"
         minHeight="400px"
       >
-        <CircularProgress size={50} sx={{ color: '#ED1F80' }} />
+        <CircularProgress size={50} sx={{ color: '#ff0f6e' }} />
       </Box>
     );
   }
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom sx={{ color: '#ED1F80' }}>
+      <Typography variant="h4" gutterBottom sx={{ color: '#ff0f6e' }}>
         Configuración de Horarios
       </Typography>
 
@@ -364,7 +364,7 @@ const ScheduleConfigManager: React.FC = () => {
           startIcon={<AddIcon />}
           onClick={openNewConfigDialog}
           sx={{
-            backgroundColor: '#ED1F80',
+            backgroundColor: '#ff0f6e',
             '&:hover': { backgroundColor: '#c91a6b' },
           }}
         >
@@ -480,8 +480,8 @@ const ScheduleConfigManager: React.FC = () => {
                           startIcon={<EditIcon />}
                           onClick={() => openEditConfigDialog(config)}
                           sx={{
-                            borderColor: '#ED1F80',
-                            color: '#ED1F80',
+                            borderColor: '#ff0f6e',
+                            color: '#ff0f6e',
                           }}
                         >
                           Editar
@@ -493,7 +493,7 @@ const ScheduleConfigManager: React.FC = () => {
                             variant="contained"
                             onClick={() => activateConfig(config._id!)}
                             sx={{
-                              backgroundColor: '#ED1F80',
+                              backgroundColor: '#ff0f6e',
                               '&:hover': { backgroundColor: '#c91a6b' },
                             }}
                           >
@@ -600,8 +600,8 @@ const ScheduleConfigManager: React.FC = () => {
                               handleWeekDayChange(dia.value, e.target.checked)
                             }
                             sx={{
-                              color: '#ED1F80',
-                              '&.Mui-checked': { color: '#ED1F80' },
+                              color: '#ff0f6e',
+                              '&.Mui-checked': { color: '#ff0f6e' },
                             }}
                           />
                         }
@@ -625,8 +625,8 @@ const ScheduleConfigManager: React.FC = () => {
                           })
                         }
                         sx={{
-                          color: '#ED1F80',
-                          '&.Mui-checked': { color: '#ED1F80' },
+                          color: '#ff0f6e',
+                          '&.Mui-checked': { color: '#ff0f6e' },
                         }}
                       />
                     }
@@ -800,7 +800,7 @@ const ScheduleConfigManager: React.FC = () => {
               )
             }
             sx={{
-              backgroundColor: '#ED1F80',
+              backgroundColor: '#ff0f6e',
               '&:hover': { backgroundColor: '#c91a6b' },
             }}
           >

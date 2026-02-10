@@ -16,7 +16,7 @@
   font-size: 2.4rem;
   font-weight: 400;
   letter-spacing: 0.5px;
-  color: #e91e63;
+  color: #ff0f6e;
   text-align: center;
   margin: 0 0 20px 0;
   text-transform: uppercase;
@@ -72,11 +72,11 @@
 }
 
 .iconLight {
-  color: #f8bbd9;
+  color: #ffe6f2;
 }
 
 .iconPink {
-  color: #e91e63;
+  color: #ff0f6e;
 }
 
 .cardTitle {

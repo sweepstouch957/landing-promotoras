@@ -33,8 +33,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#e91e63', dark: '#c2185b', light: '#f8bbd9' },
-    secondary: { main: '#ad1457', dark: '#880e4f', light: '#f48fb1' },
+    primary: { main: '#ff0f6e', dark: '#c10061', light: '#ffe6f2' },
+    secondary: { main: '#c10061', dark: '#8a0044', light: '#ff7bb8' },
   },
 });
 
@@ -185,7 +185,7 @@ export default function GenerarEnlacesPage() {
             marginBottom: 3,
             background: 'rgba(255,255,255,0.95)', 
             backdropFilter: 'blur(10px)',
-            border: '2px solid #e91e63'
+            border: '2px solid #ff0f6e'
           }}>
             <Typography variant="h3" gutterBottom sx={{ 
               fontWeight: 700, 
@@ -221,9 +221,9 @@ export default function GenerarEnlacesPage() {
                     component="span"
                     startIcon={<Upload />}
                     sx={{
-                      borderColor: '#e91e63',
-                      color: '#e91e63',
-                      '&:hover': { borderColor: '#c2185b', backgroundColor: 'rgba(233, 30, 99, 0.05)' }
+                      borderColor: '#ff0f6e',
+                      color: '#ff0f6e',
+                      '&:hover': { borderColor: '#c10061', backgroundColor: 'rgba(233, 30, 99, 0.05)' }
                     }}
                   >
                     Seleccionar Archivo JSON
@@ -244,9 +244,9 @@ export default function GenerarEnlacesPage() {
                 disabled={!jsonFile || isLoading}
                 startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <Email />}
                 sx={{
-                  backgroundColor: '#e91e63',
+                  backgroundColor: '#ff0f6e',
                   minWidth: 200,
-                  '&:hover': { backgroundColor: '#c2185b' }
+                  '&:hover': { backgroundColor: '#c10061' }
                 }}
               >
                 {isLoading ? 'Procesando...' : 'Generar Enlaces'}
@@ -337,9 +337,9 @@ export default function GenerarEnlacesPage() {
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f8bbd9' }}>Email</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f8bbd9' }}>Enlace Generado</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f8bbd9' }}>Acciones</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#ffe6f2' }}>Email</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#ffe6f2' }}>Enlace Generado</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#ffe6f2' }}>Acciones</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

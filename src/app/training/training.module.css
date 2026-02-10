@@ -52,7 +52,7 @@
 }
 
 .demoControlsTitle {
-  color: #c2185b;
+  color: #c10061;
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -85,39 +85,39 @@
 }
 
 .demoButton1 {
-  background: linear-gradient(135deg, #f8bbd9 0%, #f48fb1 100%);
-  border-color: #e91e63;
-  color: #880e4f;
+  background: linear-gradient(135deg, #ffe6f2 0%, #ff7bb8 100%);
+  border-color: #ff0f6e;
+  color: #8a0044;
 }
 
 .demoButton1:hover {
-  background: linear-gradient(135deg, #f48fb1 0%, #e91e63 100%);
+  background: linear-gradient(135deg, #ff7bb8 0%, #ff0f6e 100%);
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
 }
 
 .demoButton1.completed {
-  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+  background: linear-gradient(135deg, #ff0f6e 0%, #c10061 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(233, 30, 99, 0.5);
 }
 
 .demoButton2 {
-  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
-  border-color: #ad1457;
+  background: linear-gradient(135deg, #fce4ec 0%, #ffe6f2 100%);
+  border-color: #c10061;
   color: #4a148c;
 }
 
 .demoButton2:hover {
-  background: linear-gradient(135deg, #f8bbd9 0%, #ad1457 100%);
+  background: linear-gradient(135deg, #ffe6f2 0%, #c10061 100%);
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(173, 20, 87, 0.4);
 }
 
 .demoButton2.completed {
-  background: linear-gradient(135deg, #ad1457 0%, #880e4f 100%);
+  background: linear-gradient(135deg, #c10061 0%, #8a0044 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(173, 20, 87, 0.5);
 }
@@ -163,7 +163,7 @@
 .demoButtonReset {
   background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
   border-color: #f06292;
-  color: #c2185b;
+  color: #c10061;
 }
 
 .demoButtonReset:hover {
@@ -174,7 +174,7 @@
 }
 
 .demoTip {
-  color: #c2185b;
+  color: #c10061;
   font-size: 0.875rem;
   display: flex;
   align-items: center;
@@ -222,7 +222,7 @@
 .trainingCardTitle {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #c2185b;
+  color: #c10061;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -326,7 +326,7 @@
 
 .trainingProgressFill {
   height: 100%;
-  background: linear-gradient(90deg, #f8bbd9 0%, #e91e63 50%, #c2185b 100%);
+  background: linear-gradient(90deg, #ffe6f2 0%, #ff0f6e 50%, #c10061 100%);
   border-radius: 9999px;
   transition: width 0.3s ease;
   box-shadow: 0 0 10px rgba(233, 30, 99, 0.5);
@@ -350,13 +350,13 @@
 }
 
 .trainingButtonPrimary {
-  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+  background: linear-gradient(135deg, #ff0f6e 0%, #c10061 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
 }
 
 .trainingButtonPrimary:hover {
-  background: linear-gradient(135deg, #c2185b 0%, #ad1457 100%);
+  background: linear-gradient(135deg, #c10061 0%, #c10061 100%);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
 }
@@ -370,13 +370,13 @@
 
 .trainingButtonOutline {
   background: rgba(255, 255, 255, 0.9);
-  border: 2px solid #e91e63;
-  color: #c2185b;
+  border: 2px solid #ff0f6e;
+  color: #c10061;
   backdrop-filter: blur(5px);
 }
 
 .trainingButtonOutline:hover {
-  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+  background: linear-gradient(135deg, #ff0f6e 0%, #c10061 100%);
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
@@ -408,12 +408,12 @@
 .trainingProgressTitle {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #c2185b;
+  color: #c10061;
 }
 
 .trainingProgressCount {
   font-size: 0.875rem;
-  color: #ad1457;
+  color: #c10061;
   font-weight: 600;
   background: rgba(248, 32, 131, 0.1);
   padding: 0.25rem 0.75rem;
@@ -432,7 +432,7 @@
 
 .trainingProgressBarFill {
   height: 100%;
-  background: linear-gradient(90deg, #f8bbd9 0%, #e91e63 50%, #c2185b 100%);
+  background: linear-gradient(90deg, #ffe6f2 0%, #ff0f6e 50%, #c10061 100%);
   border-radius: 9999px;
   transition: width 0.5s ease;
   box-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
@@ -456,14 +456,14 @@
 
 .trainingVideoItem:hover {
   background: rgba(248, 32, 131, 0.05);
-  border-color: #e91e63;
+  border-color: #ff0f6e;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(248, 32, 131, 0.2);
 }
 
 .trainingVideoItem.active {
   background: linear-gradient(135deg, rgba(248, 32, 131, 0.1) 0%, rgba(233, 30, 99, 0.15) 100%);
-  border-color: #e91e63;
+  border-color: #ff0f6e;
   box-shadow: 0 4px 15px rgba(248, 32, 131, 0.3);
 }
 
@@ -482,7 +482,7 @@
 .trainingVideoItemTitle {
   font-size: 1rem;
   font-weight: 600;
-  color: #c2185b;
+  color: #c10061;
 }
 
 .trainingVideoItemStatus {
@@ -495,7 +495,7 @@
 }
 
 .trainingVideoItemStatus.playing {
-  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+  background: linear-gradient(135deg, #ff0f6e 0%, #c10061 100%);
   color: white;
 }
 
@@ -517,7 +517,7 @@
 }
 
 .trainingVideoItemDuration {
-  color: #ad1457;
+  color: #c10061;
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -527,7 +527,7 @@
   color: white;
   padding: 2rem 0;
   margin-top: 3rem;
-  border-top: 3px solid #e91e63;
+  border-top: 3px solid #ff0f6e;
 }
 
 .trainingFooterContent {

@@ -346,7 +346,7 @@ export default function AdminScheduleList() {
           component="h1"
           sx={{
             fontWeight: 'bold',
-            color: '#ED1F80',
+            color: '#ff0f6e',
             textAlign: 'center',
             mb: 3,
           }}
@@ -436,7 +436,7 @@ export default function AdminScheduleList() {
             <Button
               variant="outlined"
               onClick={handleExport}
-              sx={{ color: '#ED1F80', borderColor: '#ED1F80' }}
+              sx={{ color: '#ff0f6e', borderColor: '#ff0f6e' }}
               fullWidth
               size="small"
             >
@@ -448,7 +448,7 @@ export default function AdminScheduleList() {
             <Button
               variant="outlined"
               onClick={fetchUsers}
-              sx={{ color: '#ED1F80', borderColor: '#ED1F80' }}
+              sx={{ color: '#ff0f6e', borderColor: '#ff0f6e' }}
               fullWidth
               size="small"
             >

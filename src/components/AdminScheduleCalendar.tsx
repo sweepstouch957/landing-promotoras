@@ -489,7 +489,7 @@ export default function AdminScheduleCalendar() {
           mb: 3,
         }}
       >
-        <Typography variant="h5" fontWeight="bold" color="#ED1F80">
+        <Typography variant="h5" fontWeight="bold" color="#ff0f6e">
           Calendario de Citas
         </Typography>
         <Button
@@ -497,8 +497,8 @@ export default function AdminScheduleCalendar() {
           onClick={handleRefresh}
           startIcon={<Refresh />}
           sx={{
-            color: '#ED1F80',
-            borderColor: '#ED1F80',
+            color: '#ff0f6e',
+            borderColor: '#ff0f6e',
             '&:hover': {
               borderColor: '#e50575',
               backgroundColor: 'rgba(237, 31, 128, 0.04)',
@@ -551,10 +551,10 @@ export default function AdminScheduleCalendar() {
           '& .rbc-toolbar-label': {
             fontWeight: 'bold',
             fontSize: '1.1rem',
-            color: '#ED1F80',
+            color: '#ff0f6e',
           },
           '& .rbc-btn-group button': {
-            backgroundColor: '#ED1F80',
+            backgroundColor: '#ff0f6e',
             color: 'white',
             border: 'none',
             borderRadius: '6px',
@@ -612,7 +612,7 @@ export default function AdminScheduleCalendar() {
             const hasImportedUsers = event.resource?.some((m) => m.esImportado);
             return {
               style: {
-                backgroundColor: hasImportedUsers ? '#2196F3' : '#ED1F80',
+                backgroundColor: hasImportedUsers ? '#2196F3' : '#ff0f6e',
                 color: 'white',
                 borderRadius: '50%',
                 border: 'none',
@@ -637,7 +637,7 @@ export default function AdminScheduleCalendar() {
               variant="h6"
               fontWeight="bold"
               mb={2}
-              color="#ED1F80"
+              color="#ff0f6e"
               sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
             >
               <Schedule />
@@ -655,7 +655,7 @@ export default function AdminScheduleCalendar() {
                     cursor: 'pointer',
                     '&:hover': {
                       backgroundColor: '#fce4ec',
-                      borderColor: '#ED1F80',
+                      borderColor: '#ff0f6e',
                     },
                   }}
                   onClick={() => {
@@ -717,7 +717,7 @@ export default function AdminScheduleCalendar() {
                         <Chip
                           label={appointment.time}
                           sx={{
-                            backgroundColor: '#ED1F80',
+                            backgroundColor: '#ff0f6e',
                             color: 'white',
                             fontWeight: 'bold',
                           }}
@@ -760,7 +760,7 @@ export default function AdminScheduleCalendar() {
           <Typography
             variant="h6"
             fontWeight="bold"
-            color="#ED1F80"
+            color="#ff0f6e"
             align="center"
           >
             Detalles de la Cita
@@ -772,7 +772,7 @@ export default function AdminScheduleCalendar() {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               {/* Fecha y hora */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Schedule sx={{ color: '#ED1F80' }} />
+                <Schedule sx={{ color: '#ff0f6e' }} />
                 <Box>
                   <Typography variant="body1" fontWeight="bold">
                     {format(
@@ -792,7 +792,7 @@ export default function AdminScheduleCalendar() {
               {/* Información del cliente */}
               {selectedAppointment.nombre && selectedAppointment.apellido && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Person sx={{ color: '#ED1F80' }} />
+                  <Person sx={{ color: '#ff0f6e' }} />
                   <Box>
                     <Typography variant="body1" fontWeight="bold">
                       {selectedAppointment.nombre}{' '}
@@ -815,7 +815,7 @@ export default function AdminScheduleCalendar() {
 
               {selectedAppointment.correo && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Email sx={{ color: '#ED1F80' }} />
+                  <Email sx={{ color: '#ff0f6e' }} />
                   <Box>
                     <Typography variant="body1" fontWeight="bold">
                       {selectedAppointment.correo}
@@ -829,7 +829,7 @@ export default function AdminScheduleCalendar() {
 
               {selectedAppointment.telefono && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Phone sx={{ color: '#ED1F80' }} />
+                  <Phone sx={{ color: '#ff0f6e' }} />
                   <Box>
                     <Typography variant="body1" fontWeight="bold">
                       {selectedAppointment.telefono}
@@ -843,7 +843,7 @@ export default function AdminScheduleCalendar() {
 
               {selectedAppointment.idioma && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Person sx={{ color: '#ED1F80' }} />
+                  <Person sx={{ color: '#ff0f6e' }} />
                   <Box>
                     <Typography variant="body1" fontWeight="bold">
                       {selectedAppointment.idioma}
@@ -859,7 +859,7 @@ export default function AdminScheduleCalendar() {
                 <>
                   <Divider />
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <VideoCall sx={{ color: '#ED1F80' }} />
+                    <VideoCall sx={{ color: '#ff0f6e' }} />
                     <Box sx={{ flex: 1 }}>
                       <Typography variant="body2" color="text.secondary" mb={1}>
                         Enlace de Google Meet
@@ -870,7 +870,7 @@ export default function AdminScheduleCalendar() {
                         target="_blank"
                         rel="noopener noreferrer"
                         sx={{
-                          backgroundColor: '#ED1F80',
+                          backgroundColor: '#ff0f6e',
                           color: 'white',
                           fontWeight: 'bold',
                           borderRadius: '20px',
@@ -892,7 +892,7 @@ export default function AdminScheduleCalendar() {
 
               {selectedAppointment.htmlLink && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Schedule sx={{ color: '#ED1F80' }} />
+                  <Schedule sx={{ color: '#ff0f6e' }} />
                   <Box sx={{ flex: 1 }}>
                     <Typography variant="body2" color="text.secondary" mb={1}>
                       Ver en Google Calendar
@@ -903,8 +903,8 @@ export default function AdminScheduleCalendar() {
                       target="_blank"
                       rel="noopener noreferrer"
                       sx={{
-                        color: '#ED1F80',
-                        borderColor: '#ED1F80',
+                        color: '#ff0f6e',
+                        borderColor: '#ff0f6e',
                         borderRadius: '20px',
                         px: 3,
                         py: 1,
@@ -948,7 +948,7 @@ export default function AdminScheduleCalendar() {
           <Button
             onClick={handleCloseDetails}
             sx={{
-              backgroundColor: '#ED1F80',
+              backgroundColor: '#ff0f6e',
               color: 'white',
               fontWeight: 'bold',
               borderRadius: '25px',

@@ -45,11 +45,11 @@ const idiomas = [
 
 const inputStyles = {
   '& label.Mui-focused': {
-    color: '#ED1F80',
+    color: '#ff0f6e',
   },
   '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {
-      borderColor: '#ED1F80',
+      borderColor: '#ff0f6e',
     },
   },
 };
@@ -184,7 +184,7 @@ const SimpleSchedulingForm: React.FC = () => {
           subject: 'Confirmación de cita - Programa de Promotoras',
           html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #ED1F80;">¡Cita confirmada!</h2>
+            <h2 style="color: #ff0f6e;">¡Cita confirmada!</h2>
             <p>Tu cita ha sido agendada exitosamente:</p>
             <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
               <p><strong>Fecha:</strong> ${new Date(
@@ -195,7 +195,7 @@ const SimpleSchedulingForm: React.FC = () => {
             </div>
             <div style="text-align: center; margin: 30px 0;">
               <a href="${calendarResult.meetLink}" 
-                 style="background-color: #ED1F80; color: white; padding: 15px 30px; 
+                 style="background-color: #ff0f6e; color: white; padding: 15px 30px; 
                         text-decoration: none; border-radius: 5px; display: inline-block;">
                 Unirse a la reunión
               </a>
@@ -203,7 +203,7 @@ const SimpleSchedulingForm: React.FC = () => {
             <p>También puedes acceder al evento directamente en tu calendario:</p>
             <p><a href="${
               calendarResult.htmlLink
-            }" style="color: #ED1F80;">Ver en Google Calendar</a></p>
+            }" style="color: #ff0f6e;">Ver en Google Calendar</a></p>
             <p>¡Nos vemos pronto!</p>
           </div>
         `,
@@ -226,7 +226,7 @@ const SimpleSchedulingForm: React.FC = () => {
         title: '¡Cita agendada exitosamente!',
         text: 'Recibirás un email de confirmación con los detalles de tu cita.',
         icon: 'success',
-        confirmButtonColor: '#ED1F80',
+        confirmButtonColor: '#ff0f6e',
       }).then(() => {
         window.location.href = '/';
       });
@@ -237,7 +237,7 @@ const SimpleSchedulingForm: React.FC = () => {
         text:
           error instanceof Error ? error.message : 'Error al agendar la cita',
         icon: 'error',
-        confirmButtonColor: '#ED1F80',
+        confirmButtonColor: '#ff0f6e',
       });
     } finally {
       setIsSubmitting(false);
@@ -251,7 +251,7 @@ const SimpleSchedulingForm: React.FC = () => {
         variant="h4"
         component="h1"
         gutterBottom
-        sx={{ color: '#ED1F80', textAlign: 'center' }}
+        sx={{ color: '#ff0f6e', textAlign: 'center' }}
       >
         Agendar tu Cita
       </Typography>
@@ -316,7 +316,7 @@ const SimpleSchedulingForm: React.FC = () => {
               size="large"
               disabled={isSubmitting}
               sx={{
-                backgroundColor: '#ED1F80',
+                backgroundColor: '#ff0f6e',
                 '&:hover': { backgroundColor: '#c91a6b' },
                 minWidth: 200,
                 py: 1.5,

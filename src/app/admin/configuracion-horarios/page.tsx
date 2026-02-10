@@ -98,7 +98,7 @@ const ConfiguracionHorarios: React.FC = () => {
           title: 'Éxito',
           text: 'Configuración guardada correctamente',
           icon: 'success',
-          confirmButtonColor: '#ED1F80',
+          confirmButtonColor: '#ff0f6e',
         });
         loadConfigs();
       } else {
@@ -109,7 +109,7 @@ const ConfiguracionHorarios: React.FC = () => {
         title: 'Error',
         text: error instanceof Error ? error.message : 'Error al guardar la configuración',
         icon: 'error',
-        confirmButtonColor: '#ED1F80',
+        confirmButtonColor: '#ff0f6e',
       });
     } finally {
       setLoading(false);
@@ -134,7 +134,7 @@ const ConfiguracionHorarios: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#ED1F80', textAlign: 'center' }}>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#ff0f6e', textAlign: 'center' }}>
         Configuración de Horarios
       </Typography>
 
@@ -232,7 +232,7 @@ const ConfiguracionHorarios: React.FC = () => {
             variant="contained"
             disabled={loading}
             sx={{ 
-              backgroundColor: '#ED1F80',
+              backgroundColor: '#ff0f6e',
               '&:hover': { backgroundColor: '#C91A6B' }
             }}
           >

@@ -51,8 +51,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ open, onClose }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [adminMenuOpen, setAdminMenuOpen] = useState(true);
 
-  const primaryColor = '#f82083';
-  const hoverColor = '#e01070';
+  const primaryColor = '#ff0f6e';
+  const hoverColor = '#c10061';
 
   const menuItems = [
     {

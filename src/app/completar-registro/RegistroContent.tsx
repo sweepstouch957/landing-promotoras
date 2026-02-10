@@ -25,8 +25,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#e91e63', dark: '#c2185b', light: '#f8bbd9' },
-    secondary: { main: '#ad1457', dark: '#880e4f', light: '#f48fb1' },
+    primary: { main: '#ff0f6e', dark: '#c10061', light: '#ffe6f2' },
+    secondary: { main: '#c10061', dark: '#8a0044', light: '#ff7bb8' },
   },
 });
 
@@ -176,10 +176,10 @@ export default function CompletarRegistroPage() {
               padding: 4, 
               background: 'rgba(255,255,255,0.95)', 
               backdropFilter: 'blur(10px)',
-              border: '2px solid #e91e63'
+              border: '2px solid #ff0f6e'
             }}>
-              <CircularProgress sx={{ color: '#e91e63', marginBottom: 2 }} size={60} />
-              <Typography variant="h5" sx={{ color: '#e91e63', fontWeight: 600 }}>
+              <CircularProgress sx={{ color: '#ff0f6e', marginBottom: 2 }} size={60} />
+              <Typography variant="h5" sx={{ color: '#ff0f6e', fontWeight: 600 }}>
                 Verificando tu información...
               </Typography>
             </Card>
@@ -199,7 +199,7 @@ export default function CompletarRegistroPage() {
               padding: 4, 
               background: 'rgba(255,255,255,0.95)', 
               backdropFilter: 'blur(10px)',
-              border: '2px solid #e91e63'
+              border: '2px solid #ff0f6e'
             }}>
               <Lock sx={{ fontSize: 80, color: 'error.main', marginBottom: 2 }} />
               <Typography variant="h3" gutterBottom sx={{ 
@@ -230,10 +230,10 @@ export default function CompletarRegistroPage() {
                 startIcon={<ArrowBack />}
                 sx={{
                   minWidth: 250,
-                  background: 'linear-gradient(135deg, #e91e63 0%, #c2185b 100%)',
+                  background: 'linear-gradient(135deg, #ff0f6e 0%, #c10061 100%)',
                   boxShadow: '0 4px 15px rgba(233, 30, 99, 0.3)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #c2185b 0%, #ad1457 100%)',
+                    background: 'linear-gradient(135deg, #c10061 0%, #c10061 100%)',
                     transform: 'translateY(-2px)',
                     boxShadow: '0 8px 25px rgba(233,30,99,0.4)',
                   }
@@ -257,7 +257,7 @@ export default function CompletarRegistroPage() {
             padding: 4, 
             background: 'rgba(255,255,255,0.95)', 
             backdropFilter: 'blur(10px)',
-            border: '2px solid #e91e63'
+            border: '2px solid #ff0f6e'
           }}>
             <CheckCircle sx={{ fontSize: 80, color: 'primary.main', marginBottom: 2 }} />
             <Typography variant="h3" gutterBottom sx={{ 
@@ -272,7 +272,7 @@ export default function CompletarRegistroPage() {
             <Alert severity="success" sx={{ 
               marginBottom: 3, 
               borderRadius: '15px',
-              '& .MuiAlert-icon': { color: '#e91e63' }
+              '& .MuiAlert-icon': { color: '#ff0f6e' }
             }}>
               <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 1 }}>
                 ¡Te encontramos en nuestro sistema!
@@ -296,7 +296,7 @@ export default function CompletarRegistroPage() {
             borderRadius: 3,
             p: 2,
             backgroundColor: 'rgba(255, 240, 247, 0.95)',
-            border: '2px solid #e91e63',
+            border: '2px solid #ff0f6e',
             backdropFilter: 'blur(10px)',
           },
         }}
@@ -306,13 +306,13 @@ export default function CompletarRegistroPage() {
             display: 'flex',
             alignItems: 'center',
             gap: 1,
-            color: '#e91e63',
+            color: '#ff0f6e',
             fontWeight: 'bold',
             fontSize: '1.5rem',
             textAlign: 'center',
           }}
         >
-          <PhotoCamera sx={{ color: '#e91e63' }} />
+          <PhotoCamera sx={{ color: '#ff0f6e' }} />
           Completa tu Registro
         </DialogTitle>
         
@@ -336,13 +336,13 @@ export default function CompletarRegistroPage() {
                 alignItems: 'center', 
                 gap: 2,
                 padding: 3, 
-                border: '2px dashed #e91e63',
+                border: '2px dashed #ff0f6e',
                 borderRadius: 2, 
                 cursor: 'pointer', 
                 transition: 'all 0.3s ease',
                 '&:hover': { 
                   backgroundColor: 'rgba(233,30,99,0.05)', 
-                  borderColor: '#c2185b' 
+                  borderColor: '#c10061' 
                 }
               }}>
                 {photoPreview ? (
@@ -351,19 +351,19 @@ export default function CompletarRegistroPage() {
                     sx={{ 
                       width: 120, 
                       height: 120, 
-                      border: '3px solid #e91e63' 
+                      border: '3px solid #ff0f6e' 
                     }} 
                   />
                 ) : (
                   <IconButton 
                     component="span" 
                     sx={{ 
-                      backgroundColor: '#f8bbd9', 
-                      color: '#e91e63', 
+                      backgroundColor: '#ffe6f2', 
+                      color: '#ff0f6e', 
                       width: 80,
                       height: 80,
                       '&:hover': { 
-                        backgroundColor: '#e91e63', 
+                        backgroundColor: '#ff0f6e', 
                         color: 'white' 
                       } 
                     }}
@@ -375,7 +375,7 @@ export default function CompletarRegistroPage() {
                   variant="body1" 
                   sx={{ 
                     fontWeight: 600,
-                    color: '#e91e63'
+                    color: '#ff0f6e'
                   }}
                 >
                   {photoPreview ? 'Cambiar Foto' : 'Subir Foto'}
@@ -393,10 +393,10 @@ export default function CompletarRegistroPage() {
             onClick={() => setPhotoModalOpen(false)}
             variant="outlined"
             sx={{
-              borderColor: '#e91e63',
-              color: '#e91e63',
+              borderColor: '#ff0f6e',
+              color: '#ff0f6e',
               '&:hover': {
-                borderColor: '#c2185b',
+                borderColor: '#c10061',
                 backgroundColor: 'rgba(233, 30, 99, 0.05)',
               }
             }}
@@ -409,11 +409,11 @@ export default function CompletarRegistroPage() {
             disabled={!photoFile || uploadingPhoto}
             startIcon={uploadingPhoto ? <CircularProgress size={20} color="inherit" /> : <Send />}
             sx={{
-              backgroundColor: '#e91e63',
+              backgroundColor: '#ff0f6e',
               color: 'white',
               minWidth: 150,
               '&:hover': { 
-                backgroundColor: '#c2185b' 
+                backgroundColor: '#c10061' 
               },
               '&:disabled': { 
                 backgroundColor: 'rgba(233, 30, 99, 0.6)' 

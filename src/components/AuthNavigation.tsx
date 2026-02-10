@@ -20,7 +20,7 @@ const AuthNavigation: React.FC = () => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const primaryColor = '#e01070';
+  const primaryColor = '#c10061';
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

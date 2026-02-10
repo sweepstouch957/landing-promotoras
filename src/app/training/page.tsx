@@ -35,8 +35,8 @@ import { createActivationRequestFE } from '@/services/activation.service';
 // ---------------- UI THEME ----------------
 const theme = createTheme({
   palette: {
-    primary: { main: '#e91e63', dark: '#c2185b', light: '#f8bbd9' },
-    secondary: { main: '#ad1457', dark: '#880e4f', light: '#f48fb1' },
+    primary: { main: '#ff0f6e', dark: '#c10061', light: '#ffe6f2' },
+    secondary: { main: '#c10061', dark: '#8a0044', light: '#ff7bb8' },
   },
 });
 
@@ -648,7 +648,7 @@ export default function Home() {
                 padding: 4,
                 background: 'rgba(255,255,255,0.95)',
                 backdropFilter: 'blur(10px)',
-                border: '2px solid #e91e63',
+                border: '2px solid #ff0f6e',
               }}
             >
               <Lock
@@ -672,7 +672,7 @@ export default function Home() {
                 sx={{
                   marginBottom: 3,
                   borderRadius: '15px',
-                  '& .MuiAlert-icon': { color: '#e91e63' },
+                  '& .MuiAlert-icon': { color: '#ff0f6e' },
                 }}
               >
                 <Typography
@@ -695,11 +695,11 @@ export default function Home() {
                 sx={{
                   minWidth: 250,
                   background:
-                    'linear-gradient(135deg, #e91e63 0%, #c2185b 100%)',
+                    'linear-gradient(135deg, #ff0f6e 0%, #c10061 100%)',
                   boxShadow: '0 4px 15px rgba(233, 30, 99, 0.3)',
                   '&:hover': {
                     background:
-                      'linear-gradient(135deg, #c2185b 0%, #ad1457 100%)',
+                      'linear-gradient(135deg, #c10061 0%, #c10061 100%)',
                     transform: 'translateY(-2px)',
                     boxShadow: '0 8px 25px rgba(233,30,99,0.4)',
                   },
@@ -847,7 +847,7 @@ export default function Home() {
               borderRadius: 3,
               p: 2,
               backgroundColor: 'rgba(255, 240, 247, 0.95)',
-              border: '2px solid #e91e63',
+              border: '2px solid #ff0f6e',
               backdropFilter: 'blur(10px)',
             },
           }}
@@ -857,13 +857,13 @@ export default function Home() {
               display: 'flex',
               alignItems: 'center',
               gap: 1,
-              color: '#e91e63',
+              color: '#ff0f6e',
               fontWeight: 'bold',
               fontSize: '1.5rem',
               textAlign: 'center',
             }}
           >
-            <PhotoCamera sx={{ color: '#e91e63' }} />
+            <PhotoCamera sx={{ color: '#ff0f6e' }} />
             Completa tu Registro
           </DialogTitle>
 
@@ -896,13 +896,13 @@ export default function Home() {
                     alignItems: 'center',
                     gap: 2,
                     padding: 3,
-                    border: '2px dashed #e91e63',
+                    border: '2px dashed #ff0f6e',
                     borderRadius: 2,
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     '&:hover': {
                       backgroundColor: 'rgba(233,30,99,0.05)',
-                      borderColor: '#c2185b',
+                      borderColor: '#c10061',
                     },
                   }}
                 >
@@ -912,19 +912,19 @@ export default function Home() {
                       sx={{
                         width: 120,
                         height: 120,
-                        border: '3px solid #e91e63',
+                        border: '3px solid #ff0f6e',
                       }}
                     />
                   ) : (
                     <IconButton
                       component="span"
                       sx={{
-                        backgroundColor: '#f8bbd9',
-                        color: '#e91e63',
+                        backgroundColor: '#ffe6f2',
+                        color: '#ff0f6e',
                         width: 80,
                         height: 80,
                         '&:hover': {
-                          backgroundColor: '#e91e63',
+                          backgroundColor: '#ff0f6e',
                           color: 'white',
                         },
                       }}
@@ -934,7 +934,7 @@ export default function Home() {
                   )}
                   <Typography
                     variant="body1"
-                    sx={{ fontWeight: 600, color: '#e91e63' }}
+                    sx={{ fontWeight: 600, color: '#ff0f6e' }}
                   >
                     {photoPreview ? 'Cambiar Foto' : 'Subir Foto'}
                   </Typography>
@@ -951,10 +951,10 @@ export default function Home() {
               onClick={() => setPhotoModalOpen(false)}
               variant="outlined"
               sx={{
-                borderColor: '#e91e63',
-                color: '#e91e63',
+                borderColor: '#ff0f6e',
+                color: '#ff0f6e',
                 '&:hover': {
-                  borderColor: '#c2185b',
+                  borderColor: '#c10061',
                   backgroundColor: 'rgba(233, 30, 99, 0.05)',
                 },
               }}
@@ -973,11 +973,11 @@ export default function Home() {
                 )
               }
               sx={{
-                backgroundColor: '#e91e63',
+                backgroundColor: '#ff0f6e',
                 color: 'white',
                 minWidth: 150,
                 '&:hover': {
-                  backgroundColor: '#c2185b',
+                  backgroundColor: '#c10061',
                 },
                 '&:disabled': {
                   backgroundColor: 'rgba(233, 30, 99, 0.6)',
@@ -1000,13 +1000,13 @@ export default function Home() {
               borderRadius: 3,
               p: 2,
               backgroundColor: 'rgba(255, 240, 247, 0.95)',
-              border: '2px solid #e91e63',
+              border: '2px solid #ff0f6e',
               backdropFilter: 'blur(10px)',
             },
           }}
         >
           <DialogTitle
-            sx={{ color: '#e91e63', fontWeight: 'bold', textAlign: 'center' }}
+            sx={{ color: '#ff0f6e', fontWeight: 'bold', textAlign: 'center' }}
           >
             {modalTitle}
           </DialogTitle>
@@ -1022,8 +1022,8 @@ export default function Home() {
               onClick={closeModal}
               variant="contained"
               sx={{
-                backgroundColor: '#e91e63',
-                '&:hover': { backgroundColor: '#c2185b' },
+                backgroundColor: '#ff0f6e',
+                '&:hover': { backgroundColor: '#c10061' },
               }}
             >
               Entendido

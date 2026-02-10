@@ -230,7 +230,7 @@ const TodayAppointments: React.FC = () => {
             alignItems="center"
             minHeight="200px"
           >
-            <CircularProgress sx={{ color: '#ED1F80' }} />
+            <CircularProgress sx={{ color: '#ff0f6e' }} />
           </Box>
         </CardContent>
       </Card>
@@ -247,8 +247,8 @@ const TodayAppointments: React.FC = () => {
           mb={2}
         >
           <Box display="flex" alignItems="center" gap={1}>
-            <TodayIcon sx={{ color: '#ED1F80' }} />
-            <Typography variant="h6" sx={{ color: '#ED1F80' }}>
+            <TodayIcon sx={{ color: '#ff0f6e' }} />
+            <Typography variant="h6" sx={{ color: '#ff0f6e' }}>
               Citas de Hoy
             </Typography>
           </Box>
@@ -274,7 +274,7 @@ const TodayAppointments: React.FC = () => {
             <Button
               size="small"
               onClick={fetchTodayAppointments}
-              sx={{ mt: 1, color: '#ED1F80' }}
+              sx={{ mt: 1, color: '#ff0f6e' }}
               variant="outlined"
             >
               Reintentar
@@ -304,7 +304,7 @@ const TodayAppointments: React.FC = () => {
                   bgcolor="#f5f5f5"
                   borderRadius={1}
                 >
-                  <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+                  <Typography variant="h4" sx={{ color: '#ff0f6e' }}>
                     {stats?.totalMeetings || 0}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -320,7 +320,7 @@ const TodayAppointments: React.FC = () => {
                   bgcolor="#f5f5f5"
                   borderRadius={1}
                 >
-                  <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+                  <Typography variant="h4" sx={{ color: '#ff0f6e' }}>
                     {stats?.totalParticipants || 0}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -384,7 +384,7 @@ const TodayAppointments: React.FC = () => {
                       mb={1}
                     >
                       <Box display="flex" alignItems="center" gap={2}>
-                        <ScheduleIcon sx={{ color: '#ED1F80' }} />
+                        <ScheduleIcon sx={{ color: '#ff0f6e' }} />
                         <Box>
                           <Typography variant="subtitle1" fontWeight="bold">
                             {appointment.horaInicio} - {appointment.horaFin}
@@ -410,8 +410,8 @@ const TodayAppointments: React.FC = () => {
                             href={appointment.enlaceMeet}
                             target="_blank"
                             sx={{
-                              borderColor: '#ED1F80',
-                              color: '#ED1F80',
+                              borderColor: '#ff0f6e',
+                              color: '#ff0f6e',
                               '&:hover': {
                                 borderColor: '#c91a6b',
                                 backgroundColor: 'rgba(237, 31, 128, 0.04)',
@@ -450,7 +450,7 @@ const TodayAppointments: React.FC = () => {
                                   border="1px solid #eee"
                                 >
                                   <PersonIcon
-                                    sx={{ color: '#ED1F80', fontSize: 20 }}
+                                    sx={{ color: '#ff0f6e', fontSize: 20 }}
                                   />
                                   <Box flex={1} minWidth={0}>
                                     <Box

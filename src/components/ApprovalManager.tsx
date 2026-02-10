@@ -323,7 +323,7 @@ const ApprovalManager: React.FC = () => {
         alignItems="center"
         mb={3}
       >
-        <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+        <Typography variant="h4" sx={{ color: '#ff0f6e' }}>
           Gestión de Aprobaciones
         </Typography>
         <Box display="flex" gap={1}>
@@ -332,7 +332,7 @@ const ApprovalManager: React.FC = () => {
             onClick={() => setViewMode('candidates')}
             sx={{
               backgroundColor:
-                viewMode === 'candidates' ? '#ED1F80' : 'transparent',
+                viewMode === 'candidates' ? '#ff0f6e' : 'transparent',
             }}
           >
             Candidatos
@@ -342,7 +342,7 @@ const ApprovalManager: React.FC = () => {
             onClick={() => setViewMode('attendance')}
             sx={{
               backgroundColor:
-                viewMode === 'attendance' ? '#ED1F80' : 'transparent',
+                viewMode === 'attendance' ? '#ff0f6e' : 'transparent',
             }}
           >
             Asistentes
@@ -410,7 +410,7 @@ const ApprovalManager: React.FC = () => {
         <CardContent>
           {loading ? (
             <Box display="flex" justifyContent="center" py={4}>
-              <CircularProgress sx={{ color: '#ED1F80' }} />
+              <CircularProgress sx={{ color: '#ff0f6e' }} />
             </Box>
           ) : (
             <>
@@ -444,7 +444,7 @@ const ApprovalManager: React.FC = () => {
                             <TableRow key={user._id}>
                               <TableCell>
                                 <Box display="flex" alignItems="center" gap={1}>
-                                  <PersonIcon sx={{ color: '#ED1F80' }} />
+                                  <PersonIcon sx={{ color: '#ff0f6e' }} />
                                   <Box>
                                     <Typography variant="subtitle2">
                                       {user.nombre} {user.apellido}
@@ -542,10 +542,10 @@ const ApprovalManager: React.FC = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     sx={{
-                                      borderColor: '#ED1F80',
-                                      color: '#ED1F80',
+                                      borderColor: '#ff0f6e',
+                                      color: '#ff0f6e',
                                       '&:hover': {
-                                        borderColor: '#d1176b',
+                                        borderColor: '#c10061',
                                         backgroundColor:
                                           'rgba(237, 31, 128, 0.04)',
                                       },
@@ -664,7 +664,7 @@ const ApprovalManager: React.FC = () => {
                             <TableRow key={record._id}>
                               <TableCell>
                                 <Box display="flex" alignItems="center" gap={1}>
-                                  <PersonIcon sx={{ color: '#ED1F80' }} />
+                                  <PersonIcon sx={{ color: '#ff0f6e' }} />
                                   <Box>
                                     <Typography variant="subtitle2">
                                       {record.user.nombre}{' '}
@@ -756,10 +756,10 @@ const ApprovalManager: React.FC = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     sx={{
-                                      borderColor: '#ED1F80',
-                                      color: '#ED1F80',
+                                      borderColor: '#ff0f6e',
+                                      color: '#ff0f6e',
                                       '&:hover': {
-                                        borderColor: '#d1176b',
+                                        borderColor: '#c10061',
                                         backgroundColor:
                                           'rgba(237, 31, 128, 0.04)',
                                       },

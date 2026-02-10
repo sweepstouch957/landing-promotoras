@@ -299,7 +299,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
           <Button
             variant="contained"
             onClick={initializeSystem}
-            sx={{ backgroundColor: '#ED1F80' }}
+            sx={{ backgroundColor: '#ff0f6e' }}
           >
             Reintentar Inicialización
           </Button>
@@ -317,7 +317,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
           alignItems="center"
           mb={3}
         >
-          <Typography variant="h5" sx={{ color: '#ED1F80' }}>
+          <Typography variant="h5" sx={{ color: '#ff0f6e' }}>
             Seleccionar Horario
           </Typography>
           <Button
@@ -375,7 +375,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
             <Button
               size="small"
               onClick={fetchSlots}
-              sx={{ ml: 2, color: '#ED1F80' }}
+              sx={{ ml: 2, color: '#ff0f6e' }}
             >
               Reintentar
             </Button>
@@ -385,7 +385,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
         {/* Loading */}
         {loading && (
           <Box display="flex" justifyContent="center" py={4}>
-            <CircularProgress sx={{ color: '#ED1F80' }} />
+            <CircularProgress sx={{ color: '#ff0f6e' }} />
           </Box>
         )}
 
@@ -404,7 +404,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
                 >
                   <CardContent>
                     <Box textAlign="center" mb={2}>
-                      <Typography variant="h6" sx={{ color: '#ED1F80' }}>
+                      <Typography variant="h6" sx={{ color: '#ff0f6e' }}>
                         {format(day.date, 'EEEE', { locale: es })}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -447,7 +447,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
                               justifyContent: 'flex-start',
                               backgroundColor:
                                 selectedSlot?._id === slot._id
-                                  ? '#ED1F80'
+                                  ? '#ff0f6e'
                                   : 'transparent',
                               borderColor:
                                 getStatusColor(slot) === 'success'
@@ -508,7 +508,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
             <Button
               variant="contained"
               onClick={createSlots}
-              sx={{ ml: 2, backgroundColor: '#ED1F80' }}
+              sx={{ ml: 2, backgroundColor: '#ff0f6e' }}
             >
               Crear Cupos
             </Button>
@@ -517,7 +517,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
 
         {/* Información adicional */}
         <Box mt={3} p={2} bgcolor="#f5f5f5" borderRadius={1}>
-          <Typography variant="h6" gutterBottom sx={{ color: '#ED1F80' }}>
+          <Typography variant="h6" gutterBottom sx={{ color: '#ff0f6e' }}>
             Información importante:
           </Typography>
           <Typography variant="body2" component="div">
@@ -569,7 +569,7 @@ const SlotSelector: React.FC<SlotSelectorProps> = ({
             <Button
               onClick={confirmSlotSelection}
               variant="contained"
-              sx={{ backgroundColor: '#ED1F80' }}
+              sx={{ backgroundColor: '#ff0f6e' }}
             >
               Confirmar
             </Button>

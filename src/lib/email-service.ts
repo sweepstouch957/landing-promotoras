@@ -82,13 +82,13 @@ export class EmailService {
             margin-bottom: 30px;
           }
           .logo {
-            color: #ED1F80;
+            color: #ff0f6e;
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 10px;
           }
           .title {
-            color: #ED1F80;
+            color: #ff0f6e;
             font-size: 28px;
             font-weight: bold;
             margin-bottom: 20px;
@@ -98,7 +98,7 @@ export class EmailService {
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
-            border-left: 4px solid #ED1F80;
+            border-left: 4px solid #ff0f6e;
           }
           .detail-row {
             margin: 10px 0;
@@ -107,12 +107,12 @@ export class EmailService {
           }
           .detail-label {
             font-weight: bold;
-            color: #ED1F80;
+            color: #ff0f6e;
             min-width: 120px;
           }
           .meet-button {
             display: inline-block;
-            background-color: #ED1F80;
+            background-color: #ff0f6e;
             color: white;
             padding: 15px 30px;
             text-decoration: none;
@@ -151,7 +151,7 @@ export class EmailService {
           <p>Here are the details:</p>
 
           <div class="appointment-details">
-            <h3 style="color: #ED1F80; margin-top: 0;">Appointment Details</h3>
+            <h3 style="color: #ff0f6e; margin-top: 0;">Appointment Details</h3>
             <div class="detail-row">
               <span class="detail-label">📅 Date:</span>
               <span>${data.appointmentDate}</span>
@@ -228,7 +228,7 @@ export class EmailService {
           .header {
             text-align: center;
             margin-bottom: 30px;
-            background-color: #ED1F80;
+            background-color: #ff0f6e;
             color: white;
             padding: 20px;
             border-radius: 8px;
@@ -243,7 +243,7 @@ export class EmailService {
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
-            border-left: 4px solid #ED1F80;
+            border-left: 4px solid #ff0f6e;
           }
           .detail-row {
             margin: 10px 0;
@@ -252,12 +252,12 @@ export class EmailService {
           }
           .detail-label {
             font-weight: bold;
-            color: #ED1F80;
+            color: #ff0f6e;
             min-width: 140px;
           }
           .meet-button {
             display: inline-block;
-            background-color: #ED1F80;
+            background-color: #ff0f6e;
             color: white;
             padding: 12px 25px;
             text-decoration: none;
@@ -284,7 +284,7 @@ export class EmailService {
           </div>
 
           <div class="user-info">
-            <h3 style="color: #ED1F80; margin-top: 0;">User Information</h3>
+            <h3 style="color: #ff0f6e; margin-top: 0;">User Information</h3>
             <div class="detail-row">
               <span class="detail-label">👤 Name:</span>
               <span>${data.userName}</span>
@@ -336,7 +336,7 @@ export class EmailService {
           </div>
 
           <div class="user-info">
-            <h3 style="color: #ED1F80; margin-top: 0;">Appointment Details</h3>
+            <h3 style="color: #ff0f6e; margin-top: 0;">Appointment Details</h3>
             <div class="detail-row">
               <span class="detail-label">📅 Date:</span>
               <span>${data.appointmentDate}</span>

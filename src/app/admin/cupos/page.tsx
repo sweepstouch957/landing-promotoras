@@ -238,7 +238,7 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Box display="flex" justifyContent="center" py={2}>
-            <CircularProgress sx={{ color: '#ED1F80' }} />
+            <CircularProgress sx={{ color: '#ff0f6e' }} />
           </Box>
         </CardContent>
       </Card>
@@ -249,7 +249,7 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
     return (
       <Card sx={{ mb: 3 }}>
         <CardContent>
-          <Typography variant="h6" sx={{ color: '#ED1F80', mb: 2 }}>
+          <Typography variant="h6" sx={{ color: '#ff0f6e', mb: 2 }}>
             Cupos Llenos
           </Typography>
           <Alert severity="info">No hay cupos llenos para esta semana.</Alert>
@@ -261,7 +261,7 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
   return (
     <Card sx={{ mb: 3 }}>
       <CardContent>
-        <Typography variant="h6" sx={{ color: '#ED1F80', mb: 2 }}>
+        <Typography variant="h6" sx={{ color: '#ff0f6e', mb: 2 }}>
           Cupos Llenos ({filledSlots.length})
         </Typography>
 
@@ -316,7 +316,7 @@ const FilledSlotsSection: React.FC<FilledSlotsSectionProps> = ({
                           generateMeetAndSendEmails(slot._id);
                         }}
                         sx={{
-                          backgroundColor: '#ED1F80',
+                          backgroundColor: '#ff0f6e',
                           color: 'white',
                           '&:hover': {
                             backgroundColor: '#c91a6b',
@@ -674,7 +674,7 @@ export default function CuposPage() {
       <Box sx={{ p: 3 }}>
         {/* Encabezado y filtros */}
         <Box display="flex" justifyContent="space-between" mb={3}>
-          <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+          <Typography variant="h4" sx={{ color: '#ff0f6e' }}>
             Gestión de Cupos
           </Typography>
 
@@ -741,7 +741,7 @@ export default function CuposPage() {
           >
             <Card>
               <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h4" sx={{ color: '#ED1F80' }}>
+                <Typography variant="h4" sx={{ color: '#ff0f6e' }}>
                   {stats.slots.total}
                 </Typography>
                 <Typography variant="body2">Total Cupos</Typography>
@@ -787,7 +787,7 @@ export default function CuposPage() {
         {/* Loader */}
         {loading ? (
           <Box display="flex" justifyContent="center" py={4}>
-            <CircularProgress sx={{ color: '#ED1F80' }} />
+            <CircularProgress sx={{ color: '#ff0f6e' }} />
           </Box>
         ) : (
           <>
@@ -846,7 +846,7 @@ export default function CuposPage() {
               appointmentGroups.map((grupo, i) => (
                 <Card key={i} sx={{ mb: 3 }}>
                   <CardContent>
-                    <Typography variant="h6" sx={{ mb: 2, color: '#ED1F80' }}>
+                    <Typography variant="h6" sx={{ mb: 2, color: '#ff0f6e' }}>
                       Grupo {i + 1} ({grupo.length} citas)
                     </Typography>
 
@@ -866,7 +866,7 @@ export default function CuposPage() {
                             <TableRow key={app._id}>
                               <TableCell>
                                 <Box display="flex" alignItems="center" gap={1}>
-                                  <ScheduleIcon sx={{ color: '#ED1F80' }} />
+                                  <ScheduleIcon sx={{ color: '#ff0f6e' }} />
                                   <Typography variant="body2" fontWeight="bold">
                                     {app.horaInicio} - {app.horaFin}
                                   </Typography>

@@ -83,12 +83,12 @@ const IDIOMAS_DISPONIBLES = [
 const inputStyles = {
   '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {
-      borderColor: '#ED1F80',
+      borderColor: '#ff0f6e',
     },
   },
   '& .MuiInputLabel-root': {
     '&.Mui-focused': {
-      color: '#ED1F80',
+      color: '#ff0f6e',
     },
   },
 };
@@ -353,7 +353,7 @@ const ApplicationForm: React.FC = () => {
           component="h1"
           gutterBottom
           align="center"
-          sx={{ color: '#ED1F80' }}
+          sx={{ color: '#ff0f6e' }}
         >
           {t('form.title')}
         </Typography>
@@ -488,7 +488,7 @@ const ApplicationForm: React.FC = () => {
             {/* @ts-expect-error */}
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel sx={{ '&.Mui-focused': { color: '#ED1F80' } }}>
+                <InputLabel sx={{ '&.Mui-focused': { color: '#ff0f6e' } }}>
                   {t('form.languages')} *
                 </InputLabel>
                 <Select
@@ -505,7 +505,7 @@ const ApplicationForm: React.FC = () => {
                   )}
                   sx={{
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#ED1F80',
+                      borderColor: '#ff0f6e',
                     },
                   }}
                 >
@@ -513,7 +513,7 @@ const ApplicationForm: React.FC = () => {
                     <MenuItem key={idioma} value={idioma}>
                       <Checkbox
                         checked={selectedIdiomas.indexOf(idioma) > -1}
-                        sx={{ '&.Mui-checked': { color: '#ED1F80' } }}
+                        sx={{ '&.Mui-checked': { color: '#ff0f6e' } }}
                       />
                       <ListItemText primary={idioma} />
                     </MenuItem>
@@ -535,9 +535,9 @@ const ApplicationForm: React.FC = () => {
                 sx={{
                   mt: 2,
                   py: 1.5,
-                  backgroundColor: '#ED1F80',
+                  backgroundColor: '#ff0f6e',
                   '&:hover': {
-                    backgroundColor: !isFormReady ? '#ED1F80' : '#d1176b',
+                    backgroundColor: !isFormReady ? '#ff0f6e' : '#c10061',
                   },
                   opacity: !isFormReady ? 0.6 : 1,
                   cursor: !isFormReady ? 'not-allowed' : 'pointer',
@@ -565,7 +565,7 @@ const ApplicationForm: React.FC = () => {
             borderRadius: 3,
             p: 3,
             backgroundColor: 'rgba(255, 240, 247, 0.85)',
-            border: '2px solid #ED1F80',
+            border: '2px solid #ff0f6e',
             backdropFilter: 'blur(10px)',
           },
         }}
@@ -575,12 +575,12 @@ const ApplicationForm: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             gap: 1,
-            color: '#ED1F80',
+            color: '#ff0f6e',
             fontWeight: 'bold',
             fontSize: '1.5rem',
           }}
         >
-          <CheckCircleIcon sx={{ color: '#ED1F80' }} />
+          <CheckCircleIcon sx={{ color: '#ff0f6e' }} />
           ¡Registro completado, {nombre}!
         </DialogTitle>
         <DialogContent>
@@ -594,9 +594,9 @@ const ApplicationForm: React.FC = () => {
             onClick={() => (window.location.href = '/training')}
             variant="contained"
             sx={{
-              backgroundColor: '#ED1F80',
+              backgroundColor: '#ff0f6e',
               color: 'white',
-              '&:hover': { backgroundColor: '#d1176b' },
+              '&:hover': { backgroundColor: '#c10061' },
               borderRadius: 2,
               px: 3,
             }}
@@ -629,12 +629,12 @@ const ApplicationForm: React.FC = () => {
             borderRadius: 3,
             p: 3,
             backgroundColor: 'rgba(255, 240, 247, 0.85)',
-            border: '2px solid #ED1F80',
+            border: '2px solid #ff0f6e',
             backdropFilter: 'blur(10px)',
           },
         }}
       >
-        <DialogTitle sx={{ color: '#ED1F80', fontWeight: 'bold' }}>
+        <DialogTitle sx={{ color: '#ff0f6e', fontWeight: 'bold' }}>
           Datos Guardados Encontrados
         </DialogTitle>
         <DialogContent>
@@ -669,7 +669,7 @@ const ApplicationForm: React.FC = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleModifyData} sx={{ color: '#ED1F80' }}>
+          <Button onClick={handleModifyData} sx={{ color: '#ff0f6e' }}>
             Modificar Datos
           </Button>
           <Button onClick={handleNewApplication} sx={{ color: '#666' }}>
@@ -679,8 +679,8 @@ const ApplicationForm: React.FC = () => {
             onClick={handleContinueWithExistingData}
             variant="contained"
             sx={{
-              backgroundColor: '#ED1F80',
-              '&:hover': { backgroundColor: '#d1176b' },
+              backgroundColor: '#ff0f6e',
+              '&:hover': { backgroundColor: '#c10061' },
             }}
           >
             Continuar con estos Datos
