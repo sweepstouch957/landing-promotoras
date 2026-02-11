@@ -94,7 +94,7 @@ export default function Hero() {
           className={`${styles['hero-image']} ${styles['hero-image-desktop']}`}
         >
           <img
-            src="/hero-image.jpg"
+            src="/hero-image.webp"
             alt="Grupo de chicas felices trabajando juntas"
           />
         </div>

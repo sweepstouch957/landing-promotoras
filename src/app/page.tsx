@@ -13,16 +13,14 @@ import JoinSection from '@/components/JoinSection';
 export default function Home() {
   return (
     <main>
-        <Header />
-        <Hero />
-        <Responsibilities />
-        <HowToParticipate />
-        <PaymentStructure />
-        <WhyChoose />
-        <Bonuses />
-        <Testimonials />
-        <JoinSection />
-        <Footer />
+      <Header />
+      <Hero />
+      <Responsibilities />
+      <HowToParticipate />
+      <WhyChoose />
+      <Testimonials />
+      <JoinSection />
+      <Footer />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 /* Reset y configuración base */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Dancing+Script:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 * {
   margin: 0;
@@ -197,6 +198,7 @@ body {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -445,8 +447,9 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
 /* Importar Bebas Neue solo para títulos y botones */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 
 /* Variables */
 :root {
@@ -480,6 +483,7 @@ button,
   font-family: var(--font-titles);
   letter-spacing: 0.5px;
 }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -1170,12 +1174,15 @@ body {
     flex-direction: column;
     text-align: left;
   }
+
   .footer-right {
     text-align: left;
   }
+
   .footer-logo {
     justify-content: flex-start;
   }
+
   .footer-links {
     justify-content: flex-start;
   }
@@ -1323,8 +1330,13 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .video-volume-controls {
@@ -1368,18 +1380,19 @@ body {
   .video-controls {
     padding: 0.75rem;
   }
-  
+
   .video-button {
     width: 36px;
     height: 36px;
   }
-  
+
   .video-controls-row {
     gap: 0.5rem;
   }
-  
+
   .video-volume-controls {
-    display: none; /* Ocultar controles de volumen en móviles */
+    display: none;
+    /* Ocultar controles de volumen en móviles */
   }
 }
 
@@ -1395,10 +1408,10 @@ body {
 }
 
 /* Optimización para pantallas de alta densidad */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
   .video-element {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
   }
 }
-

@@ -1,7 +1,8 @@
 /* Contenedor principal de la sección de testimonios */
 .testimonials {
   background-color: #e4dbd8; /* Aplicamos el color de fondo directamente a la sección */
-  padding: 60px 0; /* Espaciado superior e inferior de la sección */
+  /* Un poco menos de espacio vertical entre secciones */
+  padding: 48px 0; /* Espaciado superior e inferior de la sección */
   text-align: center; /* Centra el título de la sección */
 }
 
@@ -17,7 +18,7 @@
   font-size: 2.5em; /* Tamaño de la fuente del título */
   font-weight: bold; /* Negrita */
   text-transform: uppercase; /* Todo en mayúsculas */
-  margin-bottom: 50px; /* Espacio debajo del título */
+  margin-bottom: 32px; /* Espacio debajo del título */
   letter-spacing: 1px; /* Ligero espaciado entre letras */
 }
 

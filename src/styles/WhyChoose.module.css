@@ -2,12 +2,12 @@
 
 .container {
   background-color: #e4dbd8;
+  /* Menos espacio vertical (antes usaba min-height: 80vh y centrado vertical) */
   padding: 60px 20px;
-  min-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-family: 'Inter', sans-serif;
 }
 
