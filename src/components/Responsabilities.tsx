@@ -7,7 +7,7 @@ const Responsibilities = () => {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.title}>{t('responsibilities_title')}</h2>
+
       <div className={styles.cards}>
         <div className={styles.card}>
           <div className={styles.icon}>
