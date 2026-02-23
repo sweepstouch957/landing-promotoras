@@ -7,7 +7,6 @@ import imageCompression from "browser-image-compression";
 
 import VideoPlayer from "@/components/VideoPlayer";
 import SubmitSection from "@/components/SubmitSection";
-import PaymentStructure from "@/components/PaymentStructure";
 import styles from "./training.module.css";
 import Image from "next/image";
 import {
@@ -753,11 +752,6 @@ export default function Home() {
                 setWatchedTime={setWatchedTime}
               />
             </div>
-          </div>
-
-          {/* PaymentStructure */}
-          <div className={styles.paymentContainer}>
-            <PaymentStructure />
           </div>
 
           {/* Submit Section */}
