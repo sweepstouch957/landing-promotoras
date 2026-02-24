@@ -431,8 +431,6 @@ const ApplicationForm: React.FC = () => {
                   validate: (value) => {
                     const num = Number(value);
                     if (isNaN(num)) return t('form.ageNumber');
-                    if (num < 18) return t('form.ageMin');
-                    if (num > 100) return t('form.ageMax');
                     return true;
                   },
                 })}

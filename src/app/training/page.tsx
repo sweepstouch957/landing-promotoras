@@ -754,6 +754,11 @@ export default function Home() {
             </div>
           </div>
 
+          {/* PaymentStructure */}
+          <div className={styles.paymentContainer}>
+
+          </div>
+
           {/* Submit Section */}
           <div className={styles.trainingCard}>
             <div className={styles.trainingCardContent}>
