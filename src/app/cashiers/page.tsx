@@ -8,10 +8,8 @@ export default function CashiersPage() {
   return (<>
     <Header />
 
-    {/* Banner */}
-    <CashiersBanner />
-
-    <main style={{ padding: '0rem 0' }}>
+    <main className="cashiers-registration">
+      <CashiersBanner />
       <ReactQueryProvider>
         <CashiersForm />
       </ReactQueryProvider>

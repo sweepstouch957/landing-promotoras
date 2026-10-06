@@ -1415,3 +1415,54 @@ body {
     image-rendering: crisp-edges;
   }
 }
+/* Cashier registration campaign */
+.cashiers-registration + .footer {
+  margin-top: 0;
+}
+
+.cashiers-registration {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-bottom: 28px;
+  background: linear-gradient(155deg, #ec0078 15%, #ff77b2 65%, #ed0078 100%);
+}
+.cashiers-registration::before,
+.cashiers-registration::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 150%;
+  height: 180px;
+  left: -25%;
+  bottom: -125px;
+  border-radius: 50%;
+  background: #f60077;
+  transform: rotate(-7deg);
+}
+.cashiers-registration::after {
+  bottom: -145px;
+  background: #c90065;
+  transform: rotate(7deg);
+}
+.cashiers-form {
+  margin-top: 0;
+  width: calc(100% - 24px);
+  background: #fff;
+}
+.cashiers-form .MuiOutlinedInput-root {
+  border-radius: 9px;
+  min-height: 44px;
+  background: #fcfdfe;
+}
+.cashiers-form .MuiOutlinedInput-notchedOutline { border-color: #e0e2e5; }
+.cashiers-form .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline { border-color: #ec0e7b; }
+.cashiers-form .MuiInputAdornment-root { color: #f02887; }
+.cashiers-form .MuiInputLabel-root { font-size: 14px; color: #7a818b; }
+.cashiers-form .MuiInputLabel-root.Mui-focused,
+.cashiers-form .MuiFormLabel-asterisk { color: #ec0e7b; }
+.cashiers-form .MuiFormHelperText-root { font-size: 10px; margin-left: 44px; }
+@media (min-width: 600px) {
+  .cashiers-form { margin-top: 24px; }
+  .cashiers-registration { padding-bottom: 48px; }
+}

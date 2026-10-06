@@ -3,9 +3,10 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
-  Box, TextField, Button, Typography, Paper, Grid,
+  Box, TextField, Button, Typography, Paper, InputAdornment,
   CircularProgress, Autocomplete, Snackbar, Alert
 } from '@mui/material';
+import { UserRound, Mail, Phone, MapPin, Store, ArrowRight } from 'lucide-react';
 import useStore from '@/hooks/useStore';
 import { createCashier } from '@/services/cashier.service';
 
@@ -147,47 +148,47 @@ const CashiersForm: React.FC = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 720, mx: 'auto', mt: 2 }}>
-      <Typography variant="h5" align="center" sx={{ fontWeight: 600, mb: 1 }}>
+    <Paper className="cashiers-form" elevation={0} sx={{ p: { xs: 2.25, sm: 4 }, maxWidth: 600, mx: 'auto', position: 'relative', zIndex: 1, borderRadius: '22px 22px 45% 45% / 22px 22px 36px 36px', pb: { xs: 5, sm: 6 } }}>
+      <Typography variant="h5" align="center" sx={{ fontWeight: 800, fontSize: { xs: '1.75rem', sm: '2.25rem' }, color: '#ec0e7b', mb: 0.25 }}>
         {t('title')}
       </Typography>
-      <Typography variant="body2" align="center" color="text.secondary" sx={{ mb: 3 }}>
+      <Typography variant="body2" align="center" color="text.secondary" sx={{ mb: 2.5 }}>
         {t('subtitle')}
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Grid container spacing={3} direction="column">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
           {/* Nombre */}
-          {/* @ts-expect-error */}
-          <Grid item xs={12}>
+          <Box>
             <TextField
               fullWidth
-              label={t('firstName') + ' *'}
+              label={t('firstName')} required size="small"
+              InputProps={{ startAdornment: <InputAdornment position="start"><UserRound size={20} aria-hidden="true" /></InputAdornment> }}
               {...register('nombre', { required: t('errors.required') as string })}
               error={!!errors.nombre}
               helperText={errors.nombre?.message}
             />
-          </Grid>
+          </Box>
 
           {/* Apellido */}
-          {/* @ts-expect-error */}
-          <Grid item xs={12}>
+          <Box>
             <TextField
               fullWidth
-              label={t('lastName') + ' *'}
+              label={t('lastName')} required size="small"
+              InputProps={{ startAdornment: <InputAdornment position="start"><UserRound size={20} aria-hidden="true" /></InputAdornment> }}
               {...register('apellido', { required: t('errors.required') as string })}
               error={!!errors.apellido}
               helperText={errors.apellido?.message}
             />
-          </Grid>
+          </Box>
 
           {/* Email */}
-          {/* @ts-expect-error */}
-          <Grid item xs={12}>
+          <Box>
             <TextField
               fullWidth
               type="email"
-              label={t('email') + ' *'}
+              label={t('email')} required size="small"
+              InputProps={{ startAdornment: <InputAdornment position="start"><Mail size={20} aria-hidden="true" /></InputAdornment> }}
               {...register('email', {
                 required: t('errors.required') as string,
                 pattern: {
@@ -198,15 +199,15 @@ const CashiersForm: React.FC = () => {
               error={!!errors.email}
               helperText={errors.email?.message}
             />
-          </Grid>
+          </Box>
 
           {/* Teléfono: solo números y máx 11 */}
-          {/* @ts-expect-error */}
-          <Grid item xs={12}>
+          <Box>
             <TextField
               fullWidth
               type="tel"
-              label={t('phone') + ' *'}
+              label={t('phone')} required size="small"
+              InputProps={{ startAdornment: <InputAdornment position="start"><Phone size={20} aria-hidden="true" /></InputAdornment> }}
               value={watch('telefono') || ''}   // seguimos controlando el valor
               // 👇 usamos SÓLO el onChange que provee react-hook-form
               {...register('telefono', {
@@ -224,25 +225,23 @@ const CashiersForm: React.FC = () => {
               error={!!errors.telefono}
               helperText={errors.telefono?.message}
             />
-          </Grid>
+          </Box>
 
 
           {/* ZIP opcional para filtrar tiendas */}
-          {/* @ts-expect-error */}
-          <Grid item xs={12}>
+          <Box>
             <TextField
               fullWidth
-              label={`${t('zip')} (${t('optional')})`}
+              label={`${t('zip')} (${t('optional')})`} size="small" InputProps={{ startAdornment: <InputAdornment position="start"><MapPin size={20} aria-hidden="true" /></InputAdornment> }}
               value={zipFilter}
               onChange={handleZipChange}
               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 5 }}
               helperText={zipFilter ? `${t('filteringBy')}: ${zipFilter}` : t('zipHint')}
             />
-          </Grid>
+          </Box>
 
           {/* Tienda (Autocomplete) */}
-          {/* @ts-expect-error */}
-          <Grid item xs={12}>
+          <Box>
             <Controller
               name="storeId"
               control={control}
@@ -279,12 +278,12 @@ const CashiersForm: React.FC = () => {
                       <TextField
                         {...params}
                         fullWidth
-                        label={t('store') + ' *'}
+                        label={t('store')} required size="small"
                         placeholder={t('storePlaceholder')}
                         error={!!fieldState.error}
                         helperText={fieldState.error?.message}
                         InputProps={{
-                          ...params.InputProps,
+                          ...params.InputProps, startAdornment: <InputAdornment position="start"><Store size={20} aria-hidden="true" /></InputAdornment>,
                           endAdornment: (
                             <>
                               {loading ? <CircularProgress size={18} /> : null}
@@ -298,22 +297,21 @@ const CashiersForm: React.FC = () => {
                 );
               }}
             />
-          </Grid>
+          </Box>
 
           {/* Enviar */}
-          {/* @ts-expect-error */}
-          <Grid item xs={12}>
+          <Box>
             <Button
               type="submit"
               variant="contained"
               fullWidth
               disabled={isSubmitting}
-              sx={{ mt: 1.5, py: 1.25, borderRadius: 2 }}
+              endIcon={isSubmitting ? <CircularProgress size={18} color="inherit" /> : <ArrowRight size={20} />} sx={{ py: 1.25, borderRadius: 999, fontWeight: 700, background: 'linear-gradient(100deg, #ed0078, #f01485)', boxShadow: '0 4px 10px #ec0e7b30', '&:hover': { background: '#cf0068' } }}
             >
               {t('submit')}
             </Button>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Box>
 
       <Snackbar
